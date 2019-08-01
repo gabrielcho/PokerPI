@@ -15,7 +15,6 @@ public class Interfaz extends JFrame {
 
     public Interfaz() {
         setEntorno();
-        crearBoton(new Carta(1, 1));
     }
 
     /**Prepara la interfaz gráfica a su estado inicial */
@@ -23,7 +22,7 @@ public class Interfaz extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
-        JButton boton = new JButton("yeahsisa");
+        JButton boton = crearBoton(new Carta(1,1));
         tablero.add(boton);
         tablero.repaint();
         add(tablero);
