@@ -8,7 +8,7 @@ public class Baraja {
         crearBaraja();
         try {
             for (int i = 0; i < 52; i++)
-                System.out.println(baraja[i].paloCarta() + baraja[i].valorCarta() + "            " + i+1);
+                System.out.println(baraja[i].paloCarta() + baraja[i].valorCarta() + "            " + (i + 1));
 
         } catch (Exception e) {
             System.out.println("Se salio del array");
