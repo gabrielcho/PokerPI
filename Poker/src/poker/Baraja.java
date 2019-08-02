@@ -6,6 +6,7 @@ import java.util.Random;
 public class Baraja {
     private ArrayList<Carta> baraja;
 
+    /** Constructor de la baraja, genera las 52 cartas distintas del juego */
     public Baraja() {
         baraja = new ArrayList<Carta>();
         crearBaraja();
@@ -19,7 +20,7 @@ public class Baraja {
         }
     }
 
-    public void crearBaraja() {     
+    public void crearBaraja() {
         for (int i = 1; i < 14; i++) {
             for (int j = 0; j < 4; j++) {
                 baraja.add(new Carta(i, j));
@@ -27,58 +28,52 @@ public class Baraja {
         }
 
     }
-    
-    public void barajar()
-	{
-		ArrayList<Carta> barajaTemp = new ArrayList<Carta>();
-		Random random = new Random(System.currentTimeMillis());
-		int indicerandom = 0;
-		int tamañoOriginal = this.baraja.size();
-		for(int i = 0; i<tamañoOriginal;i++)
-		{
-			indicerandom = random.nextInt(this.baraja.size());
-			barajaTemp.add(this.baraja.get(indicerandom));
-			this.baraja.remove(indicerandom);
-		}
-		this.baraja = barajaTemp;
-	}
-    
-	/**
-	 * Obtiene una carta de la baraja.
-	 * @param i  Idica la posicion de una carta en una determinada ArrayList de cartas.
-	 * @return carta  Es un objeto Carta con palo y valor.
-	 */
-	public Carta getCarta(int i)
-	{
-		return this.baraja.get(i);
-	}
-	
-	public Carta darCartaAlAzar() {
-		int i = (int) (Math.random() * baraja.size()) + 1;
-		Carta elimimarCarta = this.baraja.get(i);
-		Carta DarCarta = elimimarCarta;
-		baraja.remove(elimimarCarta);
-		return DarCarta;
-	}
-	
-	/**
-	 * Quita una carta de una baraja.
-	 * @param i  Idica la posicion de una carta en una determinada ArrayList de cartas.
-	 */
-	public void quitarCarta(int i)
-	{
-		this.baraja.remove(i);
-	}
-	
-	/**
-	 * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la añade a una nueva baraja.
-	 * @param barajaDeDondeViene the baraja de donde viene la carta
-	 */
-	public void llamarCarta(Baraja barajaDeDondeViene)
-	{
-		this.baraja.add(barajaDeDondeViene.getCarta(0));
-		barajaDeDondeViene.quitarCarta(0);
-	}
-	
+
+    public void barajar() {
+        ArrayList<Carta> barajaTemp = new ArrayList<Carta>();
+        Random random = new Random(System.currentTimeMillis());
+        int indicerandom = 0;
+        int tamanoOriginal = this.baraja.size();
+        for (int i = 0; i < tamanoOriginal; i++) {
+            indicerandom = random.nextInt(this.baraja.size());
+            barajaTemp.add(this.baraja.get(indicerandom));
+            this.baraja.remove(indicerandom);
+        }
+        this.baraja = barajaTemp;
+    }
+
+    /**
+     * Obtiene una carta de la baraja.
+     * @param i  Idica la posicion de una carta en una determinada ArrayList de cartas.
+     * @return carta  Es un objeto Carta con palo y valor.
+     */
+    public Carta getCarta(int i) {
+        return this.baraja.get(i);
+    }
+
+    public Carta darCartaAlAzar() {
+        int i = (int) (Math.random() * baraja.size()) + 1;
+        Carta elimimarCarta = this.baraja.get(i);
+        Carta DarCarta = elimimarCarta;
+        baraja.remove(elimimarCarta);
+        return DarCarta;
+    }
+
+    /**
+     * Quita una carta de una baraja.
+     * @param i  Idica la posicion de una carta en una determinada ArrayList de cartas.
+     */
+    public void quitarCarta(int i) {
+        this.baraja.remove(i);
+    }
+
+    /**
+     * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la aï¿½ade a una nueva baraja.
+     * @param barajaDeDondeViene the baraja de donde viene la carta
+     */
+    public void llamarCarta(Baraja barajaDeDondeViene) {
+        this.baraja.add(barajaDeDondeViene.getCarta(0));
+        barajaDeDondeViene.quitarCarta(0);
+    }
 
 }

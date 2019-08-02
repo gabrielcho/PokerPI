@@ -147,7 +147,7 @@ public class Carta {
         System.out.println(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png")); 
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png"))
                 .getImage();
-        imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST);
+        imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST); //Escala la imagen de la carta a un tamaño deseable
         ImageIcon imagencarta = new ImageIcon(imagen);
         return imagencarta;
     }

@@ -8,6 +8,9 @@ import java.net.URL;
 import java.awt.image.*;
 import java.io.*;
 
+/**   Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica otros componentes necesarios
+ *  para el juego.
+ */
 public class Interfaz extends JFrame {
 
     private BorderLayout layout = new BorderLayout();
@@ -22,6 +25,7 @@ public class Interfaz extends JFrame {
     /**Prepara la interfaz gráfica a su estado inicial */
     public void setEntorno() throws IOException {
         setVisible(true);
+        setTitle("【Ｐ ｏ ｋ ｅ ｒ  　ｍ　ｅ　ｌ　ｏ】");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
