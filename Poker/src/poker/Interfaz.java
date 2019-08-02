@@ -13,6 +13,7 @@ public class Interfaz extends JFrame {
     private BorderLayout layout = new BorderLayout();
     private JPanel areaJuego = new JPanel(layout);
     private JPanel areamano = new JPanel(new FlowLayout());
+    private Baraja barajainicial = new Baraja();
 
     public Interfaz() throws IOException {
         setEntorno();
@@ -24,8 +25,8 @@ public class Interfaz extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
-        JButton boton = crearBotonMano(new Carta(1, 1));
-        JButton boton1 = crearBotonMano(new Carta(6, 2));
+        JButton boton = crearBotonMano(barajainicial.darCartaAlAzar());
+        JButton boton1 = crearBotonMano(barajainicial.darCartaAlAzar());
         areaJuego.add(areamano, BorderLayout.SOUTH);
         // Se añaden botones a la parte inferior denominada areamano
         areamano.add(boton);

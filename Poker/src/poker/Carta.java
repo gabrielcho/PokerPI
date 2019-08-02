@@ -8,7 +8,7 @@ import java.awt.Image;
 import java.io.IOException;
 
 public class Carta {
-    public final static int espadas = 0, corazones = 1, diamantes = 2, picas = 3;
+    public final static int treboles = 0, corazones = 1, diamantes = 2, picas = 3;
 
     public final static int jack = 11, queen = 12, king = 13;
 
@@ -95,8 +95,8 @@ public class Carta {
 
     public String paloCarta() {
         switch (palo) {
-        case espadas:
-            return "E";
+        case treboles:
+            return "T";
         case corazones:
             return "C";
         case diamantes:
@@ -143,6 +143,8 @@ public class Carta {
 
     public ImageIcon imagenCarta() throws IOException {
         URL url = getClass().getResource("/cartas" + path);
+        System.out.println(valorCarta() + paloCarta() + ".png"); 
+        System.out.println(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png")); 
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png"))
                 .getImage();
         imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST);
