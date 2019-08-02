@@ -65,7 +65,7 @@ public class Carta {
 
         case 10:
             costoObtenido = 9;
-            return costoObtenido;
+            return costoObtenido; //ee github
 
         case 11:
             costoObtenido = 10;
