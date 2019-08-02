@@ -1,3 +1,3 @@
 all:
-			g++ *cpp -o ProEEyecto; \
+			g++ *cpp -o Proyecto; \
 			./Proyecto; \
