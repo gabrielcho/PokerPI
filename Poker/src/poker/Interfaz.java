@@ -12,13 +12,15 @@ import java.io.*;
  */
 public class Interfaz extends JFrame {
 
-    private BorderLayout layout = new BorderLayout();
-    private JPanel areaJuego = new JPanel(layout);
+    private JPanel areaJuego = new JPanel(new BorderLayout());
+    private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
+    private JPanel areaTableroCartas = new JPanel(new FlowLayout());
     private JPanel areamano = new JPanel(new BorderLayout());
     private JPanel areamanoPc = new JPanel(new FlowLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
     private JPanel areaManoBotones = new JPanel(new GridLayout());
-    private Baraja barajainicial = new Baraja();
+    private JPanel areaManoInfo = new JPanel(new GridLayout());
+    private JPanel areaPC = new JPanel(new FlowLayout());
 
     public Interfaz() throws IOException {
     }
@@ -30,19 +32,26 @@ public class Interfaz extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
-        
-        Border bordejpanelPc = new TitledBorder(new EtchedBorder(), "Oponente");
-        areamanoPc.setBorder(bordejpanelPc);
-        
-        Border bordejpanel = new TitledBorder(new EtchedBorder(), "Jugador");
-        areamano.setBorder(bordejpanel);
+
+        areaJuego.add(areamano, BorderLayout.SOUTH);
+        areaJuego.add(areaTablero, BorderLayout.CENTER); // añade el panel de las cartas comunitarias
+
+        //** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :( */
+        areaJuego.add(areaPC, BorderLayout.NORTH);
+        areaPC.add(crearComponenteDeMano(new Carta(13, 1)));
+
+        areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
+        areaTablero.add(Box.createRigidArea(new Dimension(200, 90)), BorderLayout.NORTH);
+        areaTableroCartas.add(crearComponenteDeMano(new Carta(1, 1)));
+        areaTablero.add(Box.createRigidArea(new Dimension(200, 110)), BorderLayout.SOUTH);
+
+        areamano.add(areaManoInfo, BorderLayout.EAST);
         areamano.add(areaManoCartas, BorderLayout.CENTER);
         areamano.add(areaManoBotones, BorderLayout.WEST);
-        areaManoBotones.add(new JButton("Aca van los botones de accion"));
 
+        areaManoBotones.add(new JLabel("Acá van los botones de acción"));
+        areaManoInfo.add(new JLabel("Acá va la info del jugador"));
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
-        areaJuego.add(areamano, BorderLayout.SOUTH);
-        areaJuego.add(areamanoPc, BorderLayout.NORTH);
         areaJuego.repaint();
 
         add(areaJuego);
@@ -64,7 +73,7 @@ public class Interfaz extends JFrame {
         boton.setPreferredSize(new Dimension(66, 90));
         return boton;
     }
-    
+
     public JButton crearBotonManoPc(Carta carta) throws IOException {
         JButton boton = new JButton();
         boton.setIcon(carta.ocultarCarta());
@@ -75,24 +84,23 @@ public class Interfaz extends JFrame {
 
     /** */
     public void dibujarMano(Jugador jugador) throws IOException {
-    	if(jugador.getName()=="humano") {
-        int tamano = jugador.getManoSize();
-        for (int i = 0; i < tamano; i++) {
-            Carta cartaDeMano = jugador.getCartaMano(i);
-            JButton cartaMano = crearComponenteDeMano(cartaDeMano);
-            areaManoCartas.add(cartaMano);
-            System.out.println("Carta " + i + " creada");
+        if (jugador.getName() == "humano") {
+            int tamano = jugador.getManoSize();
+            for (int i = 0; i < 2; i++) {
+                Carta cartaDeMano = jugador.getCartaMano(i);
+                JButton cartaMano = crearComponenteDeMano(cartaDeMano);
+                areaManoCartas.add(cartaMano);
+                System.out.println("Carta " + i + " creada");
+            }
+        } else {
+            int tamano = jugador.getManoSize();
+            for (int i = 0; i < tamano; i++) {
+                Carta cartaDeMano = jugador.getCartaMano(i);
+                JButton cartaMano = crearBotonManoPc(cartaDeMano);
+                areamanoPc.add(cartaMano);
+                System.out.println("Carta " + i + " del pc creada");
+            }
         }
-    }
-    	else {
-    		 int tamano = jugador.getManoSize();
-    	        for (int i = 0; i < tamano; i++) {
-    	            Carta cartaDeMano = jugador.getCartaMano(i);
-    	            JButton cartaMano = crearBotonManoPc(cartaDeMano);
-    	            areamanoPc.add(cartaMano);
-    	                   System.out.println("Carta " + i + " del pc creada");
-    	        }
-    	}
 
         revalidate();
         repaint();

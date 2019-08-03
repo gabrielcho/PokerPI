@@ -54,6 +54,11 @@ public class Baraja {
         return this.baraja.get(i);
     }
 
+    /**
+     * Método usado para repartir cartas, se toma la ultima carta de la baraja, no hay que randomizar la selección
+     * porque la baraja de por sí ya está randomizada
+     * @return carta al azar de baraja
+     */
     public Carta darCartaAlAzar() {
         Carta cartaObtenida = baraja.get(baraja.size() - 1);
         baraja.remove(cartaObtenida);
@@ -62,7 +67,7 @@ public class Baraja {
 
     /**
      * Quita una carta de una baraja.
-     * @param i  Idica la posicion de una carta en una determinada ArrayList de cartas.
+     * @param i Indica la posicion de una carta en una determinada ArrayList de cartas.
      */
     public void quitarCarta(int i) {
         this.baraja.remove(i);
