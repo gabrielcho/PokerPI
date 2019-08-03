@@ -15,7 +15,9 @@ public class Interfaz extends JFrame {
 
     private BorderLayout layout = new BorderLayout();
     private JPanel areaJuego = new JPanel(layout);
-    private JPanel areamano = new JPanel(new FlowLayout());
+    private JPanel areamano = new JPanel(new BorderLayout());
+    private JPanel areaManoCartas = new JPanel(new FlowLayout());
+    private JPanel areaManoBotones = new JPanel(new GridLayout());
     private Baraja barajainicial = new Baraja();
 
     public Interfaz() throws IOException {
@@ -28,6 +30,11 @@ public class Interfaz extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
+
+        areamano.add(areaManoCartas, BorderLayout.CENTER);
+        areamano.add(areaManoBotones, BorderLayout.WEST);
+        areaManoBotones.add(new JButton("Acá van los botones de acción"));
+
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
         areaJuego.add(areamano, BorderLayout.SOUTH);
         areaJuego.repaint();
@@ -52,18 +59,16 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
+    /** */
     public void dibujarMano(Jugador jugador) throws IOException {
         int tamano = jugador.getManoSize();
         for (int i = 0; i < tamano; i++) {
             Carta cartaDeMano = jugador.getCartaMano(i);
             JButton cartaMano = crearComponenteDeMano(cartaDeMano);
-            areamano.add(cartaMano);
+            areaManoCartas.add(cartaMano);
             System.out.println("Carta " + i + " creada");
         }
-        areaJuego.revalidate();
-        areaJuego.repaint();
-        areamano.revalidate();
-        areamano.repaint();
+
         revalidate();
         repaint();
     }
