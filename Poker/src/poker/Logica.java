@@ -16,16 +16,18 @@ public class Logica extends Interfaz {
   public Logica() throws IOException {
     setEntorno();
     baraja = new Baraja();
-    humano = new Jugador();
-    pc = new Jugador();
+    humano = new Jugador("humano");
+    pc = new Jugador("pc");
     repartirCartas();
     dibujarMano(humano);
+    dibujarMano(pc);
     revalidate();
     repaint();
   }
 
   /**Este método limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
   public void repartirCartas() {
+	
     humano.soltarCartas();
     pc.soltarCartas();
     for (int i = 0; i < 2; i++) {

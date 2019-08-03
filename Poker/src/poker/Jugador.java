@@ -4,13 +4,20 @@ public class Jugador {
 
   private int balance;
   private Mano mano;
+  private String name; //utlizo el nombre para diferenciar al pc del humano y así crear un condicional en la interfaz que me pinte las cartas
+                       //volteadas e caso de que sea el pc o normales en caso contrario
 
   /** Inicializa el objeto de jugador, asignando un valor a su balance y a su mano lista para alojar cartas */
-  public Jugador() {
+  public Jugador(String name) {
+	this.name=name;  
     mano = new Mano();
     balance = 10000;
   }
 
+  
+  public String getName() {
+	  return name;
+  }
   /**
    * Resta dinero del balance total del jugador
    * @param suma

@@ -156,6 +156,16 @@ public class Carta {
         return imagencarta;
     }
 
+    //hace lomismo que imagenCarta() pero par a las cartas del pc, que deben estar volteadas
+    public ImageIcon ocultarCarta() {
+   	 Image imagen = new ImageIcon(getClass().getResource("/cartas/" + "trasero.png"))
+                .getImage();
+   	 imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST);
+   	 ImageIcon imagencarta = new ImageIcon(imagen);
+   	 return imagencarta;
+   }
+    
+    
     public String mostrarCarta() {
         return valorCarta() + " de " + paloCarta();
     }
