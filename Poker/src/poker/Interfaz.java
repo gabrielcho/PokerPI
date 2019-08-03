@@ -16,7 +16,6 @@ public class Interfaz extends JFrame {
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
     private JPanel areaTableroCartas = new JPanel(new FlowLayout());
     private JPanel areamano = new JPanel(new BorderLayout());
-    private JPanel areamanoPc = new JPanel(new FlowLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
     private JPanel areaManoBotones = new JPanel(new GridLayout());
     private JPanel areaManoInfo = new JPanel(new GridLayout());
@@ -38,8 +37,8 @@ public class Interfaz extends JFrame {
 
         //** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :( */
         areaJuego.add(areaPC, BorderLayout.NORTH);
-        areaPC.add(crearComponenteDeMano(new Carta(13, 1)));
 
+        /**Esto tiene que ser explicado también */
         areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 90)), BorderLayout.NORTH);
         areaTableroCartas.add(crearComponenteDeMano(new Carta(1, 1)));
@@ -97,7 +96,7 @@ public class Interfaz extends JFrame {
             for (int i = 0; i < tamano; i++) {
                 Carta cartaDeMano = jugador.getCartaMano(i);
                 JButton cartaMano = crearBotonManoPc(cartaDeMano);
-                areamanoPc.add(cartaMano);
+                areaPC.add(cartaMano);
                 System.out.println("Carta " + i + " del pc creada");
             }
         }
