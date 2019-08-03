@@ -11,7 +11,7 @@ import java.io.*;
  *  para el juego.
  */
 public class Interfaz extends JFrame {
-
+    private Color colorCasino = new Color(18, 84, 8);
     private JPanel areaJuego = new JPanel(new BorderLayout());
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
     private JPanel areaTableroCartas = new JPanel(new FlowLayout());
@@ -47,15 +47,15 @@ public class Interfaz extends JFrame {
         areamano.add(areaManoInfo, BorderLayout.EAST);
         areamano.add(areaManoCartas, BorderLayout.CENTER);
         areamano.add(areaManoBotones, BorderLayout.WEST);
-
+        areaManoInfo.add(new JLabel("Acá  info del jugador"));
         areaManoBotones.add(new JLabel("Acá van los botones de acción"));
-        areaManoInfo.add(new JLabel("Acá va la info del jugador"));
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
         areaJuego.repaint();
 
         add(areaJuego);
         revalidate();
         repaint();
+        colorearTodo();
 
     }
 
@@ -103,6 +103,18 @@ public class Interfaz extends JFrame {
 
         revalidate();
         repaint();
+    }
+
+    public void colorearTodo() {
+        areamano.setBackground(colorCasino);
+        areaJuego.setBackground(colorCasino);
+        areaPC.setBackground(colorCasino);
+        areaManoCartas.setBackground(colorCasino);
+        areaTableroCartas.setBackground(colorCasino);
+        areaTablero.setBackground(colorCasino);
+        areaManoCartas.setBackground(colorCasino);
+        areaManoBotones.setBackground(colorCasino);
+        areaManoInfo.setBackground(colorCasino);
     }
 
 }
