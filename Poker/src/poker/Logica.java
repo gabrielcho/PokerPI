@@ -12,6 +12,7 @@ public class Logica extends Interfaz {
   //Por lo que toca poner un método de reinicio en la baraja.
   private Baraja baraja;
   private Jugador humano, pc;
+  private Mano manoPrueba = new Mano();
 
   public Logica() throws IOException {
     setEntorno();
@@ -23,11 +24,12 @@ public class Logica extends Interfaz {
     dibujarMano(pc);
     revalidate();
     repaint();
+
   }
 
   /**Este método limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
   public void repartirCartas() {
-	
+
     humano.soltarCartas();
     pc.soltarCartas();
     for (int i = 0; i < 2; i++) {
@@ -35,4 +37,25 @@ public class Logica extends Interfaz {
       pc.tomarCarta(baraja.darCartaAlAzar());
     }
   }
+
+  //////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  // Puede borrarse si es necesario
+  public void analizarRepetidas(Mano mano) {
+    int[] cartas = new int[14];
+    //Con este for va contando cuantas cartas de cada valor tiene
+    for (int i = 0; i < 7; i++) {
+      int valor = mano.getCarta(i).getValor();
+      cartas[valor] = cartas[valor] + 1;
+    }
+    // procedemos a construir el bucle que nos determina si es par, trio o cuatrupleta
+    for (int pos = 1; pos < 14; pos++) {
+      if (cartas[pos] == 2)
+        System.out.println("Par");
+      else if (cartas[pos] == 3)
+        System.out.println("Trio");
+      else if (cartas[pos] == 4)
+        System.out.println("Cuatrupleta");
+    }
+  }
+
 }

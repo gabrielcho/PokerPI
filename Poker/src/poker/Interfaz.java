@@ -105,6 +105,7 @@ public class Interfaz extends JFrame {
         repaint();
     }
 
+    /** Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar el JFrame */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);
         areaJuego.setBackground(colorCasino);
