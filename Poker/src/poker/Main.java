@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException { //lololo
 		new Baraja();
-		new Interfaz();
+		new Logica();
 	}
 
 }

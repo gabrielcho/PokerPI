@@ -3,6 +3,7 @@ package poker;
 import java.util.ArrayList;
 import java.util.Random;
 
+/** Clase encargada de generar y dar las ca */
 public class Baraja {
     private ArrayList<Carta> baraja;
 
@@ -20,6 +21,7 @@ public class Baraja {
         }
     }
 
+    /** Genera la baraja de 52 cartas diferentes poniéndolas en un ArrayList*/
     public void crearBaraja() {
         for (int i = 1; i < 14; i++) {
             for (int j = 0; j < 4; j++) {
@@ -29,6 +31,7 @@ public class Baraja {
 
     }
 
+    /** Aleatoriza el orden de las cartas contenidas en el arraylist de la baraja */
     public void barajar() {
         ArrayList<Carta> barajaTemp = new ArrayList<Carta>();
         Random random = new Random(System.currentTimeMillis());
@@ -52,11 +55,9 @@ public class Baraja {
     }
 
     public Carta darCartaAlAzar() {
-        int i = (int) (Math.random() * baraja.size()) + 1;
-        Carta elimimarCarta = this.baraja.get(i);
-        Carta DarCarta = elimimarCarta;
-        baraja.remove(elimimarCarta);
-        return DarCarta;
+        Carta cartaObtenida = baraja.get(baraja.size() - 1);
+        baraja.remove(cartaObtenida);
+        return cartaObtenida;
     }
 
     /**
@@ -68,7 +69,7 @@ public class Baraja {
     }
 
     /**
-     * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la a�ade a una nueva baraja.
+     * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la añade a una nueva baraja.
      * @param barajaDeDondeViene the baraja de donde viene la carta
      */
     public void llamarCarta(Baraja barajaDeDondeViene) {

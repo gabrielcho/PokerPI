@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.IOException;
 
 public class Carta {
+    /**daw */
     public final static int treboles = 0, corazones = 1, diamantes = 2, picas = 3;
 
     public final static int jack = 11, queen = 12, king = 13;
@@ -141,10 +142,13 @@ public class Carta {
         }
     }
 
+    /**
+     * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la imagen de la carta ya lista para ser dibujada
+     * sobre los componentes.
+     * @return imagen de carta
+     * @throws IOException
+     */
     public ImageIcon imagenCarta() throws IOException {
-        URL url = getClass().getResource("/cartas" + path);
-        System.out.println(valorCarta() + paloCarta() + ".png"); 
-        System.out.println(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png")); 
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png"))
                 .getImage();
         imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST); //Escala la imagen de la carta a un tamaño deseable

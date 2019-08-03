@@ -19,7 +19,6 @@ public class Interfaz extends JFrame {
     private Baraja barajainicial = new Baraja();
 
     public Interfaz() throws IOException {
-        setEntorno();
     }
 
     /**Prepara la interfaz gráfica a su estado inicial */
@@ -29,14 +28,10 @@ public class Interfaz extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
-        JButton boton = crearBotonMano(barajainicial.darCartaAlAzar());
-        JButton boton1 = crearBotonMano(barajainicial.darCartaAlAzar());
-        areaJuego.add(areamano, BorderLayout.SOUTH);
-        // Se añaden botones a la parte inferior denominada areamano
-        areamano.add(boton);
-        areamano.add(boton1);
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
+        areaJuego.add(areamano, BorderLayout.SOUTH);
         areaJuego.repaint();
+
         add(areaJuego);
         revalidate();
         repaint();
@@ -49,12 +44,28 @@ public class Interfaz extends JFrame {
      * @return boton de mano
      * @throws IOException
      */
-    public JButton crearBotonMano(Carta carta) throws IOException {
+    public JButton crearComponenteDeMano(Carta carta) throws IOException {
         JButton boton = new JButton();
         boton.setIcon(carta.imagenCarta());
         boton.setBorder(BorderFactory.createEmptyBorder());
         boton.setPreferredSize(new Dimension(66, 90));
         return boton;
+    }
+
+    public void dibujarMano(Jugador jugador) throws IOException {
+        int tamano = jugador.getManoSize();
+        for (int i = 0; i < tamano; i++) {
+            Carta cartaDeMano = jugador.getCartaMano(i);
+            JButton cartaMano = crearComponenteDeMano(cartaDeMano);
+            areamano.add(cartaMano);
+            System.out.println("Carta " + i + " creada");
+        }
+        areaJuego.revalidate();
+        areaJuego.repaint();
+        areamano.revalidate();
+        areamano.repaint();
+        revalidate();
+        repaint();
     }
 
 }
