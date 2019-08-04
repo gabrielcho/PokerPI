@@ -22,6 +22,8 @@ public class Logica extends Interfaz {
     repartirCartas();
     dibujarMano(humano);
     dibujarMano(pc);
+    pintarInfoJugadores(humano);
+    pintarInfoJugadores(pc);
     revalidate();
     repaint();
 

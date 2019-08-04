@@ -12,13 +12,6 @@ public class Baraja {
         baraja = new ArrayList<Carta>();
         crearBaraja();
         barajar();
-        try {
-            for (int i = 0; i < 52; i++)
-                System.out.println(getCarta(i).paloCarta() + getCarta(i).valorCarta() + "            " + (i + 1));
-
-        } catch (Exception e) {
-            System.out.println("Se salio del array");
-        }
     }
 
     /** Genera la baraja de 52 cartas diferentes poniéndolas en un ArrayList*/
