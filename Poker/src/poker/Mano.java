@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /** Clase encargada de emular una mano de cartas que un jugador puede usar, su principal estructura
  * es un <code> ArrayList </code> que contiene las cartas a usar
  */
-public class Mano {
+public class Mano extends Baraja{ //la mano es una baraja
     private ArrayList<Carta> mano;
 
     public Mano() {

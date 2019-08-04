@@ -2,6 +2,8 @@ package poker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 
 /**   Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica otros componentes necesarios
@@ -10,16 +12,19 @@ import java.io.*;
 public class Interfaz extends JFrame {
     private Color colorCasino = new Color(18, 84, 8);
     private JButton pasar, subir, igualar, retirarse;
-    private JPanel areaJuego = new JPanel(new BorderLayout());
+    protected JPanel areaJuego = new JPanel(new BorderLayout());
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
     private JPanel areaTableroCartas = new JPanel(new FlowLayout());
     private JPanel areamano = new JPanel(new BorderLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
     private JPanel areaManoBotones = new JPanel(new GridLayout(2,2,5, 5));
-    private JPanel areaManoInfo = new JPanel(new GridLayout());
+    protected JPanel areaManoInfo = new JPanel(new GridLayout());
     private JPanel areaPC = new JPanel(new BorderLayout());
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
     private JPanel areaPcInfo = new JPanel(new GridLayout());
+    private Escuchas escucha;
+    protected String bote;
+    
 
     public Interfaz() throws IOException {
     }
@@ -42,7 +47,6 @@ public class Interfaz extends JFrame {
         /**Esto tiene que ser explicado también */
         areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 90)), BorderLayout.NORTH);
-//        areaTableroCartas.add(crearComponenteDeMano(new Carta(1, 1)));
         areaTablero.add(Box.createRigidArea(new Dimension(200, 110)), BorderLayout.SOUTH);
 
         areamano.add(areaManoInfo, BorderLayout.EAST);
@@ -55,16 +59,16 @@ public class Interfaz extends JFrame {
         
         //Crear botones de accion
         igualar = new JButton ("Igualar"); 
-                     //escucha
+        igualar.addActionListener(escucha);           //escucha
         areaManoBotones.add(igualar);
         retirarse = new JButton ("Retirarse"); 
-    	//escucha
+        retirarse.addActionListener(escucha);   	 //escucha
         areaManoBotones.add(retirarse);
         pasar = new JButton ("Pasar"); 
-        	//escucha
+        pasar.addActionListener(escucha);    		//escucha
         areaManoBotones.add(pasar); 
         subir = new JButton ("Subir"); 
-        	//escucha
+        subir.addActionListener(escucha);    		//escucha
         areaManoBotones.add(subir);
       
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
@@ -115,6 +119,12 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
+    public void actualizarPantalla(JPanel panelParaActualizar){ 
+    	SwingUtilities.updateComponentTreeUI(this); 
+//    	this.validateTree(); 
+    	panelParaActualizar.updateUI();
+    	} 
+    
     /** */
     public void dibujarMano(Jugador jugador) throws IOException {
         if (jugador.getName() == "humano") {
@@ -139,6 +149,28 @@ public class Interfaz extends JFrame {
         repaint();
     }
 
+    
+    private class Escuchas implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(e.getSource()==pasar) {
+				//cambiar turno??
+			}
+			if(e.getSource()==subir) {
+				//igualar la apuesta que haya e incrementar lo que se quiera
+			}
+			if(e.getSource()==retirarse) {
+//				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
+			}
+			if(e.getSource()==igualar) {
+//				ver cuanto hay apostado en la mesa y apostar esa misma cantidad
+				
+				
+			}		
+		}
+    }
     /** Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar el JFrame */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);

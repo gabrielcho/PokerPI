@@ -5,6 +5,7 @@ public class Jugador {
   private int balance;
   private Mano mano;
   private String name;
+  private int apuesta;
   //utlizo el nombre para diferenciar al pc del humano y as� crear un condicional en la interfaz que me pinte las cartas
   //volteadas e caso de que sea el pc o normales en caso contrario
 
@@ -19,6 +20,13 @@ public class Jugador {
     return name;
   }
 
+  public int getApuesta() {
+	    return apuesta;
+	  }
+  
+  public void setApuesta(int valor) {
+	    apuesta=valor;
+	  }
   /**
    * Resta dinero del balance total del jugador
    * @param suma

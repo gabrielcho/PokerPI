@@ -65,6 +65,17 @@ public class Baraja {
     public void quitarCarta(int i) {
         this.baraja.remove(i);
     }
+    /**
+     * Quita una carta de una baraja.
+     * @param una carta a eliminard del array
+     */
+    public void quitarCarta(Carta carta) {
+        this.baraja.remove(carta);
+    }
+    
+    public int tamanoBaraja() {
+      return this.baraja.size();
+    }
 
     /**
      * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la añade a una nueva baraja.

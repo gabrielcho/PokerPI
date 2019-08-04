@@ -2,9 +2,11 @@ package poker;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 /**Por razones de estructuraci√≥n necesitamos que la clase L√≥gica herede de interfaz, esto permite que todo manejo
  * de l√≥gica pueda usar la clase de interfaz sin problemas de acceso.
- * <h3> Las etiquetas HTML funcionan en el javadoc wtf</h3>
+ * <h3> Las etiquetas HTML funcionan en el javadoc wtf</h3> y tambien en los jlabels xd
  */
 public class Logica extends Interfaz {
   /**Esta es el objeto de baraja a usar en todo el juego */
@@ -13,31 +15,83 @@ public class Logica extends Interfaz {
   private Baraja baraja;
   private Jugador humano, pc;
   private Mano manoPrueba = new Mano();
+   // el dinero que hay apostado por ambos jugadores en la mesa
 
   public Logica() throws IOException {
     setEntorno();
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
-    repartirCartas();
-    dibujarMano(humano);
-    dibujarMano(pc);
-    pintarInfoJugadores(humano);
-    pintarInfoJugadores(pc);
-    revalidate();
-    repaint();
-
+    bote = "0" ;
   }
 
   /**Este m√©todo limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
   public void repartirCartas() {
-
     humano.soltarCartas();
     pc.soltarCartas();
     for (int i = 0; i < 2; i++) {
-      humano.tomarCarta(baraja.darCartaAlAzar());
-      pc.tomarCarta(baraja.darCartaAlAzar());
+      Carta cartaJugador = baraja.darCartaAlAzar();
+      Carta cartaPc = baraja.darCartaAlAzar();
+      humano.tomarCarta(cartaJugador);
+      pc.tomarCarta(cartaPc);
+      baraja.quitarCarta(cartaJugador);
+      baraja.quitarCarta(cartaPc);
     }
+    
+  }
+  
+  //metodo usado para asegurarnos de que el usuario digite un numero cuando se le pide la apuesta, y la pone en la mesa
+  public boolean isNumeric(String cadena) {
+
+      boolean resultado;
+
+      try {
+          Integer.parseInt(cadena);
+          resultado = true;
+      } catch (NumberFormatException excepcion) {
+          resultado = false;
+      }
+
+      return resultado;
+  }
+  
+  
+  public void mensajePedirApuesta() {
+	  bote = JOptionPane.showInputDialog(null,"øCu·nto quieres apostar? Tienes: " + humano.getBalance());
+	    if (isNumeric(bote) == true) {
+	    while(Integer.valueOf(bote)<=0) {
+	    	JOptionPane.showMessageDialog(null, "Digite un numero v·lido","Alerta",JOptionPane.WARNING_MESSAGE);
+	    	bote = JOptionPane.showInputDialog(null,"øCu·nto quieres apostar? Tienes: " + humano.getBalance());
+	    }  
+   } 
+	    else {
+	    	while(isNumeric(bote) == false || Integer.valueOf(bote)<=0) {
+		    	JOptionPane.showMessageDialog(null, "Digite un numero v·lido","Alerta",JOptionPane.WARNING_MESSAGE);
+		    	bote = JOptionPane.showInputDialog(null,"øCu·nto quieres apostar? Tienes: " + humano.getBalance());
+	    } 
+	  }
+}
+  
+  public void jugar() throws IOException { //bucle de juego???
+	  baraja.barajar();
+	  repartirCartas();
+	    dibujarMano(humano);
+	    dibujarMano(pc);
+	    pintarInfoJugadores(humano);
+	    pintarInfoJugadores(pc);
+	    revalidate();
+	    repaint();
+	    
+	   mensajePedirApuesta();
+	   humano.setApuesta(Integer.valueOf(bote));
+	   humano.restarDinero(humano.getApuesta());
+	   areaManoInfo.removeAll();
+	   pintarInfoJugadores(humano);
+	    actualizarPantalla(areaManoInfo);
+	  // que hace el computador?? que clase de inteligencia artificial aplicamos D:
+	   
+	   
+	   
   }
 
   //////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
