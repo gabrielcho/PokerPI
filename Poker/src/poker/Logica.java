@@ -59,15 +59,15 @@ public class Logica extends Interfaz {
   public void mensajePedirApuesta() {
 	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 	    if (isNumeric(bote) == true) {
-	    while(Integer.valueOf(bote)<=0) {
+	    while(Integer.valueOf(bote)<=0 ||  Integer.valueOf(bote)>= humano.getBalance()) {
 	    	JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
 	    	bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 	    }  
    } 
 	    else {
-	    	while(isNumeric(bote) == false || Integer.valueOf(bote)<=0) {
-		    	JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
-		    	bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
+	    	while(isNumeric(bote) == false) {
+	    		JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
+		    	mensajePedirApuesta();
 	    } 
 	  }
 }
