@@ -54,20 +54,23 @@ public class Logica extends Interfaz {
   
   
   public void mensajePedirApuesta() {
-	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
-	  long valorObtenido = Long.valueOf(bote);
-	    if (isNumeric(bote) == true) {
-	    while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
-	    	JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
-	    	bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
-	    }  
-   } 
-	    else {
-	    	while(isNumeric(bote) == false) {
-	    		JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
-		    	mensajePedirApuesta();
-	    } 
+	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()); 	  
+	  if(bote==null) {
+		  System.exit(0);
 	  }
+	  else {	   if (isNumeric(bote) == true) {
+		  		   long valorObtenido = Long.valueOf(bote);	 	 
+		  		   while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
+		  			 JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
+		  	     	 mensajePedirApuesta();	
+		  }
+	    }  
+   
+	    else {
+	    		JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
+		    	mensajePedirApuesta();	    
+    }
+  }   
 }
   
   public void jugar() throws IOException { //bucle de juego???
@@ -134,6 +137,7 @@ public class Logica extends Interfaz {
   }
   
   public void JugarDeNuevo() throws IOException {
+	  if (humano.getBalance()>0) {
 	  int resp = JOptionPane.showConfirmDialog(null, "¿quieres volver a Jugar?");
 	  if(resp==0) {
 		  humano.reiniciarBalance();
@@ -142,6 +146,11 @@ public class Logica extends Interfaz {
 		  jugar();
 	  }
 	  else {
+		  System.exit(0);
+	  }	  
+	 }
+	  else {
+		  JOptionPane.showMessageDialog(null, "Ya no tienes dinero para seguir jugando", "Mensaje", JOptionPane.WARNING_MESSAGE);
 		  System.exit(0);
 	  }
   }

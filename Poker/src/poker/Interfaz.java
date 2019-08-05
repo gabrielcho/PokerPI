@@ -191,7 +191,7 @@ public class Interfaz extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getSource()==pasar) {
-				//cambiar turno??
+				//cambiar turno?? hace algo el cumputador dependiendo de su jugada??
 			}
 			if(e.getSource()==subir) {
 				//igualar la apuesta que haya e incrementar lo que se quiera
