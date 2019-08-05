@@ -17,11 +17,9 @@ public class Logica extends Interfaz {
   private Mano manoPrueba = new Mano();
 
   public Logica() throws IOException {
-    setEntorno();
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
-    bote = "0" ;
   }
 
   /**Este mÃ©todo limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
@@ -73,18 +71,25 @@ public class Logica extends Interfaz {
 }
   
   public void jugar() throws IOException { //bucle de juego???
-	  repartirCartas();
+ 
+	    setEntorno();
+	    baraja = new Baraja();
+	    repartirCartas();
 	    dibujarMano(humano);
 	    dibujarMano(pc);
 	    pintarInfo(humano);
 	    pintarInfo(pc);
 	    revalidate();
-	    repaint();
+	    actualizarPantalla();
 	    
+	   boolean noHaPerdido=true; 
+	   
+	   while(noHaPerdido) {
+		//PRIMERA RONDA DE APUESTAS   
 	   mensajePedirApuesta();
 	   humano.setApuesta(Integer.valueOf(bote));
 	   humano.restarDinero(humano.getApuesta());
-	   pc.setApuesta(Integer.valueOf(bote));
+	   pc.setApuesta(Integer.valueOf(bote));// al principio el pc siempre iguala la apuesta del jugador 
 	   pc.restarDinero(pc.getApuesta());
 	   bote = Integer.toString((Integer.valueOf(bote) + pc.getApuesta()));
 	   pintarInfo(pc); //para que actualicen las infos
@@ -92,9 +97,20 @@ public class Logica extends Interfaz {
 	   actualizarPantalla();
 	   pintarFlop();
 	   
-	  // que hace el computador?? que clase de inteligencia artificial aplicamos D:
-	  // al principio el pc siempre iguala la apuesta del jugador 
-	   	   
+	   //SEGUNDA RONDA DE APUESTAS
+	   
+	   
+	   
+	   
+	   noHaPerdido=false;//pierde y sale del bucle de juego  esto debe ser un metodo que verifique las manos xd 
+	   }
+	   if(humano.getBalance()>0 & pc.getBalance()>0) { // pierde o gana la mano, mas no el juego. el jugo se gana cuando alguno de los dos quede sin dinero
+	   LimpiarInterfaz();
+	   jugar();
+	   }
+	   else { //preguntar si quiere iniciar otra partida desde 0
+		   JugarDeNuevo();
+	   }
 	   
   }
 
@@ -117,7 +133,18 @@ public class Logica extends Interfaz {
 	  System.out.println( baraja.tamanoBaraja());
   }
   
-  
+  public void JugarDeNuevo() throws IOException {
+	  int resp = JOptionPane.showConfirmDialog(null, "¿quieres volver a Jugar?");
+	  if(resp==0) {
+		  humano.reiniciarBalance();
+		  pc.reiniciarBalance();
+		  LimpiarInterfaz();
+		  jugar();
+	  }
+	  else {
+		  System.exit(0);
+	  }
+  }
   
   
   //////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\

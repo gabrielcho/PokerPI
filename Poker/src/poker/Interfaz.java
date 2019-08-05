@@ -24,7 +24,7 @@ public class Interfaz extends JFrame {
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
     private JPanel areaPcInfo = new JPanel(new GridLayout());
     private Escuchas escucha;
-    protected String bote;
+    protected String bote= "0";
     
 
     public Interfaz() throws IOException {
@@ -38,7 +38,6 @@ public class Interfaz extends JFrame {
         setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
         setResizable(false);
-
         areaJuego.add(areamano, BorderLayout.SOUTH);
         areaJuego.add(areaTablero, BorderLayout.CENTER); // añade el panel de las cartas comunitarias
 
@@ -168,6 +167,23 @@ public class Interfaz extends JFrame {
         repaint();
     }
 
+    public void LimpiarInterfaz() {
+    	  areamano.removeAll();
+          areaBote.removeAll();
+          areaJuego.removeAll();
+          areaPC.removeAll();
+          areaPcCartas.removeAll();
+          areaPcInfo.removeAll();
+          areaManoCartas.removeAll();
+          areaTableroCartas.removeAll();
+          areaTablero.removeAll();
+          areaManoCartas.removeAll();
+          areaManoBotones.removeAll();
+          areaManoInfo.removeAll();
+
+    	this.repaint();
+    	
+    }
     
     private class Escuchas implements ActionListener{
 

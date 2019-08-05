@@ -26,6 +26,10 @@ public class Jugador {
   public void setApuesta(int valor) {
 	    apuesta=valor;
 	  }
+  
+  public void reiniciarBalance() {
+	    balance=10000;
+	  }
   /**
    * Resta dinero del balance total del jugador
    * @param suma
