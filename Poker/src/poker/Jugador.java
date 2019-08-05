@@ -1,7 +1,6 @@
 package poker;
 
 public class Jugador {
-
   private int balance;
   private Mano mano;
   private String name;
@@ -71,6 +70,18 @@ public class Jugador {
    */
   public void tomarCarta(Carta carta) {
     mano.addCarta(carta);
+  }
+  
+  public Mano getMano() {
+	  return mano;
+  }
+  /**
+   * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la a√±ade a una nueva baraja.
+   * @param barajaDeDondeViene the baraja de donde viene la carta
+   */
+  public void llamarCarta(Baraja barajaDeDondeViene, Baraja destino, Carta cartaParaAÒadir) {
+      destino.addCarta(cartaParaAÒadir);
+      barajaDeDondeViene.quitarCarta(cartaParaAÒadir);
   }
 
   /** Limpia la mano eliminando todos los objetos de carta de ella y restableciendo su tama√±o a 0 */

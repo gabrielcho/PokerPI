@@ -76,14 +76,10 @@ public class Baraja {
     public int tamanoBaraja() {
       return this.baraja.size();
     }
-
-    /**
-     * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la añade a una nueva baraja.
-     * @param barajaDeDondeViene the baraja de donde viene la carta
-     */
-    public void llamarCarta(Baraja barajaDeDondeViene) {
-        this.baraja.add(barajaDeDondeViene.getCarta(0));
-        barajaDeDondeViene.quitarCarta(0);
+    
+    public void addCarta(Carta carta) {
+    	baraja.add(carta);
     }
+
 
 }

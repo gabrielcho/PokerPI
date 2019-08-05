@@ -1,7 +1,7 @@
 package poker;
 
 import java.io.IOException;
-
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**Por razones de estructuraciÃ³n necesitamos que la clase LÃ³gica herede de interfaz, esto permite que todo manejo
@@ -15,7 +15,6 @@ public class Logica extends Interfaz {
   private Baraja baraja;
   private Jugador humano, pc;
   private Mano manoPrueba = new Mano();
-   // el dinero que hay apostado por ambos jugadores en la mesa
 
   public Logica() throws IOException {
     setEntorno();
@@ -58,8 +57,9 @@ public class Logica extends Interfaz {
   
   public void mensajePedirApuesta() {
 	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
+	  long valorObtenido = Long.valueOf(bote);
 	    if (isNumeric(bote) == true) {
-	    while(Integer.valueOf(bote)<=0 ||  Integer.valueOf(bote)>= humano.getBalance()) {
+	    while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
 	    	JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
 	    	bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 	    }  
@@ -73,27 +73,53 @@ public class Logica extends Interfaz {
 }
   
   public void jugar() throws IOException { //bucle de juego???
-	  baraja.barajar();
 	  repartirCartas();
 	    dibujarMano(humano);
 	    dibujarMano(pc);
-	    pintarInfoJugadores(humano);
-	    pintarInfoJugadores(pc);
+	    pintarInfo(humano);
+	    pintarInfo(pc);
 	    revalidate();
 	    repaint();
 	    
 	   mensajePedirApuesta();
 	   humano.setApuesta(Integer.valueOf(bote));
 	   humano.restarDinero(humano.getApuesta());
-	   areaManoInfo.removeAll();
-	   pintarInfoJugadores(humano);
-	    actualizarPantalla(areaManoInfo);
+	   pc.setApuesta(Integer.valueOf(bote));
+	   pc.restarDinero(pc.getApuesta());
+	   bote = Integer.toString((Integer.valueOf(bote) + pc.getApuesta()));
+	   pintarInfo(pc); //para que actualicen las infos
+	   pintarInfo(humano);
+	   actualizarPantalla();
+	   pintarFlop();
+	   
 	  // que hace el computador?? que clase de inteligencia artificial aplicamos D:
-	   
-	   
+	  // al principio el pc siempre iguala la apuesta del jugador 
+	   	   
 	   
   }
 
+  
+  //Dar el flop (tres cartas a la mesa)
+  public void pintarFlop() throws IOException {
+	  for(int i=0; i<3; i++) {
+		  Carta cartaFlop = baraja.getCarta(i);
+		  JButton flop = crearComponenteDeMano(cartaFlop);
+		  areaTableroCartas.add(flop);
+		  humano.llamarCarta(baraja, humano.getMano(), cartaFlop);
+		  pc.llamarCarta(baraja, pc.getMano(), cartaFlop);
+		 
+	  }
+	  actualizarPantalla();
+	  for(int i=0; i<humano.getManoSize();i++) {
+		  System.out.println(i+"   "+humano.getCartaMano(i).mostrarCarta()+" Carta humano");
+		  System.out.println(i+"   "+pc.getCartaMano(i).mostrarCarta()+" Carta pc");
+	  }
+	  System.out.println( baraja.tamanoBaraja());
+  }
+  
+  
+  
+  
   //////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
   // Puede borrarse si es necesario
   public void analizarRepetidas(Mano mano) {

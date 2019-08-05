@@ -14,11 +14,12 @@ public class Interfaz extends JFrame {
     private JButton pasar, subir, igualar, retirarse;
     protected JPanel areaJuego = new JPanel(new BorderLayout());
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
-    private JPanel areaTableroCartas = new JPanel(new FlowLayout());
+    protected JPanel areaTableroCartas = new JPanel(new FlowLayout());
     private JPanel areamano = new JPanel(new BorderLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
+    protected JPanel areaBote = new JPanel(new GridLayout());
     private JPanel areaManoBotones = new JPanel(new GridLayout(2,2,5, 5));
-    protected JPanel areaManoInfo = new JPanel(new GridLayout());
+    protected JPanel areaManoInfo = new JPanel(new GridLayout(2, 1, 5, 5));
     private JPanel areaPC = new JPanel(new BorderLayout());
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
     private JPanel areaPcInfo = new JPanel(new GridLayout());
@@ -55,7 +56,8 @@ public class Interfaz extends JFrame {
 
         areaPC.add(areaPcInfo, BorderLayout.WEST);
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
-        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
+        areaPC.add(areaBote, BorderLayout.EAST);
+//        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
         
         //Crear botones de accion
         igualar = new JButton ("Igualar"); 
@@ -82,21 +84,37 @@ public class Interfaz extends JFrame {
     }
     
     
-    //Pinta el dinero que tienen los jugadores, queda pendiente la apuesta.
-    public void pintarInfoJugadores(Jugador jugador) {
+    //Pinta el dinero que tienen los jugadores, queda pendiente la apuesta. este metodo tambien sirve para actualizar toda la info en la pantalla
+    public void pintarInfo(Jugador jugador) {
     	if(jugador.getName()=="humano") {
-    	JLabel infoHumano=new JLabel("Dinero: $" + Integer.toString(jugador.getBalance()));
+    		areaManoInfo.removeAll();
+
+    	JLabel infoApuesta=new JLabel("Tu apuesta: $" + jugador.getApuesta());
+    	infoApuesta.setFont(new Font("Broadway",Font.BOLD,15));
+    	infoApuesta.setForeground(Color.black);
+    	areaManoInfo.add(infoApuesta);	
+    		
+    		
+    	JLabel infoHumano=new JLabel("Tu Dinero: $" + Integer.toString(jugador.getBalance()));
     	infoHumano.setFont(new Font("Broadway",Font.BOLD,15));
     	infoHumano.setForeground(Color.black);
     	areaManoInfo.add(infoHumano);
     	}
     	else {
+    		areaPcInfo.removeAll();	
+    		areaBote.removeAll();	
     		JLabel infoPc=new JLabel("Dinero: $" + Integer.toString(jugador.getBalance()));
     		infoPc.setFont(new Font("Broadway",Font.BOLD,15));
         	infoPc.setForeground(Color.black);
     		areaPcInfo.add(infoPc);
+    		
+    		JLabel infoBote=new JLabel("Bote: $" + bote);
+    		infoBote.setFont(new Font("Broadway",Font.BOLD,15));
+    		infoBote.setForeground(Color.black);
+    		areaBote.add(infoBote);   		
     	}
     }
+    
     /**
      * Se crea un botón para el panel de mano, estos botones no son clickeables porque las jugadas se hacen desde otros botones.
      * @param carta
@@ -119,10 +137,11 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
-    public void actualizarPantalla(JPanel panelParaActualizar){ 
-    	SwingUtilities.updateComponentTreeUI(this); 
+    public void actualizarPantalla(){ 
+//    	SwingUtilities.updateComponentTreeUI(this); 
 //    	this.validateTree(); 
-    	panelParaActualizar.updateUI();
+//    	this.removeAll();
+    	SwingUtilities.updateComponentTreeUI(this);
     	} 
     
     /** */
@@ -174,6 +193,7 @@ public class Interfaz extends JFrame {
     /** Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar el JFrame */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);
+        areaBote.setBackground(colorCasino);
         areaJuego.setBackground(colorCasino);
         areaPC.setBackground(colorCasino);
         areaPcCartas.setBackground(colorCasino);
