@@ -20,16 +20,17 @@ public class Jugador {
   }
 
   public int getApuesta() {
-	    return apuesta;
-	  }
-  
+    return apuesta;
+  }
+
   public void setApuesta(int valor) {
-	    apuesta=valor;
-	  }
-  
+    apuesta = valor;
+  }
+
   public void reiniciarBalance() {
-	    balance=10000;
-	  }
+    balance = 10000;
+  }
+
   /**
    * Resta dinero del balance total del jugador
    * @param suma
@@ -75,17 +76,18 @@ public class Jugador {
   public void tomarCarta(Carta carta) {
     mano.addCarta(carta);
   }
-  
+
   public Mano getMano() {
-	  return mano;
+    return mano;
   }
+
   /**
    * Extrae (elimina la carta de la ArrayList de origen) una carta de una baraja de cartas y la a√±ade a una nueva baraja.
    * @param barajaDeDondeViene the baraja de donde viene la carta
    */
-  public void llamarCarta(Baraja barajaDeDondeViene, Baraja destino, Carta cartaParaAÒadir) {
-      destino.addCarta(cartaParaAÒadir);
-      barajaDeDondeViene.quitarCarta(cartaParaAÒadir);
+  public void llamarCarta(Baraja barajaDeDondeViene, Baraja destino, Carta cartaParaAnadir) {
+    destino.addCarta(cartaParaAnadir);
+    barajaDeDondeViene.quitarCarta(cartaParaAnadir);
   }
 
   /** Limpia la mano eliminando todos los objetos de carta de ella y restableciendo su tama√±o a 0 */
