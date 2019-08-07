@@ -55,7 +55,7 @@ public class Logica extends Interfaz {
     
   }
   
-  //metodo usado para asegurarnos de que el usuario digite un numero cuando se le pide la apuesta, y la pone en la mesa
+  //metodo usado para asegurarnos de que el usuario digite un numero cuando se le pide la apuesta
   public boolean isNumeric(String cadena) {
 
       boolean resultado;
@@ -71,8 +71,9 @@ public class Logica extends Interfaz {
   }
   
   
+  //Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que el usuario digite un número, de lo contrario muestra un mensaje de error.
   public void mensajePedirApuesta() {
-	  bote = JOptionPane.showInputDialog(null,"�Cu�nto quieres apostar? Tienes: " + humano.getBalance()); 	  
+	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()); 	  
 	  if(bote==null) {
 		  System.exit(0);
 	  }
@@ -115,8 +116,18 @@ public class Logica extends Interfaz {
 	   pintarInfo(pc); //para que actualicen las infos
 	   pintarInfo(humano);
 	   actualizarPantalla();
-	   pintarFlop();
+       pintarFlop();
 	   
+	   
+//	   humano.tomarCarta(new Carta(1,2));
+//	   humano.tomarCarta(new Carta(1,2));
+//	   pc.tomarCarta(new Carta(3,3));
+//	   pc.tomarCarta(new Carta(3,3));                  // para hacer pruebas del método Analizar Repetidas
+//	   
+//	   pintarFlop();
+//	   
+//	   analizarRepetidas(humano.getMano());
+//	   analizarRepetidas(pc.getMano());
 	   //SEGUNDA RONDA DE APUESTAS
 	   
 	   
@@ -135,7 +146,7 @@ public class Logica extends Interfaz {
   }
 
   
-  //Dar el flop (tres cartas a la mesa)
+  //Dar el flop (tres cartas a la mesa), pone los componentes sobre la mesa y se agregan esas cartas a las manos de cada jugador.
   public void pintarFlop() throws IOException {
 	  for(int i=0; i<3; i++) {
 		  Carta cartaFlop = baraja.darCartaAlAzar();
@@ -146,13 +157,15 @@ public class Logica extends Interfaz {
 		 
 	  }
 	  actualizarPantalla();
-	  for(int i=0; i<humano.getManoSize();i++) {
-		  System.out.println(i+"   "+humano.getCartaMano(i).mostrarCarta()+" Carta humano");
-		  System.out.println(i+"   "+pc.getCartaMano(i).mostrarCarta()+" Carta pc");
-	  }
+//	  for(int i=0; i<humano.getManoSize();i++) {
+//		  System.out.println(i+"   "+humano.getCartaMano(i).mostrarCarta()+" Carta humano");
+//		  System.out.println(i+"   "+pc.getCartaMano(i).mostrarCarta()+" Carta pc");
+//	  }
 	  System.out.println( baraja.tamanoBaraja());
   }
   
+  //Muestra un mensaje en pantalla preguntando si el usuario quiere volver a jugar
+  ////////////////////////////////////verificar si esta bien y cuando usarlo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   public void JugarDeNuevo() throws IOException {
 	  if (humano.getBalance()>0) {
 	  int resp = JOptionPane.showConfirmDialog(null, "�quieres volver a Jugar?");
@@ -175,24 +188,58 @@ public class Logica extends Interfaz {
   
   //////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
   // Puede borrarse si es necesario
+  //verifica si hay pares(pair), tríos(three of a kind), cuatrupletas(Poker), par doble, o un full house (trio + par)
   public void analizarRepetidas(Mano mano) {
     int[] cartas = new int[14];
+	 int pares = 0;
+	 boolean trio = false;
+    //Llena de ceros el array
+    for (int i = 0; i < 14; i++) {
+       
+        cartas[i] =0;
+      }
     //Con este for va contando cuantas cartas de cada valor tiene
     for (int i = 0; i < 7; i++) {
       int valor = mano.getCarta(i).getValor();
       cartas[valor] = cartas[valor] + 1;
     }
+   
     // procedemos a construir el bucle que nos determina si es par, trio o cuatrupleta
     for (int pos = 1; pos < 14; pos++) {
+    	System.out.println(cartas[pos]);
       if (cartas[pos] == 2)
-        System.out.println("Par");
+        pares=+1;
       else if (cartas[pos] == 3)
-        System.out.println("Trio");
+        trio = true;
       else if (cartas[pos] == 4)
-        System.out.println("Cuatrupleta");
+        System.out.println("Poker");
     }
-
-
+    System.out.println("Fin bucle");
+    //verifica si hay un FULL HOUSE
+    if(pares==1 & trio==true) {
+    	System.out.println("Full House");
+    }
+    
+    else {
+	    	if(trio==true) {//imprime el trio, si lo hay
+	    	 System.out.println("Trío");
+	    	}
+	    	 
+	    //verifica cuantos pares hay
+	  else { 	
+	    switch(pares) {
+	    case 0:
+	    	break;
+	    case 1:
+	    	 System.out.println("Par");
+	    	 break;
+	    case 2: 
+	    	 System.out.println("Doble Par");
+	    	 break;
+	    } 
+      }
+    }
+  
   }
 
 
