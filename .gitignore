@@ -73,6 +73,9 @@ local.properties
 !.vscode/launch.json
 !.vscode/extensions.json
 
+### Clases ya compiladas
+
+Poker/bin/poker/*.class
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
