@@ -11,7 +11,6 @@ import java.io.*;
  */
 public class Interfaz extends JFrame {
     private Color colorCasino = new Color(18, 84, 8);
-    private JButton pasar, subir, igualar, retirarse;
     protected JPanel areaJuego = new JPanel(new BorderLayout());
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
     protected JPanel areaTableroCartas = new JPanel(new FlowLayout());
@@ -23,7 +22,6 @@ public class Interfaz extends JFrame {
     private JPanel areaPC = new JPanel(new BorderLayout());
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
     private JPanel areaPcInfo = new JPanel(new GridLayout());
-    private Escuchas escucha;
     protected String bote= "0";
     
 
@@ -57,7 +55,7 @@ public class Interfaz extends JFrame {
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
         areaPC.add(areaBote, BorderLayout.EAST);
 //        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
-        
+        /*
         //Crear botones de accion
         igualar = new JButton ("Igualar"); 
         igualar.addActionListener(escucha);           //escucha
@@ -71,7 +69,7 @@ public class Interfaz extends JFrame {
         subir = new JButton ("Subir"); 
         subir.addActionListener(escucha);    		//escucha
         areaManoBotones.add(subir);
-      
+      */
         //Se repinta areaJuego (queda pendiente saber si basta con repintar)
         areaJuego.repaint();
 
@@ -185,27 +183,7 @@ public class Interfaz extends JFrame {
     	
     }
     
-    private class Escuchas implements ActionListener{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			if(e.getSource()==pasar) {
-				//cambiar turno?? hace algo el cumputador dependiendo de su jugada??
-			}
-			if(e.getSource()==subir) {
-				//igualar la apuesta que haya e incrementar lo que se quiera
-			}
-			if(e.getSource()==retirarse) {
-//				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
-			}
-			if(e.getSource()==igualar) {
-//				ver cuanto hay apostado en la mesa y apostar esa misma cantidad
-				
-				
-			}		
-		}
-    }
     /** Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar el JFrame */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);
@@ -221,5 +199,9 @@ public class Interfaz extends JFrame {
         areaManoBotones.setBackground(colorCasino);
         areaManoInfo.setBackground(colorCasino);
     }
+
+	public void addBoton(JButton boton) {
+        areaManoBotones.add(boton);
+	}
 
 }

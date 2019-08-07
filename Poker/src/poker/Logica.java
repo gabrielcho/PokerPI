@@ -3,6 +3,8 @@ package poker;
 import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**Por razones de estructuraciÃ³n necesitamos que la clase LÃ³gica herede de interfaz, esto permite que todo manejo
  * de lÃ³gica pueda usar la clase de interfaz sin problemas de acceso.
@@ -12,16 +14,32 @@ public class Logica extends Interfaz {
   /**Esta es el objeto de baraja a usar en todo el juego */
   //Hay que tener en cuenta mÃ¡s adelante que esta baraja tiene que reiniciarse
   //Por lo que toca poner un mÃ©todo de reinicio en la baraja.
+  private JButton pasar, subir, igualar, retirarse;
   private Baraja baraja;
   private Jugador humano, pc;
+	private Escuchas escucha;
   private Mano manoPrueba = new Mano();
 
   public Logica() throws IOException {
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
+		setBotones();
   }
-
+	public void setBotones(){
+		igualar = new JButton ("Igualar"); 
+        igualar.addActionListener(escucha);           //escucha
+        super.addBoton(igualar);
+        retirarse = new JButton ("Retirarse"); 
+        retirarse.addActionListener(escucha);   	 //escucha
+        super.addBoton(retirarse);
+        pasar = new JButton ("Pasar"); 
+        pasar.addActionListener(escucha);    		//escucha
+        super.addBoton(pasar); 
+        subir = new JButton ("Subir"); 
+        subir.addActionListener(escucha);    		//escucha
+        super.addBoton(subir);
+	}
   /**Este mÃ©todo limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
   public void repartirCartas() {
     humano.soltarCartas();
@@ -54,20 +72,20 @@ public class Logica extends Interfaz {
   
   
   public void mensajePedirApuesta() {
-	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()); 	  
+	  bote = JOptionPane.showInputDialog(null,"ï¿½Cuï¿½nto quieres apostar? Tienes: " + humano.getBalance()); 	  
 	  if(bote==null) {
 		  System.exit(0);
 	  }
 	  else {	   if (isNumeric(bote) == true) {
 		  		   long valorObtenido = Long.valueOf(bote);	 	 
 		  		   while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
-		  			 JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
+		  			 JOptionPane.showMessageDialog(null, "Digite un numero vï¿½lido","Alerta",JOptionPane.WARNING_MESSAGE);
 		  	     	 mensajePedirApuesta();	
 		  }
 	    }  
    
 	    else {
-	    		JOptionPane.showMessageDialog(null, "Digite un numero válido","Alerta",JOptionPane.WARNING_MESSAGE);
+	    		JOptionPane.showMessageDialog(null, "Digite un numero vï¿½lido","Alerta",JOptionPane.WARNING_MESSAGE);
 		    	mensajePedirApuesta();	    
     }
   }   
@@ -87,7 +105,6 @@ public class Logica extends Interfaz {
 	    
 	   boolean noHaPerdido=true; 
 	   
-	   while(noHaPerdido) {
 		//PRIMERA RONDA DE APUESTAS   
 	   mensajePedirApuesta();
 	   humano.setApuesta(Integer.valueOf(bote));
@@ -106,14 +123,14 @@ public class Logica extends Interfaz {
 	   
 	   
 	   noHaPerdido=false;//pierde y sale del bucle de juego  esto debe ser un metodo que verifique las manos xd 
-	   }
+	   /*
 	   if(humano.getBalance()>0 & pc.getBalance()>0) { // pierde o gana la mano, mas no el juego. el jugo se gana cuando alguno de los dos quede sin dinero
 	   LimpiarInterfaz();
 	   jugar();
 	   }
 	   else { //preguntar si quiere iniciar otra partida desde 0
 		   JugarDeNuevo();
-	   }
+	   }*/
 	   
   }
 
@@ -121,11 +138,11 @@ public class Logica extends Interfaz {
   //Dar el flop (tres cartas a la mesa)
   public void pintarFlop() throws IOException {
 	  for(int i=0; i<3; i++) {
-		  Carta cartaFlop = baraja.getCarta(i);
+		  Carta cartaFlop = baraja.darCartaAlAzar();
 		  JButton flop = crearComponenteDeMano(cartaFlop);
 		  areaTableroCartas.add(flop);
-		  humano.llamarCarta(baraja, humano.getMano(), cartaFlop);
-		  pc.llamarCarta(baraja, pc.getMano(), cartaFlop);
+		  humano.tomarCarta(cartaFlop);
+		  pc.tomarCarta(cartaFlop);
 		 
 	  }
 	  actualizarPantalla();
@@ -138,7 +155,7 @@ public class Logica extends Interfaz {
   
   public void JugarDeNuevo() throws IOException {
 	  if (humano.getBalance()>0) {
-	  int resp = JOptionPane.showConfirmDialog(null, "¿quieres volver a Jugar?");
+	  int resp = JOptionPane.showConfirmDialog(null, "ï¿½quieres volver a Jugar?");
 	  if(resp==0) {
 		  humano.reiniciarBalance();
 		  pc.reiniciarBalance();
@@ -174,6 +191,31 @@ public class Logica extends Interfaz {
       else if (cartas[pos] == 4)
         System.out.println("Cuatrupleta");
     }
+
+
   }
+
+
+		public class Escuchas implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if(e.getSource()==pasar) {
+				//cambiar turno?? hace algo el cumputador dependiendo de su jugada??
+			}
+			if(e.getSource()==subir) {
+				//igualar la apuesta que haya e incrementar lo que se quiera
+			}
+			if(e.getSource()==retirarse) {
+//				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
+
+			}
+			if(e.getSource()==igualar) {
+//				ver cuanto hay apostado en la mesa y apostar esa misma cantidad
+				
+			}		
+		}
+    }
 
 }
