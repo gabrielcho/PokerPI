@@ -77,7 +77,7 @@ public class Logica extends Interfaz implements ActionListener {
 	  }
 	  else { if (isNumeric(bote) == true) {
 		  			long valorObtenido = Long.valueOf(bote);	 	 
-		  			while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
+		  			if(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
 		  			 JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
 		  	     	 mensajePedirApuesta();	
 		  }
