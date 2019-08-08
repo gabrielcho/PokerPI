@@ -10,14 +10,13 @@ import java.awt.event.ActionListener;
  * de lógica pueda usar la clase de interfaz sin problemas de acceso.
  * <h3> Las etiquetas HTML funcionan en el javadoc wtf</h3> y tambien en los jlabels xd
  */
-public class Logica extends Interfaz {
+public class Logica extends Interfaz implements ActionListener {
   /**Esta es el objeto de baraja a usar en todo el juego */
   //Hay que tener en cuenta más adelante que esta baraja tiene que reiniciarse
   //Por lo que toca poner un método de reinicio en la baraja.
   private JButton pasar, subir, igualar, retirarse;
   private Baraja baraja;
   private Jugador humano, pc;
-	private Escuchas escucha;
   private Mano manoPrueba = new Mano();
 
   public Logica() throws IOException {
@@ -28,16 +27,16 @@ public class Logica extends Interfaz {
   }
 	public void setBotones(){
 		igualar = new JButton ("Igualar"); 
-        igualar.addActionListener(escucha);           //escucha
+        igualar.addActionListener(this);           //escucha
         super.addBoton(igualar);
         retirarse = new JButton ("Retirarse"); 
-        retirarse.addActionListener(escucha);   	 //escucha
+        retirarse.addActionListener(this);   	 //escucha
         super.addBoton(retirarse);
         pasar = new JButton ("Pasar"); 
-        pasar.addActionListener(escucha);    		//escucha
+        pasar.addActionListener(this);    		//escucha
         super.addBoton(pasar); 
         subir = new JButton ("Subir"); 
-        subir.addActionListener(escucha);    		//escucha
+        subir.addActionListener(this);    		//escucha
         super.addBoton(subir);
 	}
   /**Este método limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
@@ -241,28 +240,28 @@ public class Logica extends Interfaz {
     }
   
   }
-
-
-		public class Escuchas implements ActionListener{
-
-		@Override
+/** */
+  @Override
 		public void actionPerformed(ActionEvent e) {
 
 			if(e.getSource()==pasar) {
 				//cambiar turno?? hace algo el cumputador dependiendo de su jugada??
+				System.out.println("Pasa");
 			}
 			if(e.getSource()==subir) {
 				//igualar la apuesta que haya e incrementar lo que se quiera
+				System.out.println("Sube");
 			}
 			if(e.getSource()==retirarse) {
 //				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
-
+				System.out.println("Se retira");
 			}
 			if(e.getSource()==igualar) {
 //				ver cuanto hay apostado en la mesa y apostar esa misma cantidad
-				
+				System.out.println("Iguala");
 			}		
 		}
-    }
+
+		
 
 }
