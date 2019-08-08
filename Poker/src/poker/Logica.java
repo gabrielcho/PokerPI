@@ -16,12 +16,13 @@ public class Logica extends Interfaz implements ActionListener {
   private JButton pasar, subir, igualar, retirarse;
   private Baraja baraja;
   private Jugador humano, pc;
+  private String fase;
 
   public Logica() {
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
-		setBotones();
+	setBotones();
   }
 	public void setBotones(){
 		igualar = new JButton ("Igualar"); 
@@ -74,22 +75,64 @@ public class Logica extends Interfaz implements ActionListener {
 	  if(bote==null) {
 		  System.exit(0);
 	  }
-	  else {	   if (isNumeric(bote) == true) {
-		  		   long valorObtenido = Long.valueOf(bote);	 	 
-		  		   while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
+	  else { if (isNumeric(bote) == true) {
+		  			long valorObtenido = Long.valueOf(bote);	 	 
+		  			while(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
 		  			 JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
 		  	     	 mensajePedirApuesta();	
 		  }
-	    }  
+	     }  
    
 	    else {
-	    		JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
-		    	mensajePedirApuesta();	    
-    }
-  }   
-}
-  
-  public void jugar() { //bucle de juego???
+	    	JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
+		    mensajePedirApuesta();	    
+  	    }
+ 	  }   
+   }
+/**Pide apuestas y pinta el flop */
+   public void primeraFase() {
+	mensajePedirApuesta();
+	humano.setApuesta(Integer.valueOf(bote));
+	humano.restarDinero(humano.getApuesta());
+	pc.setApuesta(Integer.valueOf(bote));// al principio el pc siempre iguala la apuesta del jugador 
+	pc.restarDinero(pc.getApuesta());
+	bote = Integer.toString((Integer.valueOf(bote) + pc.getApuesta()));
+	pintarInfo(pc); //para que actualicen las infos
+	pintarInfo(humano);
+	actualizarPantalla();
+	pintarFlop();
+	fase = "Flop";
+   }
+   /** Empieza la fase turn poniendo la cuarta carta  */
+   public void faseTurn(){
+	pintarTurn();
+	
+	fase = "Turn"; //Cambia el estado de la fase a "Turn"
+   }
+
+   public void faseRiver(){
+	   pintarTurn(); //solo para probar
+	   fase = "River";
+   }
+   /** Añade la carta del Turn a la baraja "invisible" de los jugadores, además pinta el componente en 
+	* el tablero y actualiza 
+    */
+   public void pintarTurn(){
+	Carta cartaTurn = baraja.darCartaAlAzar();
+	JButton turn = crearComponenteDeMano(cartaTurn);
+	areaTableroCartas.add(turn);
+	humano.tomarCarta(cartaTurn);
+	pc.tomarCarta(cartaTurn);
+	revalidate();
+	repaint();
+   }
+
+  /** Inicia el juego
+  * (Queda pendiente decidir si al ejecutar este método el juego se reinicia de cero o sólo permite otra mano más)
+  * Esta vez no tenemos bucle de juego porque se supone que por el caracter de botones el juego tiene que hacerse con una
+  * estructura orientada a objetos
+   */
+  public void jugar() { 
  
 	    setEntorno();
 	    baraja = new Baraja();
@@ -99,22 +142,11 @@ public class Logica extends Interfaz implements ActionListener {
 	    pintarInfo(humano);
 	    pintarInfo(pc);
 	    revalidate();
-	    actualizarPantalla();
-	    
-	   boolean noHaPerdido=true; 
-	   
-		//PRIMERA RONDA DE APUESTAS   
-	   mensajePedirApuesta();
-	   humano.setApuesta(Integer.valueOf(bote));
-	   humano.restarDinero(humano.getApuesta());
-	   pc.setApuesta(Integer.valueOf(bote));// al principio el pc siempre iguala la apuesta del jugador 
-	   pc.restarDinero(pc.getApuesta());
-	   bote = Integer.toString((Integer.valueOf(bote) + pc.getApuesta()));
-	   pintarInfo(pc); //para que actualicen las infos
-	   pintarInfo(humano);
-	   actualizarPantalla();
-       pintarFlop();
-	   
+		actualizarPantalla();
+		
+		//PRIMERA RONDA DE APUESTAS, pide apuestas y pinta el flop 
+	  	primeraFase();
+	   // Después de esta primera fase y ya pintado el flop, queda el flujo del juego a manos de los botones
 	   
 //	   humano.tomarCarta(new Carta(1,2));
 //	   humano.tomarCarta(new Carta(1,2));
@@ -130,7 +162,7 @@ public class Logica extends Interfaz implements ActionListener {
 	   
 	   
 	   
-	   noHaPerdido=false;//pierde y sale del bucle de juego  esto debe ser un metodo que verifique las manos xd 
+	 //pierde y sale del bucle de juego  esto debe ser un metodo que verifique las manos xd 
 	   /*
 	   if(humano.getBalance()>0 & pc.getBalance()>0) { // pierde o gana la mano, mas no el juego. el jugo se gana cuando alguno de los dos quede sin dinero
 	   LimpiarInterfaz();
@@ -151,16 +183,27 @@ public class Logica extends Interfaz implements ActionListener {
 		  areaTableroCartas.add(flop);
 		  humano.tomarCarta(cartaFlop);
 		  pc.tomarCarta(cartaFlop);
-		 
 	  }
 	  actualizarPantalla();
-//	  for(int i=0; i<humano.getManoSize();i++) {
-//		  System.out.println(i+"   "+humano.getCartaMano(i).mostrarCarta()+" Carta humano");
-//		  System.out.println(i+"   "+pc.getCartaMano(i).mostrarCarta()+" Carta pc");
-//	  }
-	  System.out.println( baraja.tamanoBaraja());
   }
   
+  /**Inicializa la próxima fase dependiendo de la fase en la que se esté00 */
+  public void proximaFase(){
+	  switch(fase) {
+		case "Flop": //Pasa a la fase "Turn"
+		faseTurn();
+		break;
+		
+		case "Turn": // Pasa a la fase "River"
+		faseRiver();
+		break;
+		
+
+		case "River":	// Termina la mano y determina al ganador con alguna funcion que envuelva todo
+		break;
+		
+	  }
+  }
   //Muestra un mensaje en pantalla preguntando si el usuario quiere volver a jugar
   ////////////////////////////////////verificar si esta bien y cuando usarlo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   public void JugarDeNuevo() {
@@ -238,13 +281,15 @@ public class Logica extends Interfaz implements ActionListener {
     }
   
   }
-/** */
+/**Escuchas que determinan el comportamiento del juego */
   @Override
 		public void actionPerformed(ActionEvent e) {
 
 			if(e.getSource()==pasar) {
 				//cambiar turno?? hace algo el cumputador dependiendo de su jugada??
 				System.out.println("Pasa");
+				//Debe checar si se está en fase de flop, turn o river
+				proximaFase();
 			}
 			if(e.getSource()==subir) {
 				//igualar la apuesta que haya e incrementar lo que se quiera
@@ -253,10 +298,16 @@ public class Logica extends Interfaz implements ActionListener {
 			if(e.getSource()==retirarse) {
 //				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
 				System.out.println("Se retira");
+
+				//El computador gana automáticamente y muestra sus cartas
+
+				//Luego debe preguntar si se quiere volver a jugar
 			}
 			if(e.getSource()==igualar) {
-//				ver cuanto hay apostado en la mesa y apostar esa misma cantidad
 				System.out.println("Iguala");
+
+				//Verifica cuánto tiene apostado el pc en la mesa e iguala esa cantidad en función de la apuesta del jugador
+				//Algo tipo (apuestaPC)-(apuestaJugador) = Cantidad a igualar
 			}		
 		}
 

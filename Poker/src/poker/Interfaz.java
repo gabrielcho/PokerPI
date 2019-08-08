@@ -28,7 +28,7 @@ public class Interfaz extends JFrame {
     }
 
     /**Prepara la interfaz gráfica a su estado inicial */
-    public void setEntorno()   {
+    public void setEntorno() {
         setVisible(true);
         setTitle("Poker Texas Hold'em");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
