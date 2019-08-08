@@ -79,6 +79,13 @@ public class Interfaz extends JFrame {
 
     }
     
+    public ImageIcon imagenBoton(String nombreBoton){
+        Image imagen = new ImageIcon(getClass().getResource("/cartas/" + nombreBoton + ".png"))
+        .getImage();
+        imagen = imagen.getScaledInstance(108, 36, Image.SCALE_FAST);
+        ImageIcon imagenBoton = new ImageIcon(imagen);
+        return  imagenBoton;
+    }
     
     //Pinta el dinero que tienen los jugadores, queda pendiente la apuesta. este metodo tambien sirve para actualizar toda la info en la pantalla
     public void pintarInfo(Jugador jugador) {
@@ -115,7 +122,7 @@ public class Interfaz extends JFrame {
      * Se crea un botón para el panel de mano, estos botones no son clickeables porque las jugadas se hacen desde otros botones.
      * @param carta
      * @return boton de mano
-     * @ 
+     * 
      */
     public JButton crearComponenteDeMano(Carta carta)   {
         JButton boton = new JButton();

@@ -4,6 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import javax.swing.BorderFactory;
 
 /**Por razones de estructuración necesitamos que la clase Lógica herede de interfaz, esto permite que todo manejo
  * de lógica pueda usar la clase de interfaz sin problemas de acceso.
@@ -24,18 +26,46 @@ public class Logica extends Interfaz implements ActionListener {
     pc = new Jugador("pc");
 	setBotones();
   }
+
+  /** Ajusta los botones que se van a usar para las acciones del poker.
+   * NOTA::::: Voy a dejarlo asi por ahora porque no se me ocurre como hacer un metodo que sea compatible con la implementacion de escuchas
+   * se puede pero al final quedaria igual y esa no es la gracia.
+   */
 	public void setBotones(){
-		igualar = new JButton ("Igualar"); 
-        igualar.addActionListener(this);           //escucha
+		igualar = new JButton (); 
+		igualar.addActionListener(this);
+		igualar.setIcon(imagenBoton("igual"));
+		igualar.setPreferredSize(new Dimension(108, 36));
+		igualar.setBorder(BorderFactory.createEmptyBorder());
+		igualar.setContentAreaFilled(false);
+		igualar.setFocusPainted(false);
+		//escucha
         super.addBoton(igualar);
-        retirarse = new JButton ("Retirarse"); 
-        retirarse.addActionListener(this);   	 //escucha
+        retirarse = new JButton (); 
+		retirarse.addActionListener(this);        //escucha
+		retirarse.setIcon(imagenBoton("fold"));	
+		retirarse.setPreferredSize(new Dimension(108, 36));  
+		retirarse.setBorder(BorderFactory.createEmptyBorder());
+		retirarse.setContentAreaFilled(false);
+		retirarse.setFocusPainted(false);
         super.addBoton(retirarse);
-        pasar = new JButton ("Pasar"); 
-        pasar.addActionListener(this);    		//escucha
+        pasar = new JButton (); 
+		pasar.addActionListener(this);
+		pasar.setIcon(imagenBoton("pasar"));
+		pasar.setPreferredSize(new Dimension(108, 36));    
+		pasar.setBorder(BorderFactory.createEmptyBorder());
+		pasar.setContentAreaFilled(false);
+		pasar.setFocusPainted(false);
+		//escucha
         super.addBoton(pasar); 
-        subir = new JButton ("Subir"); 
-        subir.addActionListener(this);    		//escucha
+        subir = new JButton (); 
+		subir.addActionListener(this);
+		subir.setIcon(imagenBoton("subir"));
+		subir.setPreferredSize(new Dimension(108, 36)); 
+		subir.setBorder(BorderFactory.createEmptyBorder());
+		subir.setContentAreaFilled(false);
+		subir.setFocusPainted(false);
+		//escucha
         super.addBoton(subir);
 	}
   /**Este método limpia la mano de los jugadores y les asigna dos nuevas cartas tomadas de la baraja al azar */
