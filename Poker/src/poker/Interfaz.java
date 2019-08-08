@@ -25,6 +25,7 @@ public class Interfaz extends JFrame {
     
 
     public Interfaz()   {
+    
     }
 
     /**Prepara la interfaz gráfica a su estado inicial */

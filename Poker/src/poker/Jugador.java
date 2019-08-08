@@ -24,7 +24,7 @@ public class Jugador {
   }
 
   public void setApuesta(int valor) {
-    apuesta = valor;
+    apuesta =valor;
   }
 
   public void reiniciarBalance() {

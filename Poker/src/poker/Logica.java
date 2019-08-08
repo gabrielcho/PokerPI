@@ -19,12 +19,14 @@ public class Logica extends Interfaz implements ActionListener {
   private Baraja baraja;
   private Jugador humano, pc;
   private String fase;
+  private int apuestaActual,boteNuevo;
 
   public Logica() {
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
 	setBotones();
+	boteNuevo = 0;
   }
 
   /** Ajusta los botones que se van a usar para las acciones del poker.
@@ -100,24 +102,31 @@ public class Logica extends Interfaz implements ActionListener {
   
   
   //Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que el usuario digite un número, de lo contrario muestra un mensaje de error.
-  public void mensajePedirApuesta() {
-	  bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()); 	  
-	  if(bote==null) {
-		  System.exit(0);
-	  }
+  	public void mensajePedirApuesta() {
+		if (bote.equals("0"))
+		bote = JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()); 	  
+		else {
+			apuestaActual = Integer.valueOf(JOptionPane.showInputDialog(null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance()));
+			 boteNuevo = Integer.valueOf(bote) + apuestaActual;
+			bote = Integer.toString(boteNuevo);
+			}  
+		if(bote==null) {
+			System.exit(0);
+		  }
 	  else { if (isNumeric(bote) == true) {
-		  			long valorObtenido = Long.valueOf(bote);	 	 
+		  			int valorObtenido = Integer.valueOf(bote);	 	 
 		  			if(valorObtenido<=0 ||  valorObtenido > humano.getBalance()) {
-		  			 JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
+		  			 JOptionPane.showMessageDialog(null, "Digite un numero valido","Alerta",JOptionPane.WARNING_MESSAGE);
 		  	     	 mensajePedirApuesta();	
 		  }
 	     }  
    
 	    else {
-	    	JOptionPane.showMessageDialog(null, "Digite un numero v�lido","Alerta",JOptionPane.WARNING_MESSAGE);
+	    	JOptionPane.showMessageDialog(null, "Digite un numero valido","Alerta",JOptionPane.WARNING_MESSAGE);
 		    mensajePedirApuesta();	    
   	    }
- 	  }   
+	   
+	}   
    }
 /**Pide apuestas y pinta el flop */
    public void primeraFase() {
@@ -137,11 +146,11 @@ public class Logica extends Interfaz implements ActionListener {
    public void faseTurn(){
 	pintarTurn();
 	
-	fase = "Turn"; //Cambia el estado de la fase a "Turn"
+	fase = "Turn";          //Cambia el estado de la fase a "Turn"
    }
 
    public void faseRiver(){
-	   pintarTurn(); //solo para probar
+	   pintarTurn(); //solo para probar,
 	   fase = "River";
    }
    /** Añade la carta del Turn a la baraja "invisible" de los jugadores, además pinta el componente en 
@@ -230,6 +239,7 @@ public class Logica extends Interfaz implements ActionListener {
 		
 
 		case "River":	// Termina la mano y determina al ganador con alguna funcion que envuelva todo
+		
 		break;
 		
 	  }
@@ -324,6 +334,17 @@ public class Logica extends Interfaz implements ActionListener {
 			if(e.getSource()==subir) {
 				//igualar la apuesta que haya e incrementar lo que se quiera
 				System.out.println("Sube");
+				if(fase.equals("Turn") || fase.equals("River")){
+					mensajePedirApuesta();
+					humano.setApuesta(apuestaActual);
+					humano.restarDinero(humano.getApuesta());
+					pc.setApuesta(apuestaActual);// al principio el pc siempre iguala la apuesta del jugador 
+					pc.restarDinero(pc.getApuesta());
+					bote = Integer.toString(boteNuevo + pc.getApuesta());
+					pintarInfo(pc); //para que actualicen las infos
+					pintarInfo(humano);
+					actualizarPantalla();
+				}
 			}
 			if(e.getSource()==retirarse) {
 //				gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero

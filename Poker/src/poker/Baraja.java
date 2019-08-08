@@ -16,7 +16,8 @@ public class Baraja {
 
     /** Genera la baraja de 52 cartas diferentes poniéndolas en un ArrayList*/
     public void crearBaraja() {
-        for (int i = 1; i < 14; i++) {
+    for (int i = 1; i < 14; i++) {
+        
             for (int j = 0; j < 4; j++) {
                 baraja.add(new Carta(i, j));
             }
