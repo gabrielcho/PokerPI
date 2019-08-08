@@ -1,6 +1,5 @@
 package poker;
 
-import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
@@ -17,9 +16,8 @@ public class Logica extends Interfaz implements ActionListener {
   private JButton pasar, subir, igualar, retirarse;
   private Baraja baraja;
   private Jugador humano, pc;
-  private Mano manoPrueba = new Mano();
 
-  public Logica() throws IOException {
+  public Logica() {
     baraja = new Baraja();
     humano = new Jugador("humano");
     pc = new Jugador("pc");
@@ -91,7 +89,7 @@ public class Logica extends Interfaz implements ActionListener {
   }   
 }
   
-  public void jugar() throws IOException { //bucle de juego???
+  public void jugar() { //bucle de juego???
  
 	    setEntorno();
 	    baraja = new Baraja();
@@ -146,7 +144,7 @@ public class Logica extends Interfaz implements ActionListener {
 
   
   //Dar el flop (tres cartas a la mesa), pone los componentes sobre la mesa y se agregan esas cartas a las manos de cada jugador.
-  public void pintarFlop() throws IOException {
+  public void pintarFlop() {
 	  for(int i=0; i<3; i++) {
 		  Carta cartaFlop = baraja.darCartaAlAzar();
 		  JButton flop = crearComponenteDeMano(cartaFlop);
@@ -165,7 +163,7 @@ public class Logica extends Interfaz implements ActionListener {
   
   //Muestra un mensaje en pantalla preguntando si el usuario quiere volver a jugar
   ////////////////////////////////////verificar si esta bien y cuando usarlo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  public void JugarDeNuevo() throws IOException {
+  public void JugarDeNuevo() {
 	  if (humano.getBalance()>0) {
 	  int resp = JOptionPane.showConfirmDialog(null, "�quieres volver a Jugar?");
 	  if(resp==0) {

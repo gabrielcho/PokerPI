@@ -2,7 +2,6 @@ package poker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
@@ -25,11 +24,11 @@ public class Interfaz extends JFrame {
     protected String bote= "0";
     
 
-    public Interfaz() throws IOException {
+    public Interfaz()   {
     }
 
     /**Prepara la interfaz gráfica a su estado inicial */
-    public void setEntorno() throws IOException {
+    public void setEntorno()   {
         setVisible(true);
         setTitle("Poker Texas Hold'em");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,9 +115,9 @@ public class Interfaz extends JFrame {
      * Se crea un botón para el panel de mano, estos botones no son clickeables porque las jugadas se hacen desde otros botones.
      * @param carta
      * @return boton de mano
-     * @throws IOException
+     * @ 
      */
-    public JButton crearComponenteDeMano(Carta carta) throws IOException {
+    public JButton crearComponenteDeMano(Carta carta)   {
         JButton boton = new JButton();
         boton.setIcon(carta.imagenCarta());
         boton.setBorder(BorderFactory.createEmptyBorder());
@@ -126,7 +125,7 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
-    public JButton crearBotonManoPc(Carta carta) throws IOException {
+    public JButton crearBotonManoPc(Carta carta)   {
         JButton boton = new JButton();
         boton.setIcon(carta.ocultarCarta());
         boton.setBorder(BorderFactory.createEmptyBorder());
@@ -142,9 +141,8 @@ public class Interfaz extends JFrame {
     	} 
     
     /** */
-    public void dibujarMano(Jugador jugador) throws IOException {
+    public void dibujarMano(Jugador jugador)   {
         if (jugador.getName() == "humano") {
-            int tamano = jugador.getManoSize();
             for (int i = 0; i < 2; i++) {
                 Carta cartaDeMano = jugador.getCartaMano(i);
                 JButton cartaMano = crearComponenteDeMano(cartaDeMano);

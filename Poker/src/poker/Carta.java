@@ -2,10 +2,8 @@ package poker;
 
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.awt.Image;
-import java.io.IOException;
 
 public class Carta {
     /**daw */
@@ -90,6 +88,7 @@ public class Carta {
         return palo;
     }
 
+
     public int getValor() {
         return valor;
     }
@@ -146,9 +145,8 @@ public class Carta {
      * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la imagen de la carta ya lista para ser dibujada
      * sobre los componentes.
      * @return imagen de carta
-     * @throws IOException
      */
-    public ImageIcon imagenCarta() throws IOException {
+    public ImageIcon imagenCarta() {
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png"))
                 .getImage();
         imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST); //Escala la imagen de la carta a un tamaño deseable
