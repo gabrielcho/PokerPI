@@ -111,18 +111,21 @@ public class Logica extends Interfaz implements ActionListener {
 		return resultado;
 	}
 
-	public void mensajePedirApuesta() {
+	/**
+	 * Muestra un InputDialog de JOptionPane para preguntar por la apuesta Este
+	 * metodo retorna booleano porque esa es la manera en la que sabremos si se
+	 * ingresaron datos validos para poder realizar las jugadas que dependen de que
+	 * la apuesta se haya hecho.
+	 */
+	public boolean mensajePedirApuesta() {
+		boolean apuestaEfectuada = false;
 		String auxBote = bote;
 		String stringApuesta = JOptionPane.showInputDialog(null,
 				"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 		if (stringApuesta != null) {
 			apuestaActual = Integer.parseInt(stringApuesta);
 
-			if (apuestaActual > 0)
-				apuestaRonda += apuestaActual;
-
 			int boteNuevo = (Integer.parseInt(bote) + (apuestaActual * 2));
-			bote = Integer.toString(boteNuevo);
 
 			if (isNumeric(stringApuesta) == true) {
 				int valorObtenido = Integer.valueOf(apuestaActual);
@@ -134,6 +137,12 @@ public class Logica extends Interfaz implements ActionListener {
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirApuesta();
 				}
+
+				else {
+					apuestaEfectuada = true;
+					apuestaRonda += apuestaActual;
+					bote = Integer.toString(boteNuevo);
+				}
 			}
 
 			else {
@@ -143,6 +152,7 @@ public class Logica extends Interfaz implements ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(null, "No ingresaste apuesta", "Alerta", JOptionPane.WARNING_MESSAGE);
 		}
+		return apuestaEfectuada;
 	}
 
 	/*
@@ -401,14 +411,15 @@ public class Logica extends Interfaz implements ActionListener {
 			// igualar la apuesta que haya e incrementar lo que se quiera
 			System.out.println("Sube");
 			if (fase.equals("Turn") || fase.equals("River") || fase.equals("Flop")) {
-				mensajePedirApuesta();
-				humano.setApuesta(apuestaRonda);
-				humano.restarDinero(humano.getApuesta());
-				pc.setApuesta(apuestaRonda);// al principio el pc siempre iguala la apuesta del jugador
-				pc.restarDinero(pc.getApuesta());
-				pintarInfo(pc); // para que actualicen las infos
-				pintarInfo(humano);
-				actualizarPantalla();
+				if (mensajePedirApuesta()) {
+					humano.setApuesta(apuestaRonda);
+					humano.restarDinero(humano.getApuesta());
+					pc.setApuesta(apuestaRonda);// al principio el pc siempre iguala la apuesta del jugador
+					pc.restarDinero(pc.getApuesta());
+					pintarInfo(pc); // para que actualicen las infos
+					pintarInfo(humano);
+					actualizarPantalla();
+				}
 			}
 		}
 		if (e.getSource() == retirarse) {
