@@ -140,6 +140,14 @@ public class Logica extends Interfaz implements ActionListener {
 						apuestaEfectuada = true;
 						apuestaRonda += apuestaActual;
 						bote = Integer.toString(boteNuevo);
+
+						 humano.setApuesta(humano.getApuesta()+apuestaRonda);
+		            	   System.out.println(humano.getApuesta()+ " DEspeus de");
+		            	   System.out.println("mas "+Integer.valueOf(valorObtenido));
+		            	   humano.restarDinero(Integer.valueOf(valorObtenido));
+		            	   pc.setApuesta(pc.getApuesta()+apuestaRonda);
+		            	   pc.restarDinero(Integer.valueOf(valorObtenido));
+		            	   
 					} else
 						JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!", "Alerta",
 								JOptionPane.WARNING_MESSAGE);
@@ -172,8 +180,14 @@ public class Logica extends Interfaz implements ActionListener {
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirPrimeraApuesta();
 				} else {
-					bote = Integer.toString(Integer.parseInt(entrada) * 2);
+					bote = Integer.toString(Integer.parseInt(bote)+(Integer.parseInt(entrada) * 2));
 					apuestaRonda = Integer.parseInt(bote) / 2;
+					   humano.setApuesta(humano.getApuesta()+apuestaRonda);
+	            	   System.out.println(humano.getApuesta()+ " DEspeus de");
+	            	   System.out.println("mas "+Integer.valueOf(valorObtenido));
+	            	   humano.restarDinero(Integer.valueOf(valorObtenido));
+	            	   pc.setApuesta(pc.getApuesta()+apuestaRonda);
+	            	   pc.restarDinero(Integer.valueOf(valorObtenido));
 				}
 			}
 
@@ -188,12 +202,12 @@ public class Logica extends Interfaz implements ActionListener {
 	/** Pide apuestas y pinta el flop */
 	public void primeraFase() {
 		mensajePedirPrimeraApuesta();
-		humano.setApuesta(Integer.parseInt(bote) / 2);
-		System.out.println("El bote debe ser de 1 pero es de: " + bote);
-		humano.restarDinero(humano.getApuesta());
-		pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la apuesta del jugador
-		pc.restarDinero(Integer.parseInt(bote) / 2);
-		bote = Integer.toString(Integer.valueOf(bote));
+//		humano.setApuesta(Integer.parseInt(bote) / 2);
+//		System.out.println("El bote debe ser de 1 pero es de: " + bote);
+//		humano.restarDinero(humano.getApuesta());
+//		pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la apuesta del jugador
+//		pc.restarDinero(Integer.parseInt(bote) / 2);
+//		bote = Integer.toString(Integer.valueOf(bote));
 		pintarInfo(pc); // para que actualicen las infos
 		pintarInfo(humano);
 		actualizarPantalla();
@@ -406,10 +420,10 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println("Sube");
 			if (fase.equals("Turn") || fase.equals("River") || fase.equals("Flop")) {
 				if (mensajePedirApuesta()) {
-					humano.setApuesta(apuestaRonda+humano.getApuesta());
-					humano.restarDinero(humano.getApuesta());
-					pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre iguala la apuesta del jugador
-					pc.restarDinero(pc.getApuesta());
+//					humano.setApuesta(apuestaRonda+humano.getApuesta());
+//					humano.restarDinero(humano.getApuesta());
+//					pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre iguala la apuesta del jugador
+//					pc.restarDinero(pc.getApuesta());
 					pintarInfo(pc); // para que actualicen las infos
 					pintarInfo(humano);
 					actualizarPantalla();
@@ -429,12 +443,22 @@ public class Logica extends Interfaz implements ActionListener {
              LimpiarInterfaz();
              jugar();
 		}
-		if (e.getSource() == igualar) {
+		if (e.getSource() == igualar) { // si el humano iguala, el pc no hace nada??
+			if(pc.getApuesta()<=humano.getBalance()) {
 			System.out.println("Iguala");
-
-			// Verifica cuánto tiene apostado el pc en la mesa e iguala esa cantidad en
-			// función de la apuesta del jugador
-			// Algo tipo (apuestaPC)-(apuestaJugador) = Cantidad a igualar
+            humano.restarDinero(pc.getApuesta());
+            bote= Integer.toString(Integer.valueOf(bote)+pc.getApuesta());// Verifica cuánto tiene apostado el pc en la mesa e iguala esa cantidad en
+            // función de la apuesta del jugado																		// Algo tipo (apuestaPC)-(apuestaJugador) = Cantidad a igualar
+            humano.setApuesta(humano.getApuesta()+pc.getApuesta());
+            pintarInfo(pc); // para que actualicen las infos
+			pintarInfo(humano);
+			actualizarPantalla();
+			}
+			
+			else {
+				JOptionPane.showMessageDialog(null, "No tienes suficiente dinero para igualar la apuesta de tu oponente", "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 
