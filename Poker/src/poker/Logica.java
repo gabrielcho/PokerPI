@@ -118,30 +118,32 @@ public class Logica extends Interfaz implements ActionListener {
 	 * la apuesta se haya hecho.
 	 */
 	public boolean mensajePedirApuesta() {
-		boolean apuestaEfectuada = false;
-		String auxBote = bote;
+		boolean apuestaEfectuada = false; // Por ahora no se ha efectuado la apuesta
+		// String auxBote = bote;
 		String stringApuesta = JOptionPane.showInputDialog(null,
 				"¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 		if (stringApuesta != null) {
 			apuestaActual = Integer.parseInt(stringApuesta);
-
-			int boteNuevo = (Integer.parseInt(bote) + (apuestaActual * 2));
 
 			if (isNumeric(stringApuesta) == true) {
 				int valorObtenido = Integer.valueOf(apuestaActual);
 				System.out.println("El valorObtenido es: " + valorObtenido);
 				if (valorObtenido <= 0 || valorObtenido > humano.getBalance()) {
 					System.out.println("no pasa el filtro");
-					bote = auxBote;
 					JOptionPane.showMessageDialog(null, "Digite un numero valido", "Alerta",
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirApuesta();
 				}
 
 				else {
-					apuestaEfectuada = true;
-					apuestaRonda += apuestaActual;
-					bote = Integer.toString(boteNuevo);
+					if (apuestaActual > apuestaRonda) {
+						int boteNuevo = (Integer.parseInt(bote) + (apuestaActual * 2));
+						apuestaEfectuada = true;
+						apuestaRonda += apuestaActual;
+						bote = Integer.toString(boteNuevo);
+					} else
+						JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!", "Alerta",
+								JOptionPane.WARNING_MESSAGE);
 				}
 			}
 
@@ -155,31 +157,23 @@ public class Logica extends Interfaz implements ActionListener {
 		return apuestaEfectuada;
 	}
 
-	/*
-	 * if (bote.equals("0"))
-	 * 
-	 * else { apuestaActual = Integer.valueOf(JOptionPane.showInputDialog(
-	 * null,"¿Cuánto quieres apostar? Tienes: " + humano.getBalance())); boteNuevo =
-	 * Integer.valueOf(bote) + apuestaActual; bote = Integer.toString(boteNuevo); }
-	 */
-
 	// Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que
 	// el usuario digite un número, de lo contrario muestra un mensaje de error.
 	public void mensajePedirPrimeraApuesta() {
 		String auxBote = bote;
-		bote = JOptionPane.showInputDialog(null, "¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
-		if (bote == null) {
+		String entrada = JOptionPane.showInputDialog(null, "¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
+		if (entrada == null) {
 			System.exit(0);
 		} else {
-			if (isNumeric(bote) == true) {
-				int valorObtenido = Integer.valueOf(bote);
+			if (isNumeric(entrada) == true) {
+				int valorObtenido = Integer.valueOf(entrada);
 				if (valorObtenido <= 0 || valorObtenido > humano.getBalance()) {
-					bote = auxBote;
+
 					JOptionPane.showMessageDialog(null, "Digite un numero valido", "Alerta",
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirPrimeraApuesta();
 				} else {
-					bote = Integer.toString(Integer.parseInt(bote) * 2);
+					bote = Integer.toString(Integer.parseInt(entrada) * 2);
 					apuestaRonda = Integer.parseInt(bote) / 2;
 				}
 			}
