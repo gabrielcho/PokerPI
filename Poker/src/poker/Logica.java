@@ -29,7 +29,6 @@ public class Logica extends Interfaz implements ActionListener {
 		baraja = new Baraja();
 		humano = new Jugador("humano");
 		pc = new Jugador("pc");
-		setBotones();
 		apuestaRonda = 0;
 	}
 
@@ -194,7 +193,7 @@ public class Logica extends Interfaz implements ActionListener {
 		humano.restarDinero(humano.getApuesta());
 		pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la apuesta del jugador
 		pc.restarDinero(Integer.parseInt(bote) / 2);
-		bote = Integer.toString((Integer.valueOf(bote) + pc.getApuesta()));
+		bote = Integer.toString(Integer.valueOf(bote));
 		pintarInfo(pc); // para que actualicen las infos
 		pintarInfo(humano);
 		actualizarPantalla();
@@ -237,6 +236,7 @@ public class Logica extends Interfaz implements ActionListener {
 	public void jugar() {
 
 		setEntorno();
+		setBotones();
 		baraja = new Baraja();
 		repartirCartas();
 		dibujarMano(humano);
@@ -290,8 +290,8 @@ public class Logica extends Interfaz implements ActionListener {
 	/** Inicializa la próxima fase dependiendo de la fase en la que se esté00 */
 	public void proximaFase() {
 		apuestaRonda = 0;
-		humano.setApuesta(0);
-		pc.setApuesta(0);
+//		humano.setApuesta(0); //Las apeuestas se siguen acumulando no????
+//		pc.setApuesta(0);
 		pintarInfo(humano);
 		switch (fase) {
 		case "Flop": // Pasa a la fase "Turn"
@@ -406,9 +406,9 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println("Sube");
 			if (fase.equals("Turn") || fase.equals("River") || fase.equals("Flop")) {
 				if (mensajePedirApuesta()) {
-					humano.setApuesta(apuestaRonda);
+					humano.setApuesta(apuestaRonda+humano.getApuesta());
 					humano.restarDinero(humano.getApuesta());
-					pc.setApuesta(apuestaRonda);// al principio el pc siempre iguala la apuesta del jugador
+					pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre iguala la apuesta del jugador
 					pc.restarDinero(pc.getApuesta());
 					pintarInfo(pc); // para que actualicen las infos
 					pintarInfo(humano);
@@ -416,14 +416,18 @@ public class Logica extends Interfaz implements ActionListener {
 				}
 			}
 		}
-		if (e.getSource() == retirarse) {
-			// gana el computador y se reinicia el juego, el juego acaba cuando alguno se
-			// quede sin dinero
+		if (e.getSource() == retirarse) {// se retira de la mano, mas no del juego, se le da todo lo del bote al pc y se inicia una nueva mano.
+			// gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
 			System.out.println("Se retira");
-
-			// El computador gana automáticamente y muestra sus cartas
-
-			// Luego debe preguntar si se quiere volver a jugar
+			// no hay necesidad de mostrar las cartas, sea como sea gana esa mano, porque el jugador se retiro.
+             pc.adicionarDinero(pc.getBalance()+Integer.valueOf(bote));
+             bote = "0";
+             humano.reiniciarApuesta();
+             pc.reiniciarApuesta();
+             JOptionPane.showMessageDialog(null, "Tú oponente ganó porque te retiraste.");
+			//Debe seguir jugando (se inicia una nueva mano), el juego no acaba hasta que alguien se quede sin diner.
+             LimpiarInterfaz();
+             jugar();
 		}
 		if (e.getSource() == igualar) {
 			System.out.println("Iguala");

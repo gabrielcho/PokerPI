@@ -11,6 +11,7 @@ public class Jugador {
   /** Inicializa el objeto de jugador, asignando un valor a su balance y a su mano lista para alojar cartas */
   public Jugador(String name) {
     this.name = name;
+    apuesta=0;
     mano = new Mano();
     balance = 10000;
   }
@@ -30,6 +31,10 @@ public class Jugador {
   public void reiniciarBalance() {
     balance = 10000;
   }
+  
+  public void reiniciarApuesta() {
+	    apuesta = 0;
+	  }
 
   /**
    * Resta dinero del balance total del jugador
