@@ -261,10 +261,9 @@ public class Logica extends Interfaz implements ActionListener {
 		pintarInfo(pc);
 		revalidate();
 		actualizarPantalla();
-
+		pruebaRepetidas();
 		// PRIMERA RONDA DE APUESTAS, pide apuestas y pinta el flop
 		primeraFase();
-
 	}
 
 	// Dar el flop (tres cartas a la mesa), pone los componentes sobre la mesa y se
@@ -298,6 +297,8 @@ public class Logica extends Interfaz implements ActionListener {
 		case "River": // Termina la mano y determina al ganador con alguna funcion que envuelva todo
 			// analizarRepetidas(humano);
 			// analizarRepetidas(pc);
+			analizarRepetidas(humano);
+
 			break;
 		}
 		actualizarPantalla();
@@ -326,6 +327,79 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
+	public void pruebaRepetidas() {
+		int[] cartas = new int[14];
+		int pares = 0;
+		boolean trio = false;
+		String manoEncontrada;
+		String trioDe = "??";
+		String parDe = "??";
+		String pokerDe = "??";
+		Mano mano = new Mano();
+		mano.addCarta(new Carta(10, 1));
+		mano.addCarta(new Carta(10, 2));
+		mano.addCarta(new Carta(4, 1));
+		mano.addCarta(new Carta(13, 3));
+		mano.addCarta(new Carta(13, 2));
+		mano.addCarta(new Carta(6, 1));
+		mano.addCarta(new Carta(8, 3));
+
+		// Llena de ceros el array
+		for (int i = 0; i < 14; i++) {
+
+			cartas[i] = 0;
+		}
+		// Con este for va contando cuantas cartas de cada valor tiene
+		for (int i = 0; i < 7; i++) {
+			int valor = mano.getCarta(i).getValor();
+			cartas[valor] = cartas[valor] + 1;
+		}
+
+		// procedemos a construir el bucle que nos determina si es par, trio o
+		// cuatrupleta
+		for (int pos = 1; pos < 14; pos++) {
+			System.out.println(cartas[pos]);
+			if (cartas[pos] == 2) {
+				pares += 1;
+				parDe = Carta.obtenerValorCarta(pos);
+			} else if (cartas[pos] == 3) {
+				trioDe = Carta.obtenerValorCarta(pos);
+				trio = true;
+			} else if (cartas[pos] == 4)
+				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
+		}
+		System.out.println("Fin bucle");
+		// verifica si hay un FULL HOUSE
+		if (pares == 1 & trio == true) {
+			System.out.println("Full House");
+		}
+
+		else {
+			if (trio == true) {// imprime el trio, si lo hay
+				System.out.println("Trío de: " + trioDe);
+			}
+
+			// verifica cuantos pares hay
+			else {
+				switch (pares) {
+				case 0:
+					break;
+				case 2:
+					System.out.println("Doble Par de " + " y ");
+					break;
+				case 1:
+					System.out.println("Par de " + parDe);
+					break;
+
+				}
+			}
+
+		}
+
+		// return manoEncontrada;
+
+	}
+
 	//////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO
 	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	// Puede borrarse si es necesario
@@ -336,7 +410,9 @@ public class Logica extends Interfaz implements ActionListener {
 		int pares = 0;
 		boolean trio = false;
 		String manoEncontrada;
-		String trioDe;
+		String trioDe = "??";
+		String parDe = "??";
+		String pokerDe = "??";
 		// Llena de ceros el array
 		for (int i = 0; i < 14; i++) {
 
@@ -352,13 +428,14 @@ public class Logica extends Interfaz implements ActionListener {
 		// cuatrupleta
 		for (int pos = 1; pos < 14; pos++) {
 			System.out.println(cartas[pos]);
-			if (cartas[pos] == 2)
+			if (cartas[pos] == 2) {
 				pares = +1;
-			else if (cartas[pos] == 3) {
+				parDe = Carta.obtenerValorCarta(pos);
+			} else if (cartas[pos] == 3) {
 				trioDe = Carta.obtenerValorCarta(pos);
 				trio = true;
 			} else if (cartas[pos] == 4)
-				manoEncontrada = "Poker";
+				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
 		}
 		System.out.println("Fin bucle");
 		// verifica si hay un FULL HOUSE
@@ -368,7 +445,7 @@ public class Logica extends Interfaz implements ActionListener {
 
 		else {
 			if (trio == true) {// imprime el trio, si lo hay
-				System.out.println("Trío");
+				System.out.println("Trío de: " + trioDe);
 			}
 
 			// verifica cuantos pares hay
@@ -377,13 +454,14 @@ public class Logica extends Interfaz implements ActionListener {
 				case 0:
 					break;
 				case 1:
-					System.out.println("Par");
+					System.out.println("Par de " + parDe);
 					break;
 				case 2:
-					System.out.println("Doble Par");
+					System.out.println("Doble Par de " + " y ");
 					break;
 				}
 			}
+
 		}
 
 		// return manoEncontrada;
