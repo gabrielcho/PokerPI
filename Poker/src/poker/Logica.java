@@ -135,22 +135,22 @@ public class Logica extends Interfaz implements ActionListener {
 				}
 
 				else {
-					if (apuestaActual > apuestaRonda) {
-						int boteNuevo = (Integer.parseInt(bote) + (apuestaActual * 2));
-						apuestaEfectuada = true;
-						apuestaRonda += apuestaActual;
-						bote = Integer.toString(boteNuevo);
+					int boteNuevo = (Integer.parseInt(bote) + (apuestaActual * 2));
+					apuestaEfectuada = true;
+					apuestaRonda += apuestaActual;
+					bote = Integer.toString(boteNuevo);
 
-						humano.setApuesta(humano.getApuesta() + apuestaRonda);
-						System.out.println(humano.getApuesta() + " DEspeus de");
-						System.out.println("mas " + Integer.valueOf(valorObtenido));
-						humano.restarDinero(Integer.valueOf(valorObtenido));
-						pc.setApuesta(pc.getApuesta() + apuestaRonda);
-						pc.restarDinero(Integer.valueOf(valorObtenido));
+					humano.setApuesta(humano.getApuesta() + apuestaRonda);
+					System.out.println(humano.getApuesta() + " DEspeus de");
+					System.out.println("mas " + Integer.valueOf(valorObtenido));
+					humano.restarDinero(Integer.valueOf(valorObtenido));
+					pc.setApuesta(pc.getApuesta() + apuestaRonda);
+					pc.restarDinero(Integer.valueOf(valorObtenido));
 
-					} else
-						JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!", "Alerta",
-								JOptionPane.WARNING_MESSAGE);
+					/*
+					 * } else JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!",
+					 * "Alerta", JOptionPane.WARNING_MESSAGE);
+					 */
 				}
 			}
 

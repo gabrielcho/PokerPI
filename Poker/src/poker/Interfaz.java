@@ -60,7 +60,7 @@ public class Interfaz extends JFrame {
 
         areaPC.add(areaPcInfo, BorderLayout.WEST);
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
-        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
+        areaPC.add(Box.createRigidArea(new Dimension(132, 0)), BorderLayout.EAST);
         /*
          * //Crear botones de accion igualar = new JButton ("Igualar");
          * igualar.addActionListener(escucha); //escucha areaManoBotones.add(igualar);
@@ -106,7 +106,7 @@ public class Interfaz extends JFrame {
         } else {
             areaPcInfo.removeAll();
             areaBote.removeAll();
-            JLabel infoPc = new JLabel("Dinero: $" + Integer.toString(jugador.getBalance()));
+            JLabel infoPc = new JLabel("           Dinero: $" + Integer.toString(jugador.getBalance()));
             infoPc.setFont(new Font("SansSerif.bolditalic", Font.BOLD, 15));
             infoPc.setForeground(Color.white);
             areaPcInfo.add(infoPc);
