@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-/**   Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica otros componentes necesarios
- *  para el juego.
+/**
+ * Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica
+ * otros componentes necesarios para el juego.
  */
 public class Interfaz extends JFrame {
     private Color colorCasino = new Color(18, 84, 8);
@@ -16,19 +17,19 @@ public class Interfaz extends JFrame {
     private JPanel areamano = new JPanel(new BorderLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
     protected JPanel areaBote = new JPanel(new GridLayout());
-    private JPanel areaManoBotones = new JPanel(new GridLayout(2,2,5, 5));
+    private JPanel areaManoBotones = new JPanel(new GridLayout(2, 1, 5, 5));
+    private JPanel areaManoInfoYGlue = new JPanel(new FlowLayout());
     protected JPanel areaManoInfo = new JPanel(new GridLayout(2, 1, 5, 5));
     private JPanel areaPC = new JPanel(new BorderLayout());
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
     private JPanel areaPcInfo = new JPanel(new GridLayout());
-    protected String bote= "0";
-    
+    protected String bote = "0";
 
-    public Interfaz()   {
-    
+    public Interfaz() {
+
     }
 
-    /**Prepara la interfaz gráfica a su estado inicial */
+    /** Prepara la interfaz gráfica a su estado inicial */
     public void setEntorno() {
         setVisible(true);
         setTitle("Poker Texas Hold'em");
@@ -39,38 +40,35 @@ public class Interfaz extends JFrame {
         areaJuego.add(areamano, BorderLayout.SOUTH);
         areaJuego.add(areaTablero, BorderLayout.CENTER); // añade el panel de las cartas comunitarias
 
-        //** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :( */
+        // ** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :(
+        // */
         areaJuego.add(areaPC, BorderLayout.NORTH);
 
-        /**Esto tiene que ser explicado también */
+        /** Esto tiene que ser explicado también */
         areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 90)), BorderLayout.NORTH);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 110)), BorderLayout.SOUTH);
 
-        areamano.add(areaManoInfo, BorderLayout.EAST);
+        areamano.add(areaManoInfoYGlue, BorderLayout.EAST);
+        areaManoInfoYGlue.add(areaManoInfo);
+        areaManoInfoYGlue.add(Box.createRigidArea(new Dimension(72, 0)));
         areamano.add(areaManoCartas, BorderLayout.CENTER);
         areamano.add(areaManoBotones, BorderLayout.WEST);
 
         areaPC.add(areaPcInfo, BorderLayout.WEST);
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
         areaPC.add(areaBote, BorderLayout.EAST);
-//        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
+        // areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
         /*
-        //Crear botones de accion
-        igualar = new JButton ("Igualar"); 
-        igualar.addActionListener(escucha);           //escucha
-        areaManoBotones.add(igualar);
-        retirarse = new JButton ("Retirarse"); 
-        retirarse.addActionListener(escucha);   	 //escucha
-        areaManoBotones.add(retirarse);
-        pasar = new JButton ("Pasar"); 
-        pasar.addActionListener(escucha);    		//escucha
-        areaManoBotones.add(pasar); 
-        subir = new JButton ("Subir"); 
-        subir.addActionListener(escucha);    		//escucha
-        areaManoBotones.add(subir);
-      */
-        //Se repinta areaJuego (queda pendiente saber si basta con repintar)
+         * //Crear botones de accion igualar = new JButton ("Igualar");
+         * igualar.addActionListener(escucha); //escucha areaManoBotones.add(igualar);
+         * retirarse = new JButton ("Retirarse"); retirarse.addActionListener(escucha);
+         * //escucha areaManoBotones.add(retirarse); pasar = new JButton ("Pasar");
+         * pasar.addActionListener(escucha); //escucha areaManoBotones.add(pasar); subir
+         * = new JButton ("Subir"); subir.addActionListener(escucha); //escucha
+         * areaManoBotones.add(subir);
+         */
+        // Se repinta areaJuego (queda pendiente saber si basta con repintar)
         areaJuego.repaint();
 
         add(areaJuego);
@@ -79,53 +77,54 @@ public class Interfaz extends JFrame {
         colorearTodo();
 
     }
-    
-    public ImageIcon imagenBoton(String nombreBoton){
-        Image imagen = new ImageIcon(getClass().getResource("/cartas/" + nombreBoton + ".png"))
-        .getImage();
+
+    public ImageIcon imagenBoton(String nombreBoton) {
+        Image imagen = new ImageIcon(getClass().getResource("/cartas/" + nombreBoton + ".png")).getImage();
         imagen = imagen.getScaledInstance(108, 36, Image.SCALE_FAST);
         ImageIcon imagenBoton = new ImageIcon(imagen);
-        return  imagenBoton;
+        return imagenBoton;
     }
-    
-    //Pinta el dinero que tienen los jugadores, queda pendiente la apuesta. este metodo tambien sirve para actualizar toda la info en la pantalla
-    public void pintarInfo(Jugador jugador) {
-    	if(jugador.getName()=="humano") {
-    		areaManoInfo.removeAll();
 
-    	JLabel infoApuesta=new JLabel("Tu apuesta: $" + jugador.getApuesta());
-    	infoApuesta.setFont(new Font("Broadway",Font.BOLD,15));
-    	infoApuesta.setForeground(Color.black);
-    	areaManoInfo.add(infoApuesta);	
-    		
-    		
-    	JLabel infoHumano=new JLabel("Tu Dinero: $" + Integer.toString(jugador.getBalance()));
-    	infoHumano.setFont(new Font("Broadway",Font.BOLD,15));
-    	infoHumano.setForeground(Color.black);
-    	areaManoInfo.add(infoHumano);
-    	}
-    	else {
-    		areaPcInfo.removeAll();	
-    		areaBote.removeAll();	
-    		JLabel infoPc=new JLabel("Dinero: $" + Integer.toString(jugador.getBalance()));
-    		infoPc.setFont(new Font("Broadway",Font.BOLD,15));
-        	infoPc.setForeground(Color.black);
-    		areaPcInfo.add(infoPc);
-    		
-    		JLabel infoBote=new JLabel("Bote: $" + bote);
-    		infoBote.setFont(new Font("Broadway",Font.BOLD,15));
-    		infoBote.setForeground(Color.black);
-    		areaBote.add(infoBote);   		
-    	}
+    // Pinta el dinero que tienen los jugadores, queda pendiente la apuesta. este
+    // metodo tambien sirve para actualizar toda la info en la pantalla
+    public void pintarInfo(Jugador jugador) {
+        if (jugador.getName() == "humano") {
+            areaManoInfo.removeAll();
+
+            JLabel infoApuesta = new JLabel("Tu apuesta: $" + jugador.getApuesta());
+            infoApuesta.setFont(new Font("SansSerif.bolditalic", Font.BOLD, 15));
+            infoApuesta.setForeground(Color.black);
+            areaManoInfo.add(infoApuesta);
+
+            JLabel infoHumano = new JLabel("Tu Dinero: $" + Integer.toString(jugador.getBalance()));
+            infoHumano.setFont(new Font("SansSerif.bolditalic", Font.BOLD, 15));
+            infoHumano.setForeground(Color.white);
+            areaManoInfo.add(infoHumano);
+
+        } else {
+            areaPcInfo.removeAll();
+            areaBote.removeAll();
+            JLabel infoPc = new JLabel("Dinero: $" + Integer.toString(jugador.getBalance()));
+            infoPc.setFont(new Font("SansSerif.bolditalic", Font.BOLD, 15));
+            infoPc.setForeground(Color.white);
+            areaPcInfo.add(infoPc);
+
+            JLabel infoBote = new JLabel("Bote: $" + bote);
+            infoBote.setFont(new Font("SansSerif.bolditalic", Font.BOLD, 15));
+            infoBote.setForeground(Color.white);
+            areaBote.add(infoBote);
+        }
     }
-    
+
     /**
-     * Se crea un botón para el panel de mano, estos botones no son clickeables porque las jugadas se hacen desde otros botones.
+     * Se crea un botón para el panel de mano, estos botones no son clickeables
+     * porque las jugadas se hacen desde otros botones.
+     * 
      * @param carta
      * @return boton de mano
      * 
      */
-    public JButton crearComponenteDeMano(Carta carta)   {
+    public JButton crearComponenteDeMano(Carta carta) {
         JButton boton = new JButton();
         boton.setIcon(carta.imagenCarta());
         boton.setBorder(BorderFactory.createEmptyBorder());
@@ -133,7 +132,7 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
-    public JButton crearBotonManoPc(Carta carta)   {
+    public JButton crearBotonManoPc(Carta carta) {
         JButton boton = new JButton();
         boton.setIcon(carta.ocultarCarta());
         boton.setBorder(BorderFactory.createEmptyBorder());
@@ -141,21 +140,21 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
-    public void actualizarPantalla(){ 
-//    	SwingUtilities.updateComponentTreeUI(this); 
-//    	this.validateTree(); 
-//    	this.removeAll();
-    	SwingUtilities.updateComponentTreeUI(this);
-    	} 
-    
+    public void actualizarPantalla() {
+        // SwingUtilities.updateComponentTreeUI(this);
+        // this.validateTree();
+        // this.removeAll();
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
     /** */
-    public void dibujarMano(Jugador jugador)   {
+    public void dibujarMano(Jugador jugador) {
         if (jugador.getName() == "humano") {
             for (int i = 0; i < 2; i++) {
                 Carta cartaDeMano = jugador.getCartaMano(i);
                 JButton cartaMano = crearComponenteDeMano(cartaDeMano);
                 areaManoCartas.add(cartaMano);
-//                System.out.println("Carta " + i + " creada");
+                // System.out.println("Carta " + i + " creada");
             }
         } else {
             int tamano = jugador.getManoSize();
@@ -163,7 +162,7 @@ public class Interfaz extends JFrame {
                 Carta cartaDeMano = jugador.getCartaMano(i);
                 JButton cartaMano = crearBotonManoPc(cartaDeMano);
                 areaPcCartas.add(cartaMano, BorderLayout.CENTER);
-//                System.out.println("Carta " + i + " del pc creada");
+                // System.out.println("Carta " + i + " del pc creada");
             }
         }
 
@@ -172,25 +171,27 @@ public class Interfaz extends JFrame {
     }
 
     public void LimpiarInterfaz() {
-    	  areamano.removeAll();
-          areaBote.removeAll();
-          areaJuego.removeAll();
-          areaPC.removeAll();
-          areaPcCartas.removeAll();
-          areaPcInfo.removeAll();
-          areaManoCartas.removeAll();
-          areaTableroCartas.removeAll();
-          areaTablero.removeAll();
-          areaManoCartas.removeAll();
-          areaManoBotones.removeAll();
-          areaManoInfo.removeAll();
+        areamano.removeAll();
+        areaBote.removeAll();
+        areaJuego.removeAll();
+        areaPC.removeAll();
+        areaPcCartas.removeAll();
+        areaPcInfo.removeAll();
+        areaManoCartas.removeAll();
+        areaTableroCartas.removeAll();
+        areaTablero.removeAll();
+        areaManoCartas.removeAll();
+        areaManoBotones.removeAll();
+        areaManoInfo.removeAll();
 
-    	this.repaint();
-    	
+        this.repaint();
+
     }
-    
 
-    /** Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar el JFrame */
+    /**
+     * Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar
+     * el JFrame
+     */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);
         areaBote.setBackground(colorCasino);
@@ -204,10 +205,11 @@ public class Interfaz extends JFrame {
         areaManoCartas.setBackground(colorCasino);
         areaManoBotones.setBackground(colorCasino);
         areaManoInfo.setBackground(colorCasino);
+        areaManoInfoYGlue.setBackground(colorCasino);
     }
 
-	public void addBoton(JButton boton) {
+    public void addBoton(JButton boton) {
         areaManoBotones.add(boton);
-	}
+    }
 
 }

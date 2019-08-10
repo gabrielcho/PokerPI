@@ -141,13 +141,13 @@ public class Logica extends Interfaz implements ActionListener {
 						apuestaRonda += apuestaActual;
 						bote = Integer.toString(boteNuevo);
 
-						 humano.setApuesta(humano.getApuesta()+apuestaRonda);
-		            	   System.out.println(humano.getApuesta()+ " DEspeus de");
-		            	   System.out.println("mas "+Integer.valueOf(valorObtenido));
-		            	   humano.restarDinero(Integer.valueOf(valorObtenido));
-		            	   pc.setApuesta(pc.getApuesta()+apuestaRonda);
-		            	   pc.restarDinero(Integer.valueOf(valorObtenido));
-		            	   
+						humano.setApuesta(humano.getApuesta() + apuestaRonda);
+						System.out.println(humano.getApuesta() + " DEspeus de");
+						System.out.println("mas " + Integer.valueOf(valorObtenido));
+						humano.restarDinero(Integer.valueOf(valorObtenido));
+						pc.setApuesta(pc.getApuesta() + apuestaRonda);
+						pc.restarDinero(Integer.valueOf(valorObtenido));
+
 					} else
 						JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!", "Alerta",
 								JOptionPane.WARNING_MESSAGE);
@@ -180,14 +180,16 @@ public class Logica extends Interfaz implements ActionListener {
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirPrimeraApuesta();
 				} else {
-					bote = Integer.toString(Integer.parseInt(bote)+(Integer.parseInt(entrada) * 2));
+					bote = Integer.toString(Integer.parseInt(bote) + (Integer.parseInt(entrada) * 2));
 					apuestaRonda = Integer.parseInt(bote) / 2;
-					   humano.setApuesta(humano.getApuesta()+apuestaRonda);
-	            	   System.out.println(humano.getApuesta()+ " DEspeus de");
-	            	   System.out.println("mas "+Integer.valueOf(valorObtenido));
-	            	   humano.restarDinero(Integer.valueOf(valorObtenido));
-	            	   pc.setApuesta(pc.getApuesta()+apuestaRonda);
-	            	   pc.restarDinero(Integer.valueOf(valorObtenido));
+					humano.setApuesta(humano.getApuesta() + apuestaRonda);
+					System.out.println(humano.getApuesta() + " DEspeus de");
+					System.out.println("mas " + Integer.valueOf(valorObtenido));
+					humano.restarDinero(Integer.valueOf(valorObtenido));
+					pc.setApuesta(pc.getApuesta() + apuestaRonda);
+					System.out.println("El pc por ahora tiene " + pc.getBalance());
+					pc.restarDinero(Integer.valueOf(valorObtenido));
+					System.out.println("El pc con la resta tiene ahora " + pc.getBalance());
 				}
 			}
 
@@ -202,12 +204,13 @@ public class Logica extends Interfaz implements ActionListener {
 	/** Pide apuestas y pinta el flop */
 	public void primeraFase() {
 		mensajePedirPrimeraApuesta();
-//		humano.setApuesta(Integer.parseInt(bote) / 2);
-//		System.out.println("El bote debe ser de 1 pero es de: " + bote);
-//		humano.restarDinero(humano.getApuesta());
-//		pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la apuesta del jugador
-//		pc.restarDinero(Integer.parseInt(bote) / 2);
-//		bote = Integer.toString(Integer.valueOf(bote));
+		// humano.setApuesta(Integer.parseInt(bote) / 2);
+		// System.out.println("El bote debe ser de 1 pero es de: " + bote);
+		// humano.restarDinero(humano.getApuesta());
+		// pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la
+		// apuesta del jugador
+		// pc.restarDinero(Integer.parseInt(bote) / 2);
+		// bote = Integer.toString(Integer.valueOf(bote));
 		pintarInfo(pc); // para que actualicen las infos
 		pintarInfo(humano);
 		actualizarPantalla();
@@ -304,8 +307,8 @@ public class Logica extends Interfaz implements ActionListener {
 	/** Inicializa la próxima fase dependiendo de la fase en la que se esté00 */
 	public void proximaFase() {
 		apuestaRonda = 0;
-//		humano.setApuesta(0); //Las apeuestas se siguen acumulando no????
-//		pc.setApuesta(0);
+		// humano.setApuesta(0); //Las apeuestas se siguen acumulando no????
+		// pc.setApuesta(0);
 		pintarInfo(humano);
 		switch (fase) {
 		case "Flop": // Pasa a la fase "Turn"
@@ -317,7 +320,8 @@ public class Logica extends Interfaz implements ActionListener {
 			break;
 
 		case "River": // Termina la mano y determina al ganador con alguna funcion que envuelva todo
-
+			// analizarRepetidas(humano);
+			// analizarRepetidas(pc);
 			break;
 		}
 		actualizarPantalla();
@@ -330,7 +334,7 @@ public class Logica extends Interfaz implements ActionListener {
 	// usarlo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public void JugarDeNuevo() {
 		if (humano.getBalance() > 0) {
-			int resp = JOptionPane.showConfirmDialog(null, "�quieres volver a Jugar?");
+			int resp = JOptionPane.showConfirmDialog(null, "quieres volver a Jugar?");
 			if (resp == 0) {
 				humano.reiniciarBalance();
 				pc.reiniciarBalance();
@@ -351,10 +355,12 @@ public class Logica extends Interfaz implements ActionListener {
 	// Puede borrarse si es necesario
 	// verifica si hay pares(pair), tríos(three of a kind), cuatrupletas(Poker), par
 	//////////////////////// doble, o un full house (trio + par)
-	public void analizarRepetidas(Mano mano) {
+	public void analizarRepetidas(Jugador jugador) {
 		int[] cartas = new int[14];
 		int pares = 0;
 		boolean trio = false;
+		String manoEncontrada;
+		String trioDe;
 		// Llena de ceros el array
 		for (int i = 0; i < 14; i++) {
 
@@ -362,7 +368,7 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		// Con este for va contando cuantas cartas de cada valor tiene
 		for (int i = 0; i < 7; i++) {
-			int valor = mano.getCarta(i).getValor();
+			int valor = jugador.getMano().getCarta(i).getValor();
 			cartas[valor] = cartas[valor] + 1;
 		}
 
@@ -372,10 +378,11 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println(cartas[pos]);
 			if (cartas[pos] == 2)
 				pares = +1;
-			else if (cartas[pos] == 3)
+			else if (cartas[pos] == 3) {
+				trioDe = Carta.obtenerValorCarta(pos);
 				trio = true;
-			else if (cartas[pos] == 4)
-				System.out.println("Poker");
+			} else if (cartas[pos] == 4)
+				manoEncontrada = "Poker";
 		}
 		System.out.println("Fin bucle");
 		// verifica si hay un FULL HOUSE
@@ -403,6 +410,8 @@ public class Logica extends Interfaz implements ActionListener {
 			}
 		}
 
+		// return manoEncontrada;
+
 	}
 
 	/** Escuchas que determinan el comportamiento del juego */
@@ -420,43 +429,57 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println("Sube");
 			if (fase.equals("Turn") || fase.equals("River") || fase.equals("Flop")) {
 				if (mensajePedirApuesta()) {
-//					humano.setApuesta(apuestaRonda+humano.getApuesta());
-//					humano.restarDinero(humano.getApuesta());
-//					pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre iguala la apuesta del jugador
-//					pc.restarDinero(pc.getApuesta());
+					// humano.setApuesta(apuestaRonda+humano.getApuesta());
+					// humano.restarDinero(humano.getApuesta());
+					// pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre
+					// iguala la apuesta del jugador
+					// pc.restarDinero(pc.getApuesta());
 					pintarInfo(pc); // para que actualicen las infos
 					pintarInfo(humano);
 					actualizarPantalla();
 				}
 			}
 		}
-		if (e.getSource() == retirarse) {// se retira de la mano, mas no del juego, se le da todo lo del bote al pc y se inicia una nueva mano.
-			// gana el computador y se reinicia el juego, el juego acaba cuando alguno se quede sin dinero
+		if (e.getSource() == retirarse) {// se retira de la mano, mas no del juego, se le da todo lo del bote al pc y se
+											// inicia una nueva mano.
+			// gana el computador y se reinicia el juego, el juego acaba cuando alguno se
+			// quede sin dinero
 			System.out.println("Se retira");
-			// no hay necesidad de mostrar las cartas, sea como sea gana esa mano, porque el jugador se retiro.
-             pc.adicionarDinero(pc.getBalance()+Integer.valueOf(bote));
-             bote = "0";
-             humano.reiniciarApuesta();
-             pc.reiniciarApuesta();
-             JOptionPane.showMessageDialog(null, "Tú oponente ganó porque te retiraste.");
-			//Debe seguir jugando (se inicia una nueva mano), el juego no acaba hasta que alguien se quede sin diner.
-             LimpiarInterfaz();
-             jugar();
+			// no hay necesidad de mostrar las cartas, sea como sea gana esa mano, porque el
+			// jugador se retiro.
+			System.out.println("El pc antes del adicionarDinero() tiene " + +pc.getBalance() + " y el bote es de "
+					+ Integer.parseInt(bote));
+			pc.adicionarDinero(Integer.valueOf(bote));
+			System.out.println("El nuevo balance del pc es:" + (pc.getBalance() + Integer.parseInt(bote)));
+			System.out.println("El pc tiene " + +pc.getBalance() + " y el bote es de " + Integer.parseInt(bote));
+
+			bote = "0";
+			humano.reiniciarApuesta();
+			pc.reiniciarApuesta();
+			JOptionPane.showMessageDialog(null, "Tú oponente ganó porque te retiraste.");
+			// Debe seguir jugando (se inicia una nueva mano), el juego no acaba hasta que
+			// alguien se quede sin diner.
+			LimpiarInterfaz();
+			jugar();
 		}
 		if (e.getSource() == igualar) { // si el humano iguala, el pc no hace nada??
-			if(pc.getApuesta()<=humano.getBalance()) {
-			System.out.println("Iguala");
-            humano.restarDinero(pc.getApuesta());
-            bote= Integer.toString(Integer.valueOf(bote)+pc.getApuesta());// Verifica cuánto tiene apostado el pc en la mesa e iguala esa cantidad en
-            // función de la apuesta del jugado																		// Algo tipo (apuestaPC)-(apuestaJugador) = Cantidad a igualar
-            humano.setApuesta(humano.getApuesta()+pc.getApuesta());
-            pintarInfo(pc); // para que actualicen las infos
-			pintarInfo(humano);
-			actualizarPantalla();
+			if (pc.getApuesta() <= humano.getBalance()) {
+				System.out.println("Iguala");
+				humano.restarDinero(pc.getApuesta());
+				bote = Integer.toString(Integer.valueOf(bote) + pc.getApuesta());// Verifica cuánto tiene apostado el pc
+																					// en la mesa e iguala esa cantidad
+																					// en
+				// función de la apuesta del jugado // Algo tipo (apuestaPC)-(apuestaJugador) =
+				// Cantidad a igualar
+				humano.setApuesta(humano.getApuesta() + pc.getApuesta());
+				pintarInfo(pc); // para que actualicen las infos
+				pintarInfo(humano);
+				actualizarPantalla();
 			}
-			
+
 			else {
-				JOptionPane.showMessageDialog(null, "No tienes suficiente dinero para igualar la apuesta de tu oponente", "Alerta",
+				JOptionPane.showMessageDialog(null,
+						"No tienes suficiente dinero para igualar la apuesta de tu oponente", "Alerta",
 						JOptionPane.WARNING_MESSAGE);
 			}
 		}

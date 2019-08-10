@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 
 public class Carta {
-    /**daw */
+    /** daw */
     public final static int treboles = 0, corazones = 1, diamantes = 2, picas = 3;
 
     public final static int jack = 11, queen = 12, king = 13;
@@ -64,7 +64,7 @@ public class Carta {
 
         case 10:
             costoObtenido = 9;
-            return costoObtenido; //ee github
+            return costoObtenido; // ee github
 
         case 11:
             costoObtenido = 10;
@@ -88,7 +88,6 @@ public class Carta {
         return palo;
     }
 
-
     public int getValor() {
         return valor;
     }
@@ -106,6 +105,40 @@ public class Carta {
         default:
             return "??";
         }
+    }
+
+    public static String obtenerValorCarta(int valor) {
+        switch (valor) {
+        case 1:
+            return "A";
+        case 2:
+            return "2";
+        case 3:
+            return "3";
+        case 4:
+            return "4";
+        case 5:
+            return "5";
+        case 6:
+            return "6";
+        case 7:
+            return "7";
+        case 8:
+            return "8";
+        case 9:
+            return "9";
+        case 10:
+            return "10";
+        case 11:
+            return "J";
+        case 12:
+            return "Q";
+        case 13:
+            return "K";
+        default:
+            return "??";
+        }
+
     }
 
     public String valorCarta() {
@@ -142,28 +175,29 @@ public class Carta {
     }
 
     /**
-     * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la imagen de la carta ya lista para ser dibujada
-     * sobre los componentes.
+     * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la
+     * imagen de la carta ya lista para ser dibujada sobre los componentes.
+     * 
      * @return imagen de carta
      */
     public ImageIcon imagenCarta() {
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + valorCarta() + paloCarta() + ".png"))
                 .getImage();
-        imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST); //Escala la imagen de la carta a un tamaño deseable
+        imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST); // Escala la imagen de la carta a un tamaño
+                                                                     // deseable
         ImageIcon imagencarta = new ImageIcon(imagen);
         return imagencarta;
     }
 
-    //hace lomismo que imagenCarta() pero par a las cartas del pc, que deben estar volteadas
+    // hace lomismo que imagenCarta() pero par a las cartas del pc, que deben estar
+    // volteadas
     public ImageIcon ocultarCarta() {
-   	 Image imagen = new ImageIcon(getClass().getResource("/cartas/" + "trasero.png"))
-                .getImage();
-   	 imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST);
-   	 ImageIcon imagencarta = new ImageIcon(imagen);
-   	 return imagencarta;
-   }
-    
-    
+        Image imagen = new ImageIcon(getClass().getResource("/cartas/" + "trasero.png")).getImage();
+        imagen = imagen.getScaledInstance(66, 90, Image.SCALE_FAST);
+        ImageIcon imagencarta = new ImageIcon(imagen);
+        return imagencarta;
+    }
+
     public String mostrarCarta() {
         return valorCarta() + " de " + paloCarta();
     }
