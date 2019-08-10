@@ -167,7 +167,6 @@ public class Logica extends Interfaz implements ActionListener {
 	// Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que
 	// el usuario digite un número, de lo contrario muestra un mensaje de error.
 	public void mensajePedirPrimeraApuesta() {
-		String auxBote = bote;
 		String entrada = JOptionPane.showInputDialog(null, "¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 		if (entrada == null) {
 			System.exit(0);
@@ -265,29 +264,6 @@ public class Logica extends Interfaz implements ActionListener {
 
 		// PRIMERA RONDA DE APUESTAS, pide apuestas y pinta el flop
 		primeraFase();
-		// Después de esta primera fase y ya pintado el flop, queda el flujo del juego a
-		// manos de los botones
-
-		// humano.tomarCarta(new Carta(1,2));
-		// humano.tomarCarta(new Carta(1,2));
-		// pc.tomarCarta(new Carta(3,3));
-		// pc.tomarCarta(new Carta(3,3)); // para hacer pruebas del método Analizar
-		// Repetidas
-		//
-		// pintarFlop();
-		//
-		// analizarRepetidas(humano.getMano());
-		// analizarRepetidas(pc.getMano());
-		// SEGUNDA RONDA DE APUESTAS
-
-		// pierde y sale del bucle de juego esto debe ser un metodo que verifique las
-		// manos xd
-		/*
-		 * if(humano.getBalance()>0 & pc.getBalance()>0) { // pierde o gana la mano, mas
-		 * no el juego. el jugo se gana cuando alguno de los dos quede sin dinero
-		 * LimpiarInterfaz(); jugar(); } else { //preguntar si quiere iniciar otra
-		 * partida desde 0 JugarDeNuevo(); }
-		 */
 
 	}
 

@@ -13,6 +13,7 @@ public class Interfaz extends JFrame {
     private Color colorCasino = new Color(18, 84, 8);
     protected JPanel areaJuego = new JPanel(new BorderLayout());
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
+    private JPanel areaTableroNORTH = new JPanel(new FlowLayout());
     protected JPanel areaTableroCartas = new JPanel(new FlowLayout());
     private JPanel areamano = new JPanel(new BorderLayout());
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
@@ -43,22 +44,23 @@ public class Interfaz extends JFrame {
         // ** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :(
         // */
         areaJuego.add(areaPC, BorderLayout.NORTH);
-
         /** Esto tiene que ser explicado también */
+        areaTablero.add(areaTableroNORTH, BorderLayout.NORTH);
+        areaTableroNORTH.add(areaBote);
+        areaTableroNORTH.add(Box.createRigidArea(new Dimension(0, 90)));
+
         areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
-        areaTablero.add(Box.createRigidArea(new Dimension(200, 90)), BorderLayout.NORTH);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 110)), BorderLayout.SOUTH);
 
-        areamano.add(areaManoInfoYGlue, BorderLayout.EAST);
         areaManoInfoYGlue.add(areaManoInfo);
         areaManoInfoYGlue.add(Box.createRigidArea(new Dimension(72, 0)));
+        areamano.add(areaManoInfoYGlue, BorderLayout.EAST);
         areamano.add(areaManoCartas, BorderLayout.CENTER);
         areamano.add(areaManoBotones, BorderLayout.WEST);
 
         areaPC.add(areaPcInfo, BorderLayout.WEST);
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
-        areaPC.add(areaBote, BorderLayout.EAST);
-        // areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
+        areaPC.add(Box.createRigidArea(new Dimension(95, 90)), BorderLayout.EAST);
         /*
          * //Crear botones de accion igualar = new JButton ("Igualar");
          * igualar.addActionListener(escucha); //escucha areaManoBotones.add(igualar);
@@ -183,6 +185,8 @@ public class Interfaz extends JFrame {
         areaManoCartas.removeAll();
         areaManoBotones.removeAll();
         areaManoInfo.removeAll();
+        areaManoInfoYGlue.removeAll();
+        areaTableroNORTH.removeAll();
 
         this.repaint();
 
@@ -206,6 +210,7 @@ public class Interfaz extends JFrame {
         areaManoBotones.setBackground(colorCasino);
         areaManoInfo.setBackground(colorCasino);
         areaManoInfoYGlue.setBackground(colorCasino);
+        areaTableroNORTH.setBackground(colorCasino);
     }
 
     public void addBoton(JButton boton) {
