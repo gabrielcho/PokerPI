@@ -25,6 +25,7 @@ public class Baraja {
 
     }
 
+    
     /** Aleatoriza el orden de las cartas contenidas en el arraylist de la baraja */
     public void barajar() {
         ArrayList<Carta> barajaTemp = new ArrayList<Carta>();

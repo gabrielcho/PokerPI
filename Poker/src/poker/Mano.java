@@ -1,6 +1,7 @@
 package poker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** Clase encargada de emular una mano de cartas que un jugador puede usar, su principal estructura
  * es un <code> ArrayList </code> que contiene las cartas a usar
@@ -12,6 +13,7 @@ public class Mano extends Baraja{ //la mano es una baraja
         mano = new ArrayList<Carta>();
     }
 
+    
     /**
      * Obtiene el número de objetos de carta alojados en el ArrayList mano
      * @return int con tamaño en elementos de la mano
@@ -38,4 +40,5 @@ public class Mano extends Baraja{ //la mano es una baraja
     public void limpiarMano() {
         mano.clear();
     }
+
 }

@@ -1,23 +1,24 @@
 package poker;
 
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;
 
-public class Carta {
+public class Carta implements Comparable<Carta>{
     /** daw */
     public final static int treboles = 0, corazones = 1, diamantes = 2, picas = 3;
 
     public final static int jack = 11, queen = 12, king = 13;
 
     private final int palo;
-    private int valor, costo;
+    private Integer valor, costo;
     private String path;
 
-    public Carta(int val, int pal) {
-        valor = val;
-        palo = pal;
+    public Carta(int valor, int palo) {
+        this.valor = valor;
+        this.palo = palo;
         costo = obtenerCosto();
         String path = "/cartas/" + valorCarta() + paloCarta() + ".png";
         path = path.toString();
@@ -174,6 +175,7 @@ public class Carta {
         }
     }
 
+	
     /**
      * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la
      * imagen de la carta ya lista para ser dibujada sobre los componentes.
@@ -210,4 +212,10 @@ public class Carta {
     public String getPath() {
         return path;
     }
+
+	@Override
+	public int compareTo(Carta o) {
+		// TODO Auto-generated method stub
+		return this.valor.compareTo(o.getValor());
+	}
 }
