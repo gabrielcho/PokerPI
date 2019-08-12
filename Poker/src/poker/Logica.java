@@ -28,7 +28,16 @@ public class Logica extends Interfaz implements ActionListener {
 	private Jugador humano, pc;
 	private String fase;
 	private int apuestaActual, boteNuevo, apuestaRonda;
-
+	public static final int CARTAALTA = 1;
+	public static final int PAR = 2;
+	public static final int DOBLEPAR =3 ;
+	public static final int TRIO = 4;
+	public static final int ESCALERA = 5;
+	public static final int COLOR = 6;
+	public static final int FULLHOUSE = 7;
+	public static final int CUATRUPLETA = 8;
+	public static final int ESCALERACOLOR = 9;
+	public static final int ESCALERA REAL = 10;
 	public Logica() {
 		baraja = new Baraja();
 		humano = new Jugador("humano");
@@ -411,12 +420,12 @@ public class Logica extends Interfaz implements ActionListener {
 		System.out.println(cartas.get(0).valorCarta() + " Alto/a");
 	}
 
-	public void analizarEscaleras(Mano mano) {
-		if (listaOrdenada(mano) == null) {
-			analizarColor(mano);
+	public void analizarEscaleras(Jugador jugador) {
+		if (listaOrdenada(jugador.getMano()) == null) {
+			analizarColor(jugador.getMano());
 		} else {
 			List<Carta> cartas = new ArrayList<Carta>();
-			cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
+			cartas = listaOrdenada(jugador.getMano()); // recibimos la lista de 5 cartas ordenadas a analizar
 			// se verifica que no empiece en diez porque en ese caso seria una escalera real
 			// de color
 			if ((palosIguales(cartas) == true & cartas.get(0).obtenerCosto() != 9))
@@ -523,7 +532,7 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		for (int pos = 0; pos < 4; pos++) {
 			if (palos[pos] >= 5) {
-				System.out.println("Color Flush");
+				System.out.println("Color");
 			}
 		}
 	}
