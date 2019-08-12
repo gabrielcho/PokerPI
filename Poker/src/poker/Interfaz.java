@@ -52,7 +52,7 @@ public class Interfaz extends JFrame {
     private JPanel areaPC = new JPanel(new BorderLayout());
     
     /** The area pc cartas. */
-    private JPanel areaPcCartas = new JPanel(new FlowLayout());
+    protected JPanel areaPcCartas = new JPanel(new FlowLayout());
     
     /** The area pc info. */
     private JPanel areaPcInfo = new JPanel(new GridLayout());

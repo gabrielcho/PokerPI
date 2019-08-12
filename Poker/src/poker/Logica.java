@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import java.lang.Exception;
@@ -37,7 +38,7 @@ public class Logica extends Interfaz implements ActionListener {
 	public static final int FULLHOUSE = 7;
 	public static final int CUATRUPLETA = 8;
 	public static final int ESCALERACOLOR = 9;
-	public static final int ESCALERA REAL = 10;
+	public static final int ESCALERAREAL = 10;
 	public Logica() {
 		baraja = new Baraja();
 		humano = new Jugador("humano");
@@ -307,6 +308,18 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		actualizarPantalla();
 
+	}
+	
+	public void mostrarCartasPc() {
+		JButton carta1 = crearComponenteDeMano(pc.getCartaMano(0));
+		JButton carta2 = crearComponenteDeMano(pc.getCartaMano(1));
+		areaPcCartas.removeAll();
+		 revalidate();
+	     repaint();
+	     areaPcCartas.add(carta1, BorderLayout.CENTER);
+	     areaPcCartas.add(carta2, BorderLayout.CENTER);
+		 revalidate();
+	     repaint();
 	}
 
 	// Muestra un mensaje en pantalla preguntando si el usuario quiere volver a
@@ -654,18 +667,7 @@ public class Logica extends Interfaz implements ActionListener {
 				humano.setApuesta(humano.getApuesta() + pc.getApuesta());
 				pintarInfo(pc); // para que actualicen las infos
 				pintarInfo(humano);
-				actualizarPantalla();
-				Mano mano = new Mano();
-				mano.addCarta(new Carta(10, 1));
-				mano.addCarta(new Carta(11, 1));
-				mano.addCarta(new Carta(12, 1));
-				mano.addCarta(new Carta(13, 1)); // para probar el metodo analizar escaleras
-				mano.addCarta(new Carta(1, 1));
-				mano.addCarta(new Carta(2, 1));
-				mano.addCarta(new Carta(4, 1));
-				analizarEscaleras(mano);
-				analizarCartaAlta(mano);
-
+				actualizarPantalla();;
 			}
 
 			else {
