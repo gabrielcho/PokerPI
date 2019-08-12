@@ -407,6 +407,18 @@ public class Logica extends Interfaz implements ActionListener {
 	//////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO
 	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	// Puede borrarse si es necesario
+	//este metodo nos dice si la mano del jugador es una carta alta 
+	public void analizarCartaAlta(Mano mano) {
+		List<Carta> cartas = new ArrayList(); //crea una lista de las cartas porque hay un problema si le pasamos directamente la mano al sort
+        for(int i=0; i<mano.manoSize();i++) {
+        	cartas.add(mano.getCarta(i));
+        } 
+        
+        Collections.sort(cartas, Collections.reverseOrder()); // ordena todas las cartas con respecto a su valor de forma descendente por lo que la carta más alta sería la primera
+        
+        System.out.println( cartas.get(0).valorCarta()+" Alto/a");
+	}
+
 	public void analizarEscaleras(Mano mano) {
 		List<Carta> cartas = new ArrayList();
 		cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
@@ -467,7 +479,7 @@ public class Logica extends Interfaz implements ActionListener {
 
 		List<Carta> cartasSinLaterales = new ArrayList();
 		for (int i = 0; i < 5; i++) {
-			cartasSinPrimeras.add(mano.getCarta(1 + i));
+			cartasSinLaterales.add(mano.getCarta(1 + i));
 		}
 
 		System.out.println(cartasSinLaterales.size() + "  cartas sin laterales");
@@ -644,6 +656,7 @@ public class Logica extends Interfaz implements ActionListener {
 				mano.addCarta(new Carta(8, 1));
 				mano.addCarta(new Carta(3, 1));
 				analizarEscaleras(mano);
+				analizarCartaAlta(mano);
 			}
 
 			else {
