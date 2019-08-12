@@ -2,8 +2,6 @@ package poker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.*;
 
 /**
  * Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica
