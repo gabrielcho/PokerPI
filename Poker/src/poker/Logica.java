@@ -19,7 +19,7 @@ import java.util.List;
  * <h3>Las etiquetas HTML funcionan en el javadoc wtf</h3> y tambien en los
  * jlabels xd
  */
-public class Logica extends Interfaz implements ActionListener{
+public class Logica extends Interfaz implements ActionListener {
 	/** Esta es el objeto de baraja a usar en todo el juego */
 	// Hay que tener en cuenta más adelante que esta baraja tiene que reiniciarse
 	// Por lo que toca poner un método de reinicio en la baraja.
@@ -407,107 +407,111 @@ public class Logica extends Interfaz implements ActionListener{
 	//////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO
 	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	// Puede borrarse si es necesario
-	public void analizarEscaleras(Mano mano) { 
-        List<Carta> cartas = new ArrayList(); 
-        cartas = listaOrdenada(mano);  //recibimos la lista de 5 cartas ordenadas a analizar
-		//si no son consecutivas pero tienen el mismo palo es un Color
-		if(probarConsecutivos(cartas)== false & palosIguales(cartas)==true)
+	public void analizarEscaleras(Mano mano) {
+		List<Carta> cartas = new ArrayList();
+		cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
+		// si no son consecutivas pero tienen el mismo palo es un Color
+		if (probarConsecutivos(cartas) == false & palosIguales(cartas) == true)
 			System.out.println("Color Flush");
-		//se verifica que no empiece en diez porque en ese caso seria una escalera real de color
-		if((probarConsecutivos(cartas)==true & palosIguales(cartas)==true & cartas.get(0).getValor()!=10))// verifica si las 5 cartas que quedan son consecutivas, si lanza un true verificamos que sus palos sean iguales si es así, tenemos una escalera de color(?)
+		// se verifica que no empiece en diez porque en ese caso seria una escalera real
+		// de color
+		if ((probarConsecutivos(cartas) == true & palosIguales(cartas) == true & cartas.get(0).getValor() != 10))
+			// verifica si las 5
+			// cartas que quedan son consecutivas, si lanza un true verificamos que sus
+			// palos sean iguales si es así, tenemos una escalera de color(?)
 			System.out.println("Escalera de color");
-				
-		else if(probarConsecutivos(cartas)==true & palosIguales(cartas)==false)
-					System.out.println("Escalera normal xd");
-		//caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una escalera normal
-		else if(cartas.get(0).getValor()==10 & palosIguales(cartas)==false)
-			System.out.println("Escalera normal xd");	 
-		 //como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
-		//es una escalera real de color
-		else if(cartas.get(0).getValor()==10 & palosIguales(cartas)==true)			  
-			  System.out.println("Escalera REAL DE COLOR"); 				
-		imprimeArrayPersonas(cartas);
- 
-	}
-	
-	// recibe la mano del jugador, la ordena y verifica en que parte ese lista hay 5 valores consecutivos, nos retorna esa lista ordenanda de valores
-	//consecutivos
-	public List<Carta> listaOrdenada(Mano mano) {
-		//primero llena tres listas, con la misma mano
-		List<Carta> cartas = new ArrayList(); //crea una lista de las cartas porque hay un problema si le pasamos directamente la mano al sort
-        for(int i=0; i<mano.manoSize();i++) {
-        	cartas.add(mano.getCarta(i));
-        } 
-        System.out.println(cartas.size() + "  array 1"); 
-        System.out.println(mano.manoSize()); 
-      
-        List<Carta> cartas2 = new ArrayList(); 
-        for(int i=0; i<mano.manoSize();i++) {
-        	cartas2.add(mano.getCarta(i));
-        } 
-        System.out.println(cartas2.size() + "  array 2"); 
-        System.out.println(mano.manoSize()); 
-        List<Carta> cartas3 = new ArrayList(); 
-        for(int i=0; i<mano.manoSize();i++) {
-        	cartas3.add(mano.getCarta(i));
-        }
-        System.out.println(cartas3.size() + "  array 3");
-        System.out.println(mano.manoSize()); 
-        //ordenamos todas las listas
-        Collections.sort(cartas); //eliminamos las ultimas dos
-        Collections.sort(cartas2); //eliminamos la primera y la ultima
-        Collections.sort(cartas3); //eliminamos las primeras dos 
-        //haciendo esto ya tenemos cubiertas las tres posibilades de donde se pueden encontrar las  5 que son consecutivas
-        cartas.remove(6);
-		cartas.remove(5);
-		cartas2.remove(6);
-		cartas2.remove(0);
-		cartas3.remove(1);
-		cartas3.remove(0);
 
-		//ahora verificamos si alguna de las tres listas todas sus cartas son consecutivas
-		if (probarConsecutivos(cartas)==true)
-			return cartas;
-		else if (probarConsecutivos(cartas2)==true)
-			return cartas2;
-		else if (probarConsecutivos(cartas3)==true)
-			return cartas3;
-		return cartas; // en caso de que retorne null hay que verificar si es un color flush 
+		else if (probarConsecutivos(cartas) == true & palosIguales(cartas) == false)
+			System.out.println("Escalera normal xd");
+		// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
+		// escalera normal
+		else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == false)
+			System.out.println("Escalera normal xd");
+		// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
+		// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
+		// es una escalera real de color
+		else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == true)
+			System.out.println("Escalera REAL DE COLOR");
+		imprimeArrayPersonas(cartas);
+
 	}
-	
-	 //vetifica que los palos de una lista de cartas sean todos iguales (solo para una lista de 5)
+
+	// recibe la mano del jugador, la ordena y verifica en que parte ese lista hay 5
+	// valores consecutivos,
+	// nos retorna esa lista ordenanda de valores
+	// consecutivos
+	public List<Carta> listaOrdenada(Mano mano) {
+		// primero llena tres listas, con la misma mano
+		List<Carta> cartas = new ArrayList(); // crea una lista de las cartas por
+		// que hay un problema si le pasamos directamente la mano al sort
+		for (int i = 0; i < mano.manoSize(); i++) {
+			cartas.add(mano.getCarta(i));
+		}
+		Collections.sort(cartas); // Ordena las cartas
+
+		System.out.println(cartas.size() + "  cartas ya ordenadas");
+		System.out.println(mano.manoSize());
+
+		List<Carta> cartasSinPrimeras = new ArrayList();
+		for (int i = 0; i < 5; i++) {
+			cartasSinPrimeras.add(mano.getCarta(2 + i));
+		}
+		System.out.println(cartasSinPrimeras.size() + "  cartas sin primeras");
+		System.out.println(mano.manoSize());
+		List<Carta> cartasSinUltimas = new ArrayList();
+		for (int i = 0; i < mano.manoSize(); i++) {
+			cartasSinUltimas.add(mano.getCarta(i));
+		}
+		System.out.println(cartasSinUltimas.size() + "  cartas sin ultimas");
+		System.out.println(mano.manoSize());
+
+		List<Carta> cartasSinLaterales = new ArrayList();
+		for (int i = 0; i < 5; i++) {
+			cartasSinPrimeras.add(mano.getCarta(1 + i));
+		}
+
+		System.out.println(cartasSinLaterales.size() + "  cartas sin laterales");
+		System.out.println(mano.manoSize());
+
+		if (probarConsecutivos(cartasSinLaterales) == true)
+			return cartasSinLaterales;
+		else if (probarConsecutivos(cartasSinPrimeras) == true)
+			return cartasSinPrimeras;
+		else if (probarConsecutivos(cartasSinUltimas) == true)
+			return cartasSinUltimas;
+		return cartas; // en caso de que retorne null hay que verificar si es un color flush
+	}
+
+	// vetifica que los palos de una lista de cartas sean todos iguales (solo para
+	// una lista de 5)
 	public boolean palosIguales(List<Carta> cartas) {
-		if (cartas.get(0).getPalo()==cartas.get(1).getPalo() & cartas.get(1).getPalo()==cartas.get(2).getPalo()
-				& cartas.get(2).getPalo()==cartas.get(3).getPalo()& cartas.get(3).getPalo()==cartas.get(4).getPalo()) {
+		if (cartas.get(0).getPalo() == cartas.get(1).getPalo() & cartas.get(1).getPalo() == cartas.get(2).getPalo()
+				& cartas.get(2).getPalo() == cartas.get(3).getPalo()
+				& cartas.get(3).getPalo() == cartas.get(4).getPalo()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
-	//verifica que en una lista ordenada de cartas ordenadas por valor, sus valores sean consecutivos.
-	public static boolean probarConsecutivos(List<Carta> arreglo) 
-	{ 
-	
-		for(int i = 1; i < arreglo.size(); i++) { 
-			if((arreglo.get(i).getValor() - 1) != arreglo.get(i-1).getValor())	
-				{ 
-					return false; 
-				} 
-			} 
-		return true; 
-	} 
 
-	//imprime un array para verificar xd borrar cuando ya no se necesite
-	 public void imprimeArrayPersonas(List<Carta> array) {
-    for (int i = 0; i < array.size(); i++) {
-        System.out.println((i+1) + ". " + array.get(i).mostrarCarta());
-    }
-}
-	
+	// verifica que en una lista ordenada de cartas ordenadas por valor, sus valores
+	// sean consecutivos.
+	public static boolean probarConsecutivos(List<Carta> arreglo) {
 
-    
+		for (int i = 1; i < arreglo.size(); i++) {
+			if ((arreglo.get(i).getValor() - 1) != arreglo.get(i - 1).getValor()) {
+				return false;
+			}
+		}
+		return true;
+	}
 
+	// imprime un array para verificar xd borrar cuando ya no se necesite
+	public void imprimeArrayPersonas(List<Carta> array) {
+		for (int i = 0; i < array.size(); i++) {
+			System.out.println((i + 1) + ". " + array.get(i).mostrarCarta());
+		}
+	}
 
 	// verifica si hay pares(pair), tríos(three of a kind), cuatrupletas(Poker), par
 	//////////////////////// doble, o un full house (trio + par)
@@ -583,7 +587,7 @@ public class Logica extends Interfaz implements ActionListener{
 			System.out.println("Pasa");
 			// Debe checar si se está en fase de flop, turn o river
 			proximaFase();
-			
+
 		}
 		if (e.getSource() == subir) {
 			// igualar la apuesta que haya e incrementar lo que se quiera
@@ -623,8 +627,8 @@ public class Logica extends Interfaz implements ActionListener{
 				System.out.println("Iguala");
 				humano.restarDinero(pc.getApuesta());
 				bote = Integer.toString(Integer.valueOf(bote) + pc.getApuesta());// Verifica cuánto tiene apostado el pc
-			 															// en la mesa e iguala esa cantidad
-																					// en
+				// en la mesa e iguala esa cantidad
+				// en
 				// función de la apuesta del jugado // Algo tipo (apuestaPC)-(apuestaJugador) =
 				// Cantidad a igualar
 				humano.setApuesta(humano.getApuesta() + pc.getApuesta());
@@ -635,13 +639,13 @@ public class Logica extends Interfaz implements ActionListener{
 				mano.addCarta(new Carta(10, 1));
 				mano.addCarta(new Carta(11, 1));
 				mano.addCarta(new Carta(12, 1));
-				mano.addCarta(new Carta(13, 1));  //para probar el metodo analizar escaleras
+				mano.addCarta(new Carta(13, 1)); // para probar el metodo analizar escaleras
 				mano.addCarta(new Carta(1, 1));
 				mano.addCarta(new Carta(8, 1));
 				mano.addCarta(new Carta(3, 1));
 				analizarEscaleras(mano);
 			}
-			
+
 			else {
 				JOptionPane.showMessageDialog(null,
 						"No tienes suficiente dinero para igualar la apuesta de tu oponente", "Alerta",
