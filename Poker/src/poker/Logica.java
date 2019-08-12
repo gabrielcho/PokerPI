@@ -31,7 +31,7 @@ public class Logica extends Interfaz implements ActionListener {
 	private int apuestaActual, boteNuevo, apuestaRonda;
 	public static final int CARTAALTA = 1;
 	public static final int PAR = 2;
-	public static final int DOBLEPAR =3 ;
+	public static final int DOBLEPAR = 3;
 	public static final int TRIO = 4;
 	public static final int ESCALERA = 5;
 	public static final int COLOR = 6;
@@ -39,6 +39,7 @@ public class Logica extends Interfaz implements ActionListener {
 	public static final int CUATRUPLETA = 8;
 	public static final int ESCALERACOLOR = 9;
 	public static final int ESCALERAREAL = 10;
+
 	public Logica() {
 		baraja = new Baraja();
 		humano = new Jugador("humano");
@@ -300,26 +301,29 @@ public class Logica extends Interfaz implements ActionListener {
 			break;
 
 		case "River": // Termina la mano y determina al ganador con alguna funcion que envuelva todo
-			// analizarRepetidas(humano);
-			// analizarRepetidas(pc);
-			analizarRepetidas(humano);
-
+			
+			analizarJugadas(humano);
+			analizarJugadas(pc);
+			mostrarCartasPc();
+			JOptionPane.showMessageDialog(null, "Tu tienes: " + sacarJugada(humano) +  " y el pc tiene: " + sacarJugada(pc), "Mensaje",
+					JOptionPane.WARNING_MESSAGE);
+			
 			break;
 		}
 		actualizarPantalla();
 
 	}
-	
+
 	public void mostrarCartasPc() {
 		JButton carta1 = crearComponenteDeMano(pc.getCartaMano(0));
 		JButton carta2 = crearComponenteDeMano(pc.getCartaMano(1));
 		areaPcCartas.removeAll();
-		 revalidate();
-	     repaint();
-	     areaPcCartas.add(carta1, BorderLayout.CENTER);
-	     areaPcCartas.add(carta2, BorderLayout.CENTER);
-		 revalidate();
-	     repaint();
+		revalidate();
+		repaint();
+		areaPcCartas.add(carta1, BorderLayout.CENTER);
+		areaPcCartas.add(carta2, BorderLayout.CENTER);
+		revalidate();
+		repaint();
 	}
 
 	// Muestra un mensaje en pantalla preguntando si el usuario quiere volver a
@@ -419,11 +423,12 @@ public class Logica extends Interfaz implements ActionListener {
 	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	// Puede borrarse si es necesario
 	// este metodo nos dice si la mano del jugador es una carta alta
-	public void analizarCartaAlta(Mano mano) {
-		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas porque hay un problema si le pasamos
-												// directamente la mano al sort
-		for (int i = 0; i < mano.manoSize(); i++) {
-			cartas.add(mano.getCarta(i));
+	public void analizarCartaAlta(Jugador jugador) {
+		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas porque hay un problema si le
+														// pasamos
+		// directamente la mano al sort
+		for (int i = 0; i < jugador.getMano().manoSize(); i++) {
+			cartas.add(jugador.getMano().getCarta(i));
 		}
 
 		Collections.sort(cartas, Collections.reverseOrder()); // ordena todas las cartas con respecto a su valor de
@@ -431,34 +436,48 @@ public class Logica extends Interfaz implements ActionListener {
 																// la primera
 
 		System.out.println(cartas.get(0).valorCarta() + " Alto/a");
+		int jugada[] = { CARTAALTA, 1 } ;
+		jugador.setJugada(jugada);
 	}
 
 	public void analizarEscaleras(Jugador jugador) {
 		if (listaOrdenada(jugador.getMano()) == null) {
-			analizarColor(jugador.getMano());
+			analizarColor(jugador);
 		} else {
 			List<Carta> cartas = new ArrayList<Carta>();
 			cartas = listaOrdenada(jugador.getMano()); // recibimos la lista de 5 cartas ordenadas a analizar
 			// se verifica que no empiece en diez porque en ese caso seria una escalera real
 			// de color
-			if ((palosIguales(cartas) == true & cartas.get(0).obtenerCosto() != 9))
+			if ((palosIguales(cartas) == true & cartas.get(0).obtenerCosto() != 9)) {
 				// verifica si las 5
 				// cartas que quedan son consecutivas, si lanza un true verificamos que sus
 				// palos sean iguales si es así, tenemos una escalera de color(?)
 				System.out.println("Escalera de color");
-
-			else if (palosIguales(cartas) == false)
+				int jugada[] = { ESCALERACOLOR, 1 } ;
+				jugador.setJugada(jugada);
+			}
+				
+ else if (palosIguales(cartas) == false) {
 				System.out.println("Escalera normal xd");
+				int jugada[] = { ESCALERA, 1 };
+				jugador.setJugada(jugada);
+			}
 			// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
 			// escalera normal
-			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == false)
+			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == false) {
 				System.out.println("Escalera normal xd");
+				int jugada[] = { ESCALERA, 1 };
+				jugador.setJugada(jugada);
+			}
 			// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
 			// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
 			// es una escalera real de color
-			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == true)
+			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == true) {
+				int jugada[] = { ESCALERAREAL, 1 };
+				jugador.setJugada(jugada);
 				System.out.println("Escalera REAL DE COLOR");
-			imprimeArrayPersonas(cartas);
+				imprimeArrayPersonas(cartas);
+			}
 
 		}
 	}
@@ -532,7 +551,7 @@ public class Logica extends Interfaz implements ActionListener {
 
 	// hay que comprobar si hay color solo despues de que se compruebe de que no hay
 	// escaleras.
-	public void analizarColor(Mano mano) {
+	public void analizarColor(Jugador jugador) {
 		int[] palos = new int[4];
 		// Llena de ceros el array
 		for (int i = 0; i < 4; i++) {
@@ -540,12 +559,15 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		// Con este for va contando cuantas cartas de cada palo tiene
 		for (int i = 0; i < 7; i++) {
-			int valor = mano.getCarta(i).getPalo();
+			int valor = jugador.getMano().getCarta(i).getPalo();
 			palos[valor] = palos[valor] + 1;
 		}
+
 		for (int pos = 0; pos < 4; pos++) {
 			if (palos[pos] >= 5) {
 				System.out.println("Color");
+				int jugada[] = { COLOR, 1 };
+				jugador.setJugada(jugada);
 			}
 		}
 	}
@@ -580,17 +602,24 @@ public class Logica extends Interfaz implements ActionListener {
 			} else if (cartas[pos] == 3) {
 				trioDe = Carta.obtenerValorCarta(pos);
 				trio = true;
-			} else if (cartas[pos] == 4)
-				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
+			} else if (cartas[pos] == 4) {
+				manoEncontrada = "Cuatrupleta de " + Carta.obtenerValorCarta(pos);
+				int jugada[] = { CUATRUPLETA, 1 };
+				jugador.setJugada(jugada);
+			}
 		}
 		// verifica si hay un FULL HOUSE
 		if (pares == 1 & trio == true) {
 			System.out.println("Full House");
+			int jugada[] = { FULLHOUSE, 1 };
+			jugador.setJugada(jugada);
 		}
 
 		else {
 			if (trio == true) {// imprime el trio, si lo hay
 				System.out.println("Trío de: " + trioDe);
+				int jugada[] = { TRIO, 1 };
+				jugador.setJugada(jugada);
 			}
 
 			// verifica cuantos pares hay
@@ -600,9 +629,13 @@ public class Logica extends Interfaz implements ActionListener {
 					break;
 				case 1:
 					System.out.println("Par de " + parDe);
+					int jugada[] = { PAR, 1 };
+					jugador.setJugada(jugada);
 					break;
 				case 2:
 					System.out.println("Doble Par de " + " y ");
+					int jugadaDoblePar[] = { DOBLEPAR, 1 };
+					jugador.setJugada(jugadaDoblePar);
 					break;
 				}
 			}
@@ -667,7 +700,8 @@ public class Logica extends Interfaz implements ActionListener {
 				humano.setApuesta(humano.getApuesta() + pc.getApuesta());
 				pintarInfo(pc); // para que actualicen las infos
 				pintarInfo(humano);
-				actualizarPantalla();;
+				actualizarPantalla();
+				;
 			}
 
 			else {
@@ -675,6 +709,41 @@ public class Logica extends Interfaz implements ActionListener {
 						"No tienes suficiente dinero para igualar la apuesta de tu oponente", "Alerta",
 						JOptionPane.WARNING_MESSAGE);
 			}
+		}
+	}
+	
+	public void analizarJugadas(Jugador jugador) {
+		analizarCartaAlta(jugador);
+		analizarRepetidas(jugador);
+		analizarEscaleras(jugador);
+		
+	}
+	
+	public String sacarJugada(Jugador jugador) {
+		int jugada[] = jugador.getJugada();
+		switch (jugada[0]) {
+		case CARTAALTA:
+			return "Carta alta";
+		case PAR:
+			return "Par";
+		case DOBLEPAR:
+			return "Doble par";
+		case TRIO:
+			return "Trío";
+		case ESCALERA:
+			return "Escalera";
+		case COLOR:
+			return "Color";
+		case FULLHOUSE:
+			return "Full house";
+		case CUATRUPLETA:
+			return "Cuatrupleta";
+		case ESCALERACOLOR:
+			return "Escalera de Color";
+		case ESCALERAREAL:
+			return "Escalera Real";
+		default:
+			return "???";
 		}
 	}
 
