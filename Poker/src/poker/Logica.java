@@ -408,13 +408,8 @@ public class Logica extends Interfaz implements ActionListener{
 	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	// Puede borrarse si es necesario
 	public void analizarEscaleras(Mano mano) { 
-        List<Carta> cartas = new ArrayList(); //crea una lista de las cartas porque hay un problema si le pasamos directamente la mano al sort
-        for(int i=0; i<mano.manoSize();i++) {
-        	cartas.add(mano.getCarta(i));
-        }     
-		Collections.sort(cartas);    // ordena las cartas por su valor, despues elimina dos cartas (porque la mano se verifica con 5)
-		cartas.remove(6);
-		cartas.remove(5);
+        List<Carta> cartas = new ArrayList(); 
+        cartas = listaOrdenada(mano);  //recibimos la lista de 5 cartas ordenadas a analizar
 		//si no son consecutivas pero tienen el mismo palo es un Color
 		if(probarConsecutivos(cartas)== false & palosIguales(cartas)==true)
 			System.out.println("Color Flush");
@@ -433,6 +428,51 @@ public class Logica extends Interfaz implements ActionListener{
 			  System.out.println("Escalera REAL DE COLOR"); 				
 		imprimeArrayPersonas(cartas);
  
+	}
+	
+	// recibe la mano del jugador, la ordena y verifica en que parte ese lista hay 5 valores consecutivos, nos retorna esa lista ordenanda de valores
+	//consecutivos
+	public List<Carta> listaOrdenada(Mano mano) {
+		//primero llena tres listas, con la misma mano
+		List<Carta> cartas = new ArrayList(); //crea una lista de las cartas porque hay un problema si le pasamos directamente la mano al sort
+        for(int i=0; i<mano.manoSize();i++) {
+        	cartas.add(mano.getCarta(i));
+        } 
+        System.out.println(cartas.size() + "  array 1"); 
+        System.out.println(mano.manoSize()); 
+      
+        List<Carta> cartas2 = new ArrayList(); 
+        for(int i=0; i<mano.manoSize();i++) {
+        	cartas2.add(mano.getCarta(i));
+        } 
+        System.out.println(cartas2.size() + "  array 2"); 
+        System.out.println(mano.manoSize()); 
+        List<Carta> cartas3 = new ArrayList(); 
+        for(int i=0; i<mano.manoSize();i++) {
+        	cartas3.add(mano.getCarta(i));
+        }
+        System.out.println(cartas3.size() + "  array 3");
+        System.out.println(mano.manoSize()); 
+        //ordenamos todas las listas
+        Collections.sort(cartas); //eliminamos las ultimas dos
+        Collections.sort(cartas2); //eliminamos la primera y la ultima
+        Collections.sort(cartas3); //eliminamos las primeras dos 
+        //haciendo esto ya tenemos cubiertas las tres posibilades de donde se pueden encontrar las  5 que son consecutivas
+        cartas.remove(6);
+		cartas.remove(5);
+		cartas2.remove(6);
+		cartas2.remove(0);
+		cartas3.remove(1);
+		cartas3.remove(0);
+
+		//ahora verificamos si alguna de las tres listas todas sus cartas son consecutivas
+		if (probarConsecutivos(cartas)==true)
+			return cartas;
+		else if (probarConsecutivos(cartas2)==true)
+			return cartas2;
+		else if (probarConsecutivos(cartas3)==true)
+			return cartas3;
+		return cartas; // en caso de que retorne null hay que verificar si es un color flush 
 	}
 	
 	 //vetifica que los palos de una lista de cartas sean todos iguales (solo para una lista de 5)
@@ -550,11 +590,6 @@ public class Logica extends Interfaz implements ActionListener{
 			System.out.println("Sube");
 			if (fase.equals("Turn") || fase.equals("River") || fase.equals("Flop")) {
 				if (mensajePedirApuesta()) {
-					// humano.setApuesta(apuestaRonda+humano.getApuesta());
-					// humano.restarDinero(humano.getApuesta());
-					// pc.setApuesta(apuestaRonda+pc.getApuesta());// al principio el pc siempre
-					// iguala la apuesta del jugador
-					// pc.restarDinero(pc.getApuesta());
 					pintarInfo(pc); // para que actualicen las infos
 					pintarInfo(humano);
 					actualizarPantalla();
@@ -597,13 +632,13 @@ public class Logica extends Interfaz implements ActionListener{
 				pintarInfo(humano);
 				actualizarPantalla();
 				Mano mano = new Mano();
-				mano.addCarta(new Carta(11, 1));
 				mano.addCarta(new Carta(10, 1));
+				mano.addCarta(new Carta(11, 1));
+				mano.addCarta(new Carta(12, 1));
+				mano.addCarta(new Carta(13, 1));  //para probar el metodo analizar escaleras
+				mano.addCarta(new Carta(1, 1));
+				mano.addCarta(new Carta(8, 1));
 				mano.addCarta(new Carta(3, 1));
-				mano.addCarta(new Carta(7, 1));  //para probar el metodo analizar escaleras
-				mano.addCarta(new Carta(9, 1));
-				mano.addCarta(new Carta(4, 1));
-				mano.addCarta(new Carta(6, 1));
 				analizarEscaleras(mano);
 			}
 			
