@@ -398,7 +398,7 @@ public class Logica extends Interfaz implements ActionListener {
 	// Puede borrarse si es necesario
 	// este metodo nos dice si la mano del jugador es una carta alta
 	public void analizarCartaAlta(Mano mano) {
-		List<Carta> cartas = new ArrayList(); // crea una lista de las cartas porque hay un problema si le pasamos
+		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas porque hay un problema si le pasamos
 												// directamente la mano al sort
 		for (int i = 0; i < mano.manoSize(); i++) {
 			cartas.add(mano.getCarta(i));
@@ -413,13 +413,13 @@ public class Logica extends Interfaz implements ActionListener {
 
 	public void analizarEscaleras(Mano mano) {
 		if (listaOrdenada(mano) == null) {
-			System.out.println("no hay escalera de ningun tipo");
+			analizarColor(mano);
 		} else {
-			List<Carta> cartas = new ArrayList();
+			List<Carta> cartas = new ArrayList<Carta>();
 			cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
 			// se verifica que no empiece en diez porque en ese caso seria una escalera real
 			// de color
-			if ((palosIguales(cartas) == true & cartas.get(0).getValor() != 10))
+			if ((palosIguales(cartas) == true & cartas.get(0).obtenerCosto() != 9))
 				// verifica si las 5
 				// cartas que quedan son consecutivas, si lanza un true verificamos que sus
 				// palos sean iguales si es así, tenemos una escalera de color(?)
@@ -429,12 +429,12 @@ public class Logica extends Interfaz implements ActionListener {
 				System.out.println("Escalera normal xd");
 			// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
 			// escalera normal
-			else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == false)
+			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == false)
 				System.out.println("Escalera normal xd");
 			// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
 			// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
 			// es una escalera real de color
-			else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == true)
+			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == true)
 				System.out.println("Escalera REAL DE COLOR");
 			imprimeArrayPersonas(cartas);
 
@@ -447,27 +447,26 @@ public class Logica extends Interfaz implements ActionListener {
 	// consecutivos
 	public List<Carta> listaOrdenada(Mano mano) { // mirar caso en el que las dos o tres listas tienen consecutivos??
 		// primero llena tres listas, con la misma mano
-		List<Carta> cartas = new ArrayList(); // crea una lista de las cartas por
+		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas por
 		// que hay un problema si le pasamos directamente la mano al sort
 		for (int i = 0; i < mano.manoSize(); i++) {
 			cartas.add(mano.getCarta(i));
 		}
 		Collections.sort(cartas); // Ordena las cartas
 
-		List<Carta> cartasSinPrimeras = new ArrayList();
+		List<Carta> cartasSinPrimeras = new ArrayList<Carta>();
 		for (int i = 0; i < 5; i++) {
 			cartasSinPrimeras.add(cartas.get(2 + i));
 		}
 
-		List<Carta> cartasSinUltimas = new ArrayList();
+		List<Carta> cartasSinUltimas = new ArrayList<Carta>();
 		for (int i = 0; i < 5; i++) {
 			cartasSinUltimas.add(cartas.get(i));
 		}
-		List<Carta> cartasSinLaterales = new ArrayList();
+		List<Carta> cartasSinLaterales = new ArrayList<Carta>();
 		for (int i = 0; i < 5; i++) {
 			cartasSinLaterales.add(cartas.get(1 + i));
 		}
-
 		if (probarConsecutivos(cartasSinPrimeras) == true)
 			return cartasSinPrimeras;
 		else if (probarConsecutivos(cartasSinLaterales) == true)
@@ -495,7 +494,7 @@ public class Logica extends Interfaz implements ActionListener {
 	public static boolean probarConsecutivos(List<Carta> arreglo) {
 
 		for (int i = 1; i < arreglo.size(); i++) {
-			if ((arreglo.get(i).getValor() - 1) != arreglo.get(i - 1).getValor()) {
+			if ((arreglo.get(i).obtenerCosto() - 1) != arreglo.get(i - 1).obtenerCosto()) {
 				return false;
 			}
 		}
@@ -515,7 +514,6 @@ public class Logica extends Interfaz implements ActionListener {
 		int[] palos = new int[4];
 		// Llena de ceros el array
 		for (int i = 0; i < 4; i++) {
-
 			palos[i] = 0;
 		}
 		// Con este for va contando cuantas cartas de cada palo tiene
@@ -523,7 +521,7 @@ public class Logica extends Interfaz implements ActionListener {
 			int valor = mano.getCarta(i).getPalo();
 			palos[valor] = palos[valor] + 1;
 		}
-		for (int pos = 1; pos < 4; pos++) {
+		for (int pos = 0; pos < 4; pos++) {
 			if (palos[pos] >= 5) {
 				System.out.println("Color Flush");
 			}
@@ -649,15 +647,14 @@ public class Logica extends Interfaz implements ActionListener {
 				pintarInfo(humano);
 				actualizarPantalla();
 				Mano mano = new Mano();
-				mano.addCarta(new Carta(1, 1));
-				mano.addCarta(new Carta(3, 1));
-				mano.addCarta(new Carta(5, 1));
-				mano.addCarta(new Carta(7, 1)); // para probar el metodo analizar escaleras
-				mano.addCarta(new Carta(9, 1));
+				mano.addCarta(new Carta(10, 1));
 				mano.addCarta(new Carta(11, 1));
-				mano.addCarta(new Carta(13, 1));
+				mano.addCarta(new Carta(12, 1));
+				mano.addCarta(new Carta(13, 1)); // para probar el metodo analizar escaleras
+				mano.addCarta(new Carta(1, 1));
+				mano.addCarta(new Carta(2, 1));
+				mano.addCarta(new Carta(4, 1));
 				analizarEscaleras(mano);
-				analizarColor(mano);
 				analizarCartaAlta(mano);
 
 			}

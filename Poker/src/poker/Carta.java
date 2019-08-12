@@ -216,6 +216,6 @@ public class Carta implements Comparable<Carta>{
 	@Override
 	public int compareTo(Carta o) {
 		// TODO Auto-generated method stub
-		return this.valor.compareTo(o.getValor());
+		return this.costo.compareTo(o.obtenerCosto());
 	}
 }
