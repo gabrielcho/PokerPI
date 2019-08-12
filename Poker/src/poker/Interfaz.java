@@ -1,34 +1,75 @@
+/* 
+ * @Author Gabriel Arango
+ * @Author Diego Timaná
+ * @Version 1.0
+ */
 package poker;
 
 import javax.swing.*;
 import java.awt.*;
 
+// TODO: Auto-generated Javadoc
 /**
  * Esta clase se encarga de gestionar todo lo gráfico, dibuja paneles y grafica
  * otros componentes necesarios para el juego.
  */
 public class Interfaz extends JFrame {
+    
+    /** The color casino. */
     private Color colorCasino = new Color(18, 84, 8);
+    
+    /** The area juego. */
     protected JPanel areaJuego = new JPanel(new BorderLayout());
+    
+    /** The area tablero. */
     private JPanel areaTablero = new JPanel(new BorderLayout()); // en la documentación se explica por qué BorderL.
+    
+    /** The area tablero NORTH. */
     private JPanel areaTableroNORTH = new JPanel(new FlowLayout());
+    
+    /** The area tablero cartas. */
     protected JPanel areaTableroCartas = new JPanel(new FlowLayout());
+    
+    /** The areamano. */
     private JPanel areamano = new JPanel(new BorderLayout());
+    
+    /** The area mano cartas. */
     private JPanel areaManoCartas = new JPanel(new FlowLayout());
+    
+    /** The area bote. */
     protected JPanel areaBote = new JPanel(new GridLayout());
+    
+    /** The area mano botones. */
     private JPanel areaManoBotones = new JPanel(new GridLayout(2, 1, 5, 5));
+    
+    /** The area mano info Y glue. */
     private JPanel areaManoInfoYGlue = new JPanel(new FlowLayout());
+    
+    /** The area mano info. */
     protected JPanel areaManoInfo = new JPanel(new GridLayout(2, 1, 5, 5));
+    
+    /** The area PC. */
     private JPanel areaPC = new JPanel(new BorderLayout());
+    
+    /** The area pc cartas. */
     private JPanel areaPcCartas = new JPanel(new FlowLayout());
+    
+    /** The area pc info. */
     private JPanel areaPcInfo = new JPanel(new GridLayout());
+    
+    /** The bote. */
     protected String bote = "0";
 
+    /**
+     * Instantiates a new interfaz.
+     */
     public Interfaz() {
 
     }
 
-    /** Prepara la interfaz gráfica a su estado inicial */
+    /**
+     *  Prepara la interfaz gráfica a su estado inicial.
+     */
     public void setEntorno() {
         setVisible(true);
         setTitle("Poker Texas Hold'em");
@@ -38,14 +79,11 @@ public class Interfaz extends JFrame {
         setResizable(false);
         areaJuego.add(areamano, BorderLayout.SOUTH);
         areaJuego.add(areaTablero, BorderLayout.CENTER); // añade el panel de las cartas comunitarias
-
-        // ** Voy a explicar todo esto en la documentacion cuando tenga tiempo sorry :(
-        // */
         areaJuego.add(areaPC, BorderLayout.NORTH);
-        /** Esto tiene que ser explicado también */
+       
         areaTablero.add(areaTableroNORTH, BorderLayout.NORTH);
         areaTableroNORTH.add(areaBote);
-        areaTableroNORTH.add(Box.createRigidArea(new Dimension(0, 90)));
+        areaTableroNORTH.add(Box.createRigidArea(new Dimension(0, 90))); //ponemos Rigid Areas para centrar los paneles
 
         areaTablero.add(areaTableroCartas, BorderLayout.CENTER);
         areaTablero.add(Box.createRigidArea(new Dimension(200, 110)), BorderLayout.SOUTH);
@@ -59,15 +97,7 @@ public class Interfaz extends JFrame {
         areaPC.add(areaPcInfo, BorderLayout.WEST);
         areaPC.add(areaPcCartas, BorderLayout.CENTER);
         areaPC.add(Box.createRigidArea(new Dimension(132, 0)), BorderLayout.EAST);
-        /*
-         * //Crear botones de accion igualar = new JButton ("Igualar");
-         * igualar.addActionListener(escucha); //escucha areaManoBotones.add(igualar);
-         * retirarse = new JButton ("Retirarse"); retirarse.addActionListener(escucha);
-         * //escucha areaManoBotones.add(retirarse); pasar = new JButton ("Pasar");
-         * pasar.addActionListener(escucha); //escucha areaManoBotones.add(pasar); subir
-         * = new JButton ("Subir"); subir.addActionListener(escucha); //escucha
-         * areaManoBotones.add(subir);
-         */
+
         // Se repinta areaJuego (queda pendiente saber si basta con repintar)
         areaJuego.repaint();
 
@@ -78,6 +108,13 @@ public class Interfaz extends JFrame {
 
     }
 
+    /**
+     * Imagen boton.
+     *
+     * @param nombreBoton the nombre boton
+     * @return the image icon
+     */
+    /* el botón tiene una imagen, es metodo se la pone  */
     public ImageIcon imagenBoton(String nombreBoton) {
         Image imagen = new ImageIcon(getClass().getResource("/cartas/" + nombreBoton + ".png")).getImage();
         imagen = imagen.getScaledInstance(108, 36, Image.SCALE_FAST);
@@ -85,7 +122,12 @@ public class Interfaz extends JFrame {
         return imagenBoton;
     }
 
-    // Pinta el dinero que tienen los jugadores, queda pendiente la apuesta. este
+    // Pinta el dinero que tienen los jugadores. Este
+    /**
+     * Pintar info.
+     *
+     * @param jugador the jugador
+     */
     // metodo tambien sirve para actualizar toda la info en la pantalla
     public void pintarInfo(Jugador jugador) {
         if (jugador.getName() == "humano") {
@@ -119,10 +161,10 @@ public class Interfaz extends JFrame {
     /**
      * Se crea un botón para el panel de mano, estos botones no son clickeables
      * porque las jugadas se hacen desde otros botones.
-     * 
-     * @param carta
+     * Las cartas se representan graficamente mediante botones
+     *
+     * @param carta the carta
      * @return boton de mano
-     * 
      */
     public JButton crearComponenteDeMano(Carta carta) {
         JButton boton = new JButton();
@@ -132,6 +174,13 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
+    /**
+     * Crear boton mano pc.
+     *
+     * @param carta the carta
+     * @return the j button
+     */
+    /*Crea el boton que representa las cartas del pc, que están volteadas*/
     public JButton crearBotonManoPc(Carta carta) {
         JButton boton = new JButton();
         boton.setIcon(carta.ocultarCarta());
@@ -140,14 +189,22 @@ public class Interfaz extends JFrame {
         return boton;
     }
 
+    /**
+     * Actualizar pantalla.
+     */
+    /*Actualiza la pantalla*/
     public void actualizarPantalla() {
-        // SwingUtilities.updateComponentTreeUI(this);
-        // this.validateTree();
-        // this.removeAll();
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    /** */
+    /**
+     * Dibujar mano.
+     *
+     * @param jugador the jugador
+     */
+    /*Este metodo añade las cartas a los paneles para ser graficadas, dependiendo del jugador que se le ingrese
+     * las pinta ocultas o no
+     */
     public void dibujarMano(Jugador jugador) {
         if (jugador.getName() == "humano") {
             for (int i = 0; i < 2; i++) {
@@ -169,7 +226,12 @@ public class Interfaz extends JFrame {
         revalidate();
         repaint();
     }
-
+   
+    /**
+     * Limpiar interfaz.
+     */
+    /*Limpia todos los paneles de la interfaz, dejándolos sin ningun componente. Se utiliza cuando se quiere reiniciar el juego
+     * */
     public void LimpiarInterfaz() {
         areamano.removeAll();
         areaBote.removeAll();
@@ -191,8 +253,8 @@ public class Interfaz extends JFrame {
     }
 
     /**
-     * Colorea todos los paneles de la interfaz, por alguna razón no sirvió pintar
-     * el JFrame
+     * Colorea todos los paneles de la interfaz de un mismo color.
+     * 
      */
     public void colorearTodo() {
         areamano.setBackground(colorCasino);
@@ -211,6 +273,12 @@ public class Interfaz extends JFrame {
         areaTableroNORTH.setBackground(colorCasino);
     }
 
+    /**
+     * Adds the boton.
+     *
+     * @param boton the boton
+     */
+    /*Añade un boton al panel areaManoBotones, este metodo se ultiliza en la Lógica*/
     public void addBoton(JButton boton) {
         areaManoBotones.add(boton);
     }

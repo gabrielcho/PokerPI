@@ -1,20 +1,34 @@
+/* 
+ * @Author Gabriel Arango
+ * @Author Diego Timaná
+ * @Version 1.0
+ */
 package poker;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/** Clase encargada de generar y dar las ca */
+// TODO: Auto-generated Javadoc
+/**
+ *  Clase encargada de generar y dar las cartas.
+ */
 public class Baraja {
+    
+    /** The baraja. */
     private ArrayList<Carta> baraja;
 
-    /** Constructor de la baraja, genera las 52 cartas distintas del juego */
+    /**
+     *  Constructor de la baraja, genera las 52 cartas distintas del juego.
+     */
     public Baraja() {
         baraja = new ArrayList<Carta>();
         crearBaraja();
         barajar();
     }
 
-    /** Genera la baraja de 52 cartas diferentes poniéndolas en un ArrayList*/
+    /**
+     *  Genera la baraja de 52 cartas diferentes poniéndolas en un ArrayList.
+     */
     public void crearBaraja() {
     for (int i = 1; i < 14; i++) {
         
@@ -26,7 +40,9 @@ public class Baraja {
     }
 
     
-    /** Aleatoriza el orden de las cartas contenidas en el arraylist de la baraja */
+    /**
+     *  Aleatoriza el orden de las cartas contenidas en el arraylist de la baraja.
+     */
     public void barajar() {
         ArrayList<Carta> barajaTemp = new ArrayList<Carta>();
         Random random = new Random(System.currentTimeMillis());
@@ -51,7 +67,8 @@ public class Baraja {
 
     /**
      * Método usado para repartir cartas, se toma la ultima carta de la baraja, no hay que randomizar la selección
-     * porque la baraja de por sí ya está randomizada
+     * porque la baraja de por sí ya está randomizada.
+     *
      * @return carta al azar de baraja
      */
     public Carta darCartaAlAzar() {
@@ -67,18 +84,30 @@ public class Baraja {
     public void quitarCarta(int i) {
         this.baraja.remove(i);
     }
+    
     /**
      * Quita una carta de una baraja.
-     * @param una carta a eliminard del array
+     *
+     * @param carta the carta
      */
     public void quitarCarta(Carta carta) {
         this.baraja.remove(carta);
     }
     
+    /**
+     * Tamano baraja.
+     *
+     * @return the tamanño
+     */
     public int tamanoBaraja() {
       return this.baraja.size();
     }
     
+    /**
+     * Adds the carta.
+     *
+     * @param carta the carta
+     */
     public void addCarta(Carta carta) {
     	baraja.add(carta);
     }
