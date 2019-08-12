@@ -130,9 +130,9 @@ public class Logica extends Interfaz implements ActionListener {
 
 			if (isNumeric(stringApuesta) == true) {
 				int valorObtenido = Integer.valueOf(apuestaActual);
-				System.out.println("El valorObtenido es: " + valorObtenido);
+			
 				if (valorObtenido <= 0 || valorObtenido > humano.getBalance()) {
-					System.out.println("no pasa el filtro");
+					
 					JOptionPane.showMessageDialog(null, "Digite un numero valido", "Alerta",
 							JOptionPane.WARNING_MESSAGE);
 					mensajePedirApuesta();
@@ -145,8 +145,7 @@ public class Logica extends Interfaz implements ActionListener {
 					bote = Integer.toString(boteNuevo);
 
 					humano.setApuesta(humano.getApuesta() + apuestaRonda);
-					System.out.println(humano.getApuesta() + " DEspeus de");
-					System.out.println("mas " + Integer.valueOf(valorObtenido));
+			
 					humano.restarDinero(Integer.valueOf(valorObtenido));
 					pc.setApuesta(pc.getApuesta() + apuestaRonda);
 					pc.restarDinero(Integer.valueOf(valorObtenido));
@@ -186,13 +185,12 @@ public class Logica extends Interfaz implements ActionListener {
 					bote = Integer.toString(Integer.parseInt(bote) + (Integer.parseInt(entrada) * 2));
 					apuestaRonda = Integer.parseInt(bote) / 2;
 					humano.setApuesta(humano.getApuesta() + apuestaRonda);
-					System.out.println(humano.getApuesta() + " DEspeus de");
-					System.out.println("mas " + Integer.valueOf(valorObtenido));
+				
 					humano.restarDinero(Integer.valueOf(valorObtenido));
 					pc.setApuesta(pc.getApuesta() + apuestaRonda);
-					System.out.println("El pc por ahora tiene " + pc.getBalance());
+				
 					pc.restarDinero(Integer.valueOf(valorObtenido));
-					System.out.println("El pc con la resta tiene ahora " + pc.getBalance());
+				
 				}
 			}
 
@@ -207,13 +205,6 @@ public class Logica extends Interfaz implements ActionListener {
 	/** Pide apuestas y pinta el flop */
 	public void primeraFase() {
 		mensajePedirPrimeraApuesta();
-		// humano.setApuesta(Integer.parseInt(bote) / 2);
-		// System.out.println("El bote debe ser de 1 pero es de: " + bote);
-		// humano.restarDinero(humano.getApuesta());
-		// pc.setApuesta(Integer.parseInt(bote));// al principio el pc siempre iguala la
-		// apuesta del jugador
-		// pc.restarDinero(Integer.parseInt(bote) / 2);
-		// bote = Integer.toString(Integer.valueOf(bote));
 		pintarInfo(pc); // para que actualicen las infos
 		pintarInfo(humano);
 		actualizarPantalla();
@@ -265,7 +256,7 @@ public class Logica extends Interfaz implements ActionListener {
 		pintarInfo(pc);
 		revalidate();
 		actualizarPantalla();
-		pruebaRepetidas();
+//		pruebaRepetidas();
 		// PRIMERA RONDA DE APUESTAS, pide apuestas y pinta el flop
 		primeraFase();
 	}
@@ -362,7 +353,6 @@ public class Logica extends Interfaz implements ActionListener {
 		// procedemos a construir el bucle que nos determina si es par, trio o
 		// cuatrupleta
 		for (int pos = 1; pos < 14; pos++) {
-			System.out.println(cartas[pos]);
 			if (cartas[pos] == 2) {
 				pares += 1;
 				parDe = Carta.obtenerValorCarta(pos);
@@ -372,7 +362,6 @@ public class Logica extends Interfaz implements ActionListener {
 			} else if (cartas[pos] == 4)
 				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
 		}
-		System.out.println("Fin bucle");
 		// verifica si hay un FULL HOUSE
 		if (pares == 1 & trio == true) {
 			System.out.println("Full House");
@@ -420,39 +409,39 @@ public class Logica extends Interfaz implements ActionListener {
 	}
 
 	public void analizarEscaleras(Mano mano) {
-		List<Carta> cartas = new ArrayList();
-		cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
-		// si no son consecutivas pero tienen el mismo palo es un Color
-		if (probarConsecutivos(cartas) == false & palosIguales(cartas) == true)
-			System.out.println("Color Flush");
-		// se verifica que no empiece en diez porque en ese caso seria una escalera real
-		// de color
-		if ((probarConsecutivos(cartas) == true & palosIguales(cartas) == true & cartas.get(0).getValor() != 10))
-			// verifica si las 5
-			// cartas que quedan son consecutivas, si lanza un true verificamos que sus
-			// palos sean iguales si es así, tenemos una escalera de color(?)
-			System.out.println("Escalera de color");
+		if(listaOrdenada(mano)==null) {
+			System.out.println("no hay escalera de ningun tipo");
+		}else {
+			List<Carta> cartas = new ArrayList();
+			cartas = listaOrdenada(mano); // recibimos la lista de 5 cartas ordenadas a analizar
+			// se verifica que no empiece en diez porque en ese caso seria una escalera real
+			// de color
+			if ((palosIguales(cartas) == true & cartas.get(0).getValor() != 10))
+				// verifica si las 5
+				// cartas que quedan son consecutivas, si lanza un true verificamos que sus
+				// palos sean iguales si es así, tenemos una escalera de color(?)
+				System.out.println("Escalera de color");
+	
+			else if (palosIguales(cartas) == false)
+				System.out.println("Escalera normal xd");
+			// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
+			// escalera normal
+			else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == false)
+				System.out.println("Escalera normal xd");
+			// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
+			// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
+			// es una escalera real de color
+			else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == true)
+				System.out.println("Escalera REAL DE COLOR");
+			imprimeArrayPersonas(cartas);
 
-		else if (probarConsecutivos(cartas) == true & palosIguales(cartas) == false)
-			System.out.println("Escalera normal xd");
-		// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
-		// escalera normal
-		else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == false)
-			System.out.println("Escalera normal xd");
-		// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
-		// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
-		// es una escalera real de color
-		else if (cartas.get(0).getValor() == 10 & palosIguales(cartas) == true)
-			System.out.println("Escalera REAL DE COLOR");
-		imprimeArrayPersonas(cartas);
-
+		}
 	}
-
 	// recibe la mano del jugador, la ordena y verifica en que parte ese lista hay 5
 	// valores consecutivos,
 	// nos retorna esa lista ordenanda de valores
 	// consecutivos
-	public List<Carta> listaOrdenada(Mano mano) {
+	public List<Carta> listaOrdenada(Mano mano) { //mirar caso en el que las dos o tres listas tienen consecutivos??
 		// primero llena tres listas, con la misma mano
 		List<Carta> cartas = new ArrayList(); // crea una lista de las cartas por
 		// que hay un problema si le pasamos directamente la mano al sort
@@ -461,37 +450,27 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		Collections.sort(cartas); // Ordena las cartas
 
-		System.out.println(cartas.size() + "  cartas ya ordenadas");
-		System.out.println(mano.manoSize());
-
 		List<Carta> cartasSinPrimeras = new ArrayList();
 		for (int i = 0; i < 5; i++) {
-			cartasSinPrimeras.add(mano.getCarta(2 + i));
+			cartasSinPrimeras.add(cartas.get(2 + i));
 		}
-		System.out.println(cartasSinPrimeras.size() + "  cartas sin primeras");
-		System.out.println(mano.manoSize());
-		List<Carta> cartasSinUltimas = new ArrayList();
-		for (int i = 0; i < mano.manoSize(); i++) {
-			cartasSinUltimas.add(mano.getCarta(i));
-		}
-		System.out.println(cartasSinUltimas.size() + "  cartas sin ultimas");
-		System.out.println(mano.manoSize());
 
+		List<Carta> cartasSinUltimas = new ArrayList();
+		for (int i = 0; i < 5; i++) {
+			cartasSinUltimas.add(cartas.get(i));
+		}
 		List<Carta> cartasSinLaterales = new ArrayList();
 		for (int i = 0; i < 5; i++) {
-			cartasSinLaterales.add(mano.getCarta(1 + i));
+			cartasSinLaterales.add(cartas.get(1 + i));
 		}
 
-		System.out.println(cartasSinLaterales.size() + "  cartas sin laterales");
-		System.out.println(mano.manoSize());
-
-		if (probarConsecutivos(cartasSinLaterales) == true)
-			return cartasSinLaterales;
-		else if (probarConsecutivos(cartasSinPrimeras) == true)
-			return cartasSinPrimeras;
-		else if (probarConsecutivos(cartasSinUltimas) == true)
+		 if (probarConsecutivos(cartasSinUltimas) == true)
 			return cartasSinUltimas;
-		return cartas; // en caso de que retorne null hay que verificar si es un color flush
+		 else if (probarConsecutivos(cartasSinLaterales) == true)
+			return cartasSinLaterales;
+		 else if (probarConsecutivos(cartasSinPrimeras) == true)
+			return cartasSinPrimeras;
+		else return null; // en caso de que retorne null significa que no hay escaleras de ningun tipo
 	}
 
 	// vetifica que los palos de una lista de cartas sean todos iguales (solo para
@@ -524,7 +503,26 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println((i + 1) + ". " + array.get(i).mostrarCarta());
 		}
 	}
+    
+	//hay que comprobar si hay color solo despues de que se compruebe de que no hay escaleras.
+	public void analizarColor(Mano mano) {
+		int[] palos = new int[4];
+		// Llena de ceros el array
+		for (int i = 0; i < 4; i++) {
 
+			palos[i] = 0;
+		}
+		// Con este for va contando cuantas cartas de cada palo tiene
+		for (int i = 0; i < 7; i++) {
+			int valor = mano.getCarta(i).getPalo();
+			palos[valor] = palos[valor] + 1;
+		}
+		for (int pos = 1; pos < 4; pos++) {
+			if (palos[pos] >= 5) {
+				System.out.println("Color Flush");
+			}
+		}	
+	}
 	// verifica si hay pares(pair), tríos(three of a kind), cuatrupletas(Poker), par
 	//////////////////////// doble, o un full house (trio + par)
 	public void analizarRepetidas(Jugador jugador) {
@@ -549,7 +547,6 @@ public class Logica extends Interfaz implements ActionListener {
 		// procedemos a construir el bucle que nos determina si es par, trio o
 		// cuatrupleta
 		for (int pos = 1; pos < 14; pos++) {
-			System.out.println(cartas[pos]);
 			if (cartas[pos] == 2) {
 				pares = +1;
 				parDe = Carta.obtenerValorCarta(pos);
@@ -559,7 +556,6 @@ public class Logica extends Interfaz implements ActionListener {
 			} else if (cartas[pos] == 4)
 				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
 		}
-		System.out.println("Fin bucle");
 		// verifica si hay un FULL HOUSE
 		if (pares == 1 & trio == true) {
 			System.out.println("Full House");
@@ -622,9 +618,7 @@ public class Logica extends Interfaz implements ActionListener {
 			System.out.println("El pc antes del adicionarDinero() tiene " + +pc.getBalance() + " y el bote es de "
 					+ Integer.parseInt(bote));
 			pc.adicionarDinero(Integer.valueOf(bote));
-			System.out.println("El nuevo balance del pc es:" + (pc.getBalance() + Integer.parseInt(bote)));
-			System.out.println("El pc tiene " + +pc.getBalance() + " y el bote es de " + Integer.parseInt(bote));
-
+	
 			bote = "0";
 			humano.reiniciarApuesta();
 			pc.reiniciarApuesta();
@@ -648,15 +642,17 @@ public class Logica extends Interfaz implements ActionListener {
 				pintarInfo(humano);
 				actualizarPantalla();
 				Mano mano = new Mano();
-				mano.addCarta(new Carta(10, 1));
-				mano.addCarta(new Carta(11, 1));
-				mano.addCarta(new Carta(12, 1));
-				mano.addCarta(new Carta(13, 1)); // para probar el metodo analizar escaleras
 				mano.addCarta(new Carta(1, 1));
-				mano.addCarta(new Carta(8, 1));
 				mano.addCarta(new Carta(3, 1));
-				analizarEscaleras(mano);
+				mano.addCarta(new Carta(5, 1));
+				mano.addCarta(new Carta(7, 1)); // para probar el metodo analizar escaleras
+				mano.addCarta(new Carta(9, 1));
+				mano.addCarta(new Carta(11, 1));
+				mano.addCarta(new Carta(13, 1));
+				analizarEscaleras(mano);		
+				analizarColor(mano);
 				analizarCartaAlta(mano);
+				
 			}
 
 			else {
