@@ -1,3 +1,8 @@
+/*
+ * @Author Gabriel Arango
+ * @Author Diego Timaná
+ * @Version 1.0
+ */
 package poker;
 
 import javax.swing.JButton;
@@ -7,39 +12,69 @@ import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
-import java.lang.Exception;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * Por razones de estructuración necesitamos que la clase Lógica herede de
  * interfaz, esto permite que todo manejo de lógica pueda usar la clase de
  * interfaz sin problemas de acceso.
- * <h3>Las etiquetas HTML funcionan en el javadoc wtf</h3> y tambien en los
- * jlabels xd
  */
 public class Logica extends Interfaz implements ActionListener {
-	/** Esta es el objeto de baraja a usar en todo el juego */
-	// Hay que tener en cuenta más adelante que esta baraja tiene que reiniciarse
-	// Por lo que toca poner un método de reinicio en la baraja.
+	
+	/** The retirarse. */
 	private JButton pasar, subir, igualar, retirarse;
-	private Baraja baraja;
+	
+	/** The baraja. */
+	private Baraja baraja; 
+ /**  Esta es el objeto de baraja a usar en todo el juego. */
 	private Jugador humano, pc;
+	
+	/** The fase. */
 	private String fase;
-	private int apuestaActual, boteNuevo, apuestaRonda;
+	
+	/** The apuesta ronda. */
+	private int apuestaActual, apuestaRonda;
+	
+	/** The Constant CARTAALTA. */
 	public static final int CARTAALTA = 1;
+	
+	/** The Constant PAR. */
 	public static final int PAR = 2;
+	
+	/** The Constant DOBLEPAR. */
 	public static final int DOBLEPAR = 3;
+	
+	/** The Constant TRIO. */
 	public static final int TRIO = 4;
+	
+	/** The Constant ESCALERA. */
 	public static final int ESCALERA = 5;
+	
+	/** The Constant COLOR. */
 	public static final int COLOR = 6;
+	
+	/** The Constant FULLHOUSE. */
 	public static final int FULLHOUSE = 7;
+	
+	/** The Constant CUATRUPLETA. */
 	public static final int CUATRUPLETA = 8;
+	
+	/** The Constant ESCALERACOLOR. */
 	public static final int ESCALERACOLOR = 9;
+	
+	/** The Constant ESCALERAREAL. */
 	public static final int ESCALERAREAL = 10;
 
+	/**
+	 * Instantiates a new logica.
+	 */
+	/*
+	 * El constructor de la clase nos inicia algunas variables y nos crea objetos
+	 *  que vamos a necesitar durante todo el juego
+	*/
 	public Logica() {
 		baraja = new Baraja();
 		humano = new Jugador("humano");
@@ -48,20 +83,18 @@ public class Logica extends Interfaz implements ActionListener {
 	}
 
 	/**
-	 * Ajusta los botones que se van a usar para las acciones del poker. NOTA:::::
-	 * Voy a dejarlo asi por ahora porque no se me ocurre como hacer un metodo que
-	 * sea compatible con la implementacion de escuchas se puede pero al final
-	 * quedaria igual y esa no es la gracia.
+	 * Ajusta los botones que se van a usar para las acciones del poker. 
+	 * se inicializan en esta clase porque aquí vamos a manejar las acciones de estos.
 	 */
 	public void setBotones() {
 		igualar = new JButton();
-		igualar.addActionListener(this);
+		igualar.addActionListener(this);// escucha
 		igualar.setIcon(imagenBoton("igual"));
 		igualar.setPreferredSize(new Dimension(108, 36));
 		igualar.setBorder(BorderFactory.createEmptyBorder());
 		igualar.setContentAreaFilled(false);
 		igualar.setFocusPainted(false);
-		// escucha
+		
 		super.addBoton(igualar);
 		retirarse = new JButton();
 		retirarse.addActionListener(this); // escucha
@@ -71,29 +104,29 @@ public class Logica extends Interfaz implements ActionListener {
 		retirarse.setContentAreaFilled(false);
 		retirarse.setFocusPainted(false);
 		super.addBoton(retirarse);
+		
 		pasar = new JButton();
-		pasar.addActionListener(this);
+		pasar.addActionListener(this);// escucha
 		pasar.setIcon(imagenBoton("pasar"));
 		pasar.setPreferredSize(new Dimension(108, 36));
 		pasar.setBorder(BorderFactory.createEmptyBorder());
 		pasar.setContentAreaFilled(false);
 		pasar.setFocusPainted(false);
-		// escucha
+		
 		super.addBoton(pasar);
 		subir = new JButton();
-		subir.addActionListener(this);
+		subir.addActionListener(this);// escucha
 		subir.setIcon(imagenBoton("subir"));
 		subir.setPreferredSize(new Dimension(108, 36));
 		subir.setBorder(BorderFactory.createEmptyBorder());
 		subir.setContentAreaFilled(false);
 		subir.setFocusPainted(false);
-		// escucha
 		super.addBoton(subir);
 	}
 
 	/**
 	 * Este método limpia la mano de los jugadores y les asigna dos nuevas cartas
-	 * tomadas de la baraja al azar
+	 * tomadas de la baraja al azar.
 	 */
 	public void repartirCartas() {
 		humano.soltarCartas();
@@ -109,8 +142,16 @@ public class Logica extends Interfaz implements ActionListener {
 
 	}
 
-	// metodo usado para asegurarnos de que el usuario digite un numero cuando se le
-	// pide la apuesta
+	/**
+	 * Checks if is numeric.
+	 *
+	 * @param cadena the cadena
+	 * @return true, if is numeric
+	 */
+	/*
+	 *  método usado para asegurarnos de que el usuario digite un número y no
+	 *  un String en el JOptionPane  
+	 */
 	public boolean isNumeric(String cadena) {
 
 		boolean resultado;
@@ -130,6 +171,8 @@ public class Logica extends Interfaz implements ActionListener {
 	 * metodo retorna booleano porque esa es la manera en la que sabremos si se
 	 * ingresaron datos validos para poder realizar las jugadas que dependen de que
 	 * la apuesta se haya hecho.
+	 *
+	 * @return true, if successful
 	 */
 	public boolean mensajePedirApuesta() {
 		boolean apuestaEfectuada = false; // Por ahora no se ha efectuado la apuesta
@@ -160,11 +203,6 @@ public class Logica extends Interfaz implements ActionListener {
 					humano.restarDinero(Integer.valueOf(valorObtenido));
 					pc.setApuesta(pc.getApuesta() + apuestaRonda);
 					pc.restarDinero(Integer.valueOf(valorObtenido));
-
-					/*
-					 * } else JOptionPane.showMessageDialog(null, "Tienes que subir la apuesta!",
-					 * "Alerta", JOptionPane.WARNING_MESSAGE);
-					 */
 				}
 			}
 
@@ -178,8 +216,13 @@ public class Logica extends Interfaz implements ActionListener {
 		return apuestaEfectuada;
 	}
 
-	// Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que
-	// el usuario digite un número, de lo contrario muestra un mensaje de error.
+	/**
+	 * Mensaje pedir primera apuesta.
+	 */
+	/* Muestra un mensaje en pantalla pidiendo la apuesta del jugador, verifica que
+	*  el usuario digite un número válido, de lo contrario muestra un mensaje de error y si da en el boton
+	*  cancelar del ShowInputDialog el programa termina
+	*/
 	public void mensajePedirPrimeraApuesta() {
 		String entrada = JOptionPane.showInputDialog(null, "¿Cuánto quieres apostar? Tienes: " + humano.getBalance());
 		if (entrada == null) {
@@ -213,7 +256,9 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
-	/** Pide apuestas y pinta el flop */
+	/**
+	 *  Pide apuestas y pinta el flop.
+	 */
 	public void primeraFase() {
 		mensajePedirPrimeraApuesta();
 		pintarInfo(pc); // para que actualicen las infos
@@ -223,13 +268,18 @@ public class Logica extends Interfaz implements ActionListener {
 		fase = "Flop";
 	}
 
-	/** Empieza la fase turn poniendo la cuarta carta */
+	/**
+	 *  Empieza la fase turn poniendo la cuarta carta.
+	 */
 	public void faseTurn() {
 		pintarProximaFase();
 
 		fase = "Turn"; // Cambia el estado de la fase a "Turn"
 	}
 
+	/**
+	 * Fase river.
+	 */
 	public void faseRiver() {
 		pintarProximaFase();
 		fase = "River";
@@ -237,7 +287,7 @@ public class Logica extends Interfaz implements ActionListener {
 
 	/**
 	 * Añade la carta del Turn a la baraja "invisible" de los jugadores, además
-	 * pinta el componente en el tablero y actualiza
+	 * pinta el componente en el tablero y actualiza.
 	 */
 	public void pintarProximaFase() {
 		Carta cartaTurn = baraja.darCartaAlAzar();
@@ -245,15 +295,11 @@ public class Logica extends Interfaz implements ActionListener {
 		areaTableroCartas.add(turn);
 		humano.tomarCarta(cartaTurn);
 		pc.tomarCarta(cartaTurn);
-		revalidate();
-		repaint();
+		actualizarPantalla();
 	}
 
 	/**
-	 * Inicia el juego (Queda pendiente decidir si al ejecutar este método el juego
-	 * se reinicia de cero o sólo permite otra mano más) Esta vez no tenemos bucle
-	 * de juego porque se supone que por el caracter de botones el juego tiene que
-	 * hacerse con una estructura orientada a objetos
+	 * Inicia el juego.
 	 */
 	public void jugar() {
 
@@ -265,14 +311,15 @@ public class Logica extends Interfaz implements ActionListener {
 		dibujarMano(pc);
 		pintarInfo(humano);
 		pintarInfo(pc);
-		revalidate();
 		actualizarPantalla();
-		// pruebaRepetidas();
 		// PRIMERA RONDA DE APUESTAS, pide apuestas y pinta el flop
 		primeraFase();
 	}
 
 	// Dar el flop (tres cartas a la mesa), pone los componentes sobre la mesa y se
+	/**
+	 * Pintar flop.
+	 */
 	// agregan esas cartas a las manos de cada jugador.
 	public void pintarFlop() {
 		for (int i = 0; i < 3; i++) {
@@ -285,11 +332,11 @@ public class Logica extends Interfaz implements ActionListener {
 		actualizarPantalla();
 	}
 
-	/** Inicializa la próxima fase dependiendo de la fase en la que se esté00 */
+	/**
+	 *  Inicializa la próxima fase dependiendo de la fase en la que se esté.
+	 */
 	public void proximaFase() {
 		apuestaRonda = 0;
-		// humano.setApuesta(0); //Las apeuestas se siguen acumulando no????
-		// pc.setApuesta(0);
 		pintarInfo(humano);
 		switch (fase) {
 		case "Flop": // Pasa a la fase "Turn"
@@ -300,7 +347,7 @@ public class Logica extends Interfaz implements ActionListener {
 			faseRiver();
 			break;
 
-		case "River": // Termina la mano y determina al ganador con alguna funcion que envuelva todo
+		case "River": // Termina la mano, muestra las cartas del pc y determina al ganador
 
 			analizarJugadas(humano);
 			analizarJugadas(pc);
@@ -313,22 +360,24 @@ public class Logica extends Interfaz implements ActionListener {
 
 	}
 
+	/**
+	 * Método usado para mostrar las cartas del pc que están volteadas 
+	 * durante el juego, se utiliza cuando el juego termina.
+	 */
 	public void mostrarCartasPc() {
 		JButton carta1 = crearComponenteDeMano(pc.getCartaMano(0));
 		JButton carta2 = crearComponenteDeMano(pc.getCartaMano(1));
 		areaPcCartas.removeAll();
-		revalidate();
-		repaint();
 		areaPcCartas.add(carta1, BorderLayout.CENTER);
 		areaPcCartas.add(carta2, BorderLayout.CENTER);
-		revalidate();
-		repaint();
+		actualizarPantalla();
 	}
 
-	// Muestra un mensaje en pantalla preguntando si el usuario quiere volver a
-	// jugar
-	//////////////////////////////////// verificar si esta bien y cuando
-	// usarlo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/** Verifica que el usuario todiavía tenga dinero para jugar y entonces
+	 * muestra un mensaje en pantalla preguntando si el usuario quiere volver a
+	 * jugar, en caso de que no tenga dinero o presione el boton "no" 
+	 * de el ShowComfirmDialog el programa acaba.
+	 */
 	public void JugarDeNuevo() {
 		if (humano.getBalance() > 0) {
 			int resp = JOptionPane.showConfirmDialog(null, "quieres volver a Jugar?");
@@ -347,81 +396,12 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
-	public void pruebaRepetidas() {
-		int[] cartas = new int[14];
-		int pares = 0;
-		boolean trio = false;
-		String manoEncontrada;
-		String trioDe = "??";
-		String parDe = "??";
-		String pokerDe = "??";
-		Mano mano = new Mano();
-		mano.addCarta(new Carta(10, 1));
-		mano.addCarta(new Carta(10, 2));
-		mano.addCarta(new Carta(4, 1));
-		mano.addCarta(new Carta(13, 3));
-		mano.addCarta(new Carta(13, 2));
-		mano.addCarta(new Carta(6, 1));
-		mano.addCarta(new Carta(8, 3));
 
-		// Llena de ceros el array
-		for (int i = 0; i < 14; i++) {
-
-			cartas[i] = 0;
-		}
-		// Con este for va contando cuantas cartas de cada valor tiene
-		for (int i = 0; i < 7; i++) {
-			int valor = mano.getCarta(i).getValor();
-			cartas[valor] = cartas[valor] + 1;
-		}
-
-		// procedemos a construir el bucle que nos determina si es par, trio o
-		// cuatrupleta
-		for (int pos = 1; pos < 14; pos++) {
-			if (cartas[pos] == 2) {
-				pares += 1;
-				parDe = Carta.obtenerValorCarta(pos);
-			} else if (cartas[pos] == 3) {
-				trioDe = Carta.obtenerValorCarta(pos);
-				trio = true;
-			} else if (cartas[pos] == 4)
-				manoEncontrada = "Poker de " + Carta.obtenerValorCarta(pos);
-		}
-		// verifica si hay un FULL HOUSE
-		if (pares == 1 & trio == true) {
-			System.out.println("Full House");
-		}
-
-		else {
-			if (trio == true) {// imprime el trio, si lo hay
-				System.out.println("Trío de: " + trioDe);
-			}
-
-			// verifica cuantos pares hay
-			else {
-				switch (pares) {
-				case 0:
-					break;
-				case 2:
-					System.out.println("Doble Par de " + " y ");
-					break;
-				case 1:
-					System.out.println("Par de " + parDe);
-					break;
-
-				}
-			}
-
-		}
-
-		// return manoEncontrada;
-
-	}
-
-	//////////////////////// PENDIENTES PARA IMPLEMENTAR LUEGO
-	//////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	// Puede borrarse si es necesario
-	// este metodo nos dice si la mano del jugador es una carta alta
+	/**
+	 * Este método verifica cual es la carta más alta de la mano del jugador y se la agrega a su jugada.
+	 *
+	 * @param jugador the jugador
+	 */
 	public void analizarCartaAlta(Jugador jugador) {
 		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas porque hay un problema si le
 														// pasamos
@@ -439,29 +419,35 @@ public class Logica extends Interfaz implements ActionListener {
 		jugador.setJugada(jugada);
 	}
 
+	
+	/**
+	 * este método nos analiza las posibles escaleras que puede llegar a tener un jugador tales como
+	 * Escalera, Escalera Real De Color, además tambien nos sirve para ayudarnos a ver si hay un Color.
+	 * la jugada que se obtenga se agrega a la jugada del jugador.
+	 *
+	 * @param jugador the jugador
+	 */
 	public void analizarEscaleras(Jugador jugador) {
 		if (listaOrdenada(jugador.getMano()) == null) {
-			analizarColor(jugador);
+			analizarColor(jugador);  /* cuando la lista ordenada nos retorna un null significa que en la mano del jugador 
+			no hay 5 cartas consecutivas por lo que se procede a analizar si hay un color el cual no necesita que haya cartas cosecutivas, solo que
+			los palos de las cartas sean iguales*/
 		} else {
 			List<Carta> cartas = new ArrayList<Carta>();
-			cartas = listaOrdenada(jugador.getMano()); // recibimos la lista de 5 cartas ordenadas a analizar
-			// se verifica que no empiece en diez porque en ese caso seria una escalera real
-			// de color
+			cartas = listaOrdenada(jugador.getMano()); // recibimos la lista de 5 cartas ordenadas y consecutivas a analizar
+			// se verifica que no empiece en 9 porque en ese caso seria una escalera real de color
 			if ((palosIguales(cartas) == true & cartas.get(0).obtenerCosto() != 9)) {
-				// verifica si las 5
-				// cartas que quedan son consecutivas, si lanza un true verificamos que sus
-				// palos sean iguales si es así, tenemos una escalera de color(?)
 				System.out.println("Escalera de color");
 				int jugada[] = { ESCALERACOLOR, 1 };
 				jugador.setJugada(jugada);
 			}
-
+			/*como la lista que estamos analizando es consecutiva, si no tiene los palos iguales entonces es una escalera normal*/
 			else if (palosIguales(cartas) == false) {
 				System.out.println("Escalera normal xd");
 				int jugada[] = { ESCALERA, 1 };
 				jugador.setJugada(jugada);
 			}
-			// caso en el que empieza en 10 pero no tinen el mismo palo, entonces es una
+			// caso en el que empieza en 9 pero no tinen el mismo palo, entonces es una
 			// escalera normal
 			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == false) {
 				System.out.println("Escalera normal xd");
@@ -469,7 +455,7 @@ public class Logica extends Interfaz implements ActionListener {
 				jugador.setJugada(jugada);
 			}
 			// como las cartas estan ordenadas, y hay 5, si empieza en 10, seguirian
-			// 11(J),12(Q),13(Q),14(As)?? si son del mismo palo entonces
+			// 11(J),12(Q),13(Q),14(As) si son del mismo palo entonces
 			// es una escalera real de color
 			else if (cartas.get(0).obtenerCosto() == 9 & palosIguales(cartas) == true) {
 				int jugada[] = { ESCALERAREAL, 1 };
@@ -484,6 +470,12 @@ public class Logica extends Interfaz implements ActionListener {
 	// recibe la mano del jugador, la ordena y verifica en que parte ese lista hay 5
 	// valores consecutivos,
 	// nos retorna esa lista ordenanda de valores
+	/**
+	 * Lista ordenada.
+	 *
+	 * @param mano the mano
+	 * @return the list ordenada y consecutiva
+	 */
 	// consecutivos
 	public List<Carta> listaOrdenada(Mano mano) { // mirar caso en el que las dos o tres listas tienen consecutivos??
 		// primero llena tres listas, con la misma mano
@@ -514,10 +506,16 @@ public class Logica extends Interfaz implements ActionListener {
 		else if (probarConsecutivos(cartasSinUltimas) == true)
 			return cartasSinUltimas;
 		else
-			return null; // en caso de que retorne null significa que no hay escaleras de ningun tipo
+			return null; // en caso de que retorne null significa que no hay escaleras de ningun tipo pero puede haber un color 
 	}
 
 	// vetifica que los palos de una lista de cartas sean todos iguales (solo para
+	/**
+	 * Palos iguales.
+	 *
+	 * @param cartas the cartas
+	 * @return true, if successful
+	 */
 	// una lista de 5)
 	public boolean palosIguales(List<Carta> cartas) {
 		if (cartas.get(0).getPalo() == cartas.get(1).getPalo() & cartas.get(1).getPalo() == cartas.get(2).getPalo()
@@ -529,7 +527,13 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
-	// verifica que en una lista ordenada de cartas ordenadas por valor, sus valores
+	// verifica, en una lista ordenada de cartas ordenadas por valor que sus valores
+	/**
+	 * Probar consecutivos.
+	 *
+	 * @param arreglo the arreglo
+	 * @return true, if successful
+	 */
 	// sean consecutivos.
 	public static boolean probarConsecutivos(List<Carta> arreglo) {
 
@@ -541,6 +545,11 @@ public class Logica extends Interfaz implements ActionListener {
 		return true;
 	}
 
+	/**
+	 * Imprime array personas.
+	 *
+	 * @param array the array
+	 */
 	// imprime un array para verificar xd borrar cuando ya no se necesite
 	public void imprimeArrayPersonas(List<Carta> array) {
 		for (int i = 0; i < array.size(); i++) {
@@ -549,9 +558,14 @@ public class Logica extends Interfaz implements ActionListener {
 	}
 
 	// hay que comprobar si hay color solo despues de que se compruebe de que no hay
+	/**
+	 * Analizar color.
+	 *
+	 * @param jugador the jugador
+	 */
 	// escaleras.
 	public void analizarColor(Jugador jugador) {
-		int[] palos = new int[4];
+		int[] palos = new int[4]; /*se crea un array de 4 que nos representaria todos los palos posibles*/
 		// Llena de ceros el array
 		for (int i = 0; i < 4; i++) {
 			palos[i] = 0;
@@ -559,9 +573,11 @@ public class Logica extends Interfaz implements ActionListener {
 		// Con este for va contando cuantas cartas de cada palo tiene
 		for (int i = 0; i < 7; i++) {
 			int valor = jugador.getMano().getCarta(i).getPalo();
-			palos[valor] = palos[valor] + 1;
+			palos[valor] = palos[valor] + 1; /*Se suma uno a cada posición del array que representa un palo por cada carta de ese palo que haya
+			en la mano del jugador por eso el for va a hasta 7*/
 		}
-
+		/*Este for nos verifica en que palo hay más de 5 cartas, y si lo hay significa que el jugador tiene un color y lo
+		 * agrega a su jugada*/
 		for (int pos = 0; pos < 4; pos++) {
 			if (palos[pos] >= 5) {
 				System.out.println("Color");
@@ -572,9 +588,14 @@ public class Logica extends Interfaz implements ActionListener {
 	}
 
 	// verifica si hay pares(pair), tríos(three of a kind), cuatrupletas(Poker), par
-	//////////////////////// doble, o un full house (trio + par)
+	/**
+	 * Analizar repetidas.
+	 *
+	 * @param jugador the jugador
+	 */
+	// doble, o un full house (trio + par)
 	public void analizarRepetidas(Jugador jugador) {
-		int[] cartas = new int[14];
+		int[] cartas = new int[14]; /*se crea un array de 14 que nos representaria todos los valores de cartas posibles*/
 		int pares = 0;
 		boolean trio = false;
 		String manoEncontrada;
@@ -651,16 +672,19 @@ public class Logica extends Interfaz implements ActionListener {
 
 	}
 
-	/** Escuchas que determinan el comportamiento del juego */
+	/**
+	 *  Escuchas que determinan el comportamiento del juego.
+	 *
+	 * @param e the evento
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == pasar) {
-			// cambiar turno?? hace algo el cumputador dependiendo de su jugada??
+			// cambia de fase el juego, no pasa nada más
 			System.out.println("Pasa");
 			// Debe checar si se está en fase de flop, turn o river
 			proximaFase();
-
 		}
 		if (e.getSource() == subir) {
 			// igualar la apuesta que haya e incrementar lo que se quiera
@@ -669,7 +693,8 @@ public class Logica extends Interfaz implements ActionListener {
 				if (mensajePedirApuesta()) {
 					pintarInfo(pc); // para que actualicen las infos
 					pintarInfo(humano);
-					actualizarPantalla();
+					proximaFase();
+					actualizarPantalla();					
 				}
 			}
 		}
@@ -678,13 +703,10 @@ public class Logica extends Interfaz implements ActionListener {
 											// gana el computador y se reinicia el juego, el juego acaba cuando alguno se
 											// quede sin dinero
 			System.out.println("Se retira");
-			// no hay necesidad de mostrar las cartas, sea como sea gana esa mano, porque el
-			// jugador se retiro.
 			System.out.println("El pc antes del adicionarDinero() tiene " + +pc.getBalance() + " y el bote es de "
 					+ Integer.parseInt(bote));
 			pc.adicionarDinero(Integer.valueOf(bote));
-
-			bote = "0";
+			bote = "0"; //se reincia el bote ya que lo que había antes se lo lleva el pc
 			humano.reiniciarApuesta();
 			pc.reiniciarApuesta();
 			JOptionPane.showMessageDialog(null, "Tú oponente ganó porque te retiraste.");
@@ -693,20 +715,17 @@ public class Logica extends Interfaz implements ActionListener {
 			LimpiarInterfaz();
 			jugar();
 		}
-		if (e.getSource() == igualar) { // si el humano iguala, el pc no hace nada??
-			if (pc.getApuesta() <= humano.getBalance()) {
+		if (e.getSource() == igualar) { /*El jugador pone en la mesa lo que el pc haya apostado anteriormente, mientras que el pc no hace n*/
+			if (pc.getApuesta() <= humano.getBalance()) { /*Verifica que el jugador tenga el suficiente dinero para igualar, en caso de que no
+			se muestra un mensaje advirtiéndole */
 				System.out.println("Iguala");
 				humano.restarDinero(pc.getApuesta());
-				bote = Integer.toString(Integer.valueOf(bote) + pc.getApuesta());// Verifica cuánto tiene apostado el pc
-				// en la mesa e iguala esa cantidad
-				// en
-				// función de la apuesta del jugado // Algo tipo (apuestaPC)-(apuestaJugador) =
-				// Cantidad a igualar
+				bote = Integer.toString(Integer.valueOf(bote) + pc.getApuesta());
 				humano.setApuesta(humano.getApuesta() + pc.getApuesta());
 				pintarInfo(pc); // para que actualicen las infos
 				pintarInfo(humano);
-				actualizarPantalla();
-				;
+				proximaFase();
+				actualizarPantalla();			
 			}
 
 			else {
@@ -717,6 +736,11 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
+	/**
+	 * Analiza todas las posibles jugadas de los jugadores.
+	 *
+	 * @param jugador the jugador
+	 */
 	public void analizarJugadas(Jugador jugador) {
 		analizarCartaAlta(jugador);
 		analizarRepetidas(jugador);
@@ -724,6 +748,12 @@ public class Logica extends Interfaz implements ActionListener {
 
 	}
 
+	/**
+	 * Obtiene la jugada que el jugador tenga en su atributo "Jugada".
+	 *
+	 * @param jugador the jugador
+	 * @return la jugada
+	 */
 	public String sacarJugada(Jugador jugador) {
 		int jugada[] = jugador.getJugada();
 		switch (jugada[0]) {
@@ -752,6 +782,9 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 	}
 
+	/**
+	 * Determina el ganador del juego basado en las reglas del Poker Texas Hold'em.
+	 */
 	public void determinarGanador() {
 		for (int i = 0; i < 2; i++) {
 

@@ -194,7 +194,8 @@ public class Interfaz extends JFrame {
      */
     /*Actualiza la pantalla*/
     public void actualizarPantalla() {
-        SwingUtilities.updateComponentTreeUI(this);
+    	revalidate();
+		repaint();
     }
 
     /**
