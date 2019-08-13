@@ -301,13 +301,12 @@ public class Logica extends Interfaz implements ActionListener {
 			break;
 
 		case "River": // Termina la mano y determina al ganador con alguna funcion que envuelva todo
-			
+
 			analizarJugadas(humano);
 			analizarJugadas(pc);
 			mostrarCartasPc();
-			JOptionPane.showMessageDialog(null, "Tu tienes: " + sacarJugada(humano) +  " y el pc tiene: " + sacarJugada(pc), "Mensaje",
-					JOptionPane.WARNING_MESSAGE);
-			
+			determinarGanador();
+
 			break;
 		}
 		actualizarPantalla();
@@ -426,7 +425,7 @@ public class Logica extends Interfaz implements ActionListener {
 	public void analizarCartaAlta(Jugador jugador) {
 		List<Carta> cartas = new ArrayList<Carta>(); // crea una lista de las cartas porque hay un problema si le
 														// pasamos
-		// directamente la mano al sort
+														// directamente la mano al sort
 		for (int i = 0; i < jugador.getMano().manoSize(); i++) {
 			cartas.add(jugador.getMano().getCarta(i));
 		}
@@ -436,7 +435,7 @@ public class Logica extends Interfaz implements ActionListener {
 																// la primera
 
 		System.out.println(cartas.get(0).valorCarta() + " Alto/a");
-		int jugada[] = { CARTAALTA, 1 } ;
+		int jugada[] = { CARTAALTA, 1 };
 		jugador.setJugada(jugada);
 	}
 
@@ -453,11 +452,11 @@ public class Logica extends Interfaz implements ActionListener {
 				// cartas que quedan son consecutivas, si lanza un true verificamos que sus
 				// palos sean iguales si es así, tenemos una escalera de color(?)
 				System.out.println("Escalera de color");
-				int jugada[] = { ESCALERACOLOR, 1 } ;
+				int jugada[] = { ESCALERACOLOR, 1 };
 				jugador.setJugada(jugada);
 			}
-				
- else if (palosIguales(cartas) == false) {
+
+			else if (palosIguales(cartas) == false) {
 				System.out.println("Escalera normal xd");
 				int jugada[] = { ESCALERA, 1 };
 				jugador.setJugada(jugada);
@@ -580,7 +579,10 @@ public class Logica extends Interfaz implements ActionListener {
 		boolean trio = false;
 		String manoEncontrada;
 		String trioDe = "??";
-		String parDe = "??";
+		String par = "??";
+		int par1 = 0;
+		int par2 = 0;
+		int cuatrupleta;
 		String pokerDe = "??";
 		// Llena de ceros el array
 		for (int i = 0; i < 14; i++) {
@@ -598,13 +600,17 @@ public class Logica extends Interfaz implements ActionListener {
 		for (int pos = 1; pos < 14; pos++) {
 			if (cartas[pos] == 2) {
 				pares = +1;
-				parDe = Carta.obtenerValorCarta(pos);
+				if (par1 == 0) {
+					par1 = pos;
+				} else
+					par2 = pos;
+
 			} else if (cartas[pos] == 3) {
 				trioDe = Carta.obtenerValorCarta(pos);
 				trio = true;
 			} else if (cartas[pos] == 4) {
 				manoEncontrada = "Cuatrupleta de " + Carta.obtenerValorCarta(pos);
-				int jugada[] = { CUATRUPLETA, 1 };
+				int jugada[] = { CUATRUPLETA, pos };
 				jugador.setJugada(jugada);
 			}
 		}
@@ -628,21 +634,20 @@ public class Logica extends Interfaz implements ActionListener {
 				case 0:
 					break;
 				case 1:
-					System.out.println("Par de " + parDe);
-					int jugada[] = { PAR, 1 };
+					System.out.println("Par de " + Carta.obtenerValorCarta(par1));
+					int jugada[] = { PAR, par1 };
 					jugador.setJugada(jugada);
 					break;
 				case 2:
-					System.out.println("Doble Par de " + " y ");
-					int jugadaDoblePar[] = { DOBLEPAR, 1 };
+					System.out.println(
+							"Doble Par de " + Carta.obtenerValorCarta(par1) + " y " + Carta.obtenerValorCarta(par2));
+					int jugadaDoblePar[] = { DOBLEPAR, (par2 + par1) };
 					jugador.setJugada(jugadaDoblePar);
 					break;
 				}
 			}
 
 		}
-
-		// return manoEncontrada;
 
 	}
 
@@ -670,8 +675,8 @@ public class Logica extends Interfaz implements ActionListener {
 		}
 		if (e.getSource() == retirarse) {// se retira de la mano, mas no del juego, se le da todo lo del bote al pc y se
 											// inicia una nueva mano.
-			// gana el computador y se reinicia el juego, el juego acaba cuando alguno se
-			// quede sin dinero
+											// gana el computador y se reinicia el juego, el juego acaba cuando alguno se
+											// quede sin dinero
 			System.out.println("Se retira");
 			// no hay necesidad de mostrar las cartas, sea como sea gana esa mano, porque el
 			// jugador se retiro.
@@ -711,14 +716,14 @@ public class Logica extends Interfaz implements ActionListener {
 			}
 		}
 	}
-	
+
 	public void analizarJugadas(Jugador jugador) {
 		analizarCartaAlta(jugador);
 		analizarRepetidas(jugador);
 		analizarEscaleras(jugador);
-		
+
 	}
-	
+
 	public String sacarJugada(Jugador jugador) {
 		int jugada[] = jugador.getJugada();
 		switch (jugada[0]) {
@@ -744,6 +749,30 @@ public class Logica extends Interfaz implements ActionListener {
 			return "Escalera Real";
 		default:
 			return "???";
+		}
+	}
+
+	public void determinarGanador() {
+		for (int i = 0; i < 2; i++) {
+
+			if (humano.getJugada()[i] > pc.getJugada()[i]) {
+				JOptionPane.showMessageDialog(null, "Ganas con " + sacarJugada(humano), "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+				humano.adicionarDinero(Integer.parseInt(bote));
+				break;
+
+			} else if (humano.getJugada()[i] < pc.getJugada()[i]) {
+				JOptionPane.showMessageDialog(null, "El PC gana con: " + sacarJugada(pc), "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+				pc.adicionarDinero(Integer.parseInt(bote));
+				break;
+			}
+
+			else if (humano.getJugada()[1] == pc.getJugada()[1]) {
+				JOptionPane.showMessageDialog(null, "EMPATE (POR AHORA) " + sacarJugada(pc), "Alerta",
+						JOptionPane.WARNING_MESSAGE);
+			}
+
 		}
 	}
 

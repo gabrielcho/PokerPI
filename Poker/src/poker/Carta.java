@@ -15,9 +15,10 @@ import java.awt.Image;
 /**
  * The Class Carta.
  */
-public class Carta implements Comparable<Carta>{ //se implementa la interfaz comparable, para así poder organizar las cartas, cosa que nos ayuda a 
-	//determinar el tipo de jugada que tinene algun jugado
-    /**  daw. */
+public class Carta implements Comparable<Carta> { // se implementa la interfaz comparable, para así poder organizar las
+                                                  // cartas, cosa que nos ayuda a
+    // determinar el tipo de jugada que tinene algun jugado
+    /** daw. */
     public final static int treboles = 0, corazones = 1, diamantes = 2, picas = 3;
 
     /** The Constant king. */
@@ -25,10 +26,10 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
 
     /** The palo. */
     private final int palo;
-    
+
     /** The costo. */
-    private Integer valor, costo; //son de tipo integer para que no haya problemas en el compareTo
-    
+    private Integer valor, costo; // son de tipo integer para que no haya problemas en el compareTo
+
     /** The path. */
     private String path;
 
@@ -36,7 +37,7 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
      * Instantiates a new carta.
      *
      * @param valor the valor
-     * @param palo the palo
+     * @param palo  the palo
      */
     public Carta(int valor, int palo) {
         this.valor = valor;
@@ -51,10 +52,71 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
      *
      * @return the costo
      */
-    //Obtiene el peso de cada carta (es diferente al valor)
+    // Obtiene el peso de cada carta (es diferente al valor)
     public int obtenerCosto() {
         int costoObtenido = 0;
         switch (valor) {
+        case 1:
+            costoObtenido = 13;
+            return costoObtenido;
+
+        case 2:
+            costoObtenido = 1;
+            return costoObtenido;
+
+        case 3:
+            costoObtenido = 2;
+            return costoObtenido;
+
+        case 4:
+            costoObtenido = 3;
+            return costoObtenido;
+
+        case 5:
+            costoObtenido = 4;
+            return costoObtenido;
+
+        case 6:
+            costoObtenido = 5;
+            return costoObtenido;
+
+        case 7:
+            costoObtenido = 6;
+            return costoObtenido;
+
+        case 8:
+            costoObtenido = 7;
+            return costoObtenido;
+
+        case 9:
+            costoObtenido = 8;
+            return costoObtenido;
+
+        case 10:
+            costoObtenido = 9;
+            return costoObtenido; // ee github
+
+        case 11:
+            costoObtenido = 10;
+            return costoObtenido;
+
+        case 12:
+            costoObtenido = 11;
+            return costoObtenido;
+
+        case 13:
+            costoObtenido = 12;
+            return costoObtenido;
+
+        default:
+            break;
+        }
+        return costoObtenido;
+    }
+
+    public static int costoCarta(int i) {
+        int costoObtenido = 0;
+        switch (i) {
         case 1:
             costoObtenido = 13;
             return costoObtenido;
@@ -136,7 +198,8 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
      *
      * @return the string
      */
-    //nos devuelve el palo de la carta según que representación numérica de este. Nos sirve para representar la carta en consola
+    // nos devuelve el palo de la carta según que representación numérica de este.
+    // Nos sirve para representar la carta en consola
     public String paloCarta() {
         switch (palo) {
         case treboles:
@@ -152,14 +215,15 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
         }
     }
 
-    //nos devuelve el valor de la carta según que representación numérica de este. Nos sirve para representar la carta en consola
+    // nos devuelve el valor de la carta según que representación numérica de este.
+    // Nos sirve para representar la carta en consola
     /**
      * Obtener valor carta.
      *
      * @param valor the valor
      * @return the string
      */
-    //es estático
+    // es estático
     public static String obtenerValorCarta(int valor) {
         switch (valor) {
         case 1:
@@ -193,13 +257,14 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
         }
 
     }
-    
+
     /**
      * Valor carta.
      *
      * @return the string
      */
-    //nos devuelve el valor de la carta según que representación numérica de este. Nos sirve para representar la carta en consola
+    // nos devuelve el valor de la carta según que representación numérica de este.
+    // Nos sirve para representar la carta en consola
     public String valorCarta() {
         switch (valor) {
         case 1:
@@ -233,7 +298,6 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
         }
     }
 
-	
     /**
      * Este método returna un objeto de tipo <code>ImageIcon</code> que aloja la
      * imagen de la carta ya lista para ser dibujada sobre los componentes.
@@ -267,18 +331,17 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
      *
      * @return the string
      */
-    //retorna un string que nos reresenta la carta
+    // retorna un string que nos reresenta la carta
     public String mostrarCarta() {
         return valorCarta() + " de " + paloCarta();
     }
-    
-   
+
     /**
      * Path imagen.
      *
      * @return the url
      */
-    //la dirección url donde se encuentra la imagen
+    // la dirección url donde se encuentra la imagen
     public URL pathImagen() {
         URL url = getClass().getResource("/src/cartas" + path);
         return url;
@@ -293,16 +356,16 @@ public class Carta implements Comparable<Carta>{ //se implementa la interfaz com
         return path;
     }
 
-	/**
-	 * Compare to.
-	 *
-	 * @param o the objeto carta
-	 * @return the int
-	 */
-	@Override
-	//este es el metodo que ayuda al Sort a comparar cartas según su costo.
-	public int compareTo(Carta o) {
-		// TODO Auto-generated method stub
-		return this.costo.compareTo(o.obtenerCosto());
-	}
+    /**
+     * Compare to.
+     *
+     * @param o the objeto carta
+     * @return the int
+     */
+    @Override
+    // este es el metodo que ayuda al Sort a comparar cartas según su costo.
+    public int compareTo(Carta o) {
+        // TODO Auto-generated method stub
+        return this.costo.compareTo(o.obtenerCosto());
+    }
 }
