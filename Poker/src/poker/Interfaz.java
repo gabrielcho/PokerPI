@@ -224,8 +224,7 @@ public class Interfaz extends JFrame {
             }
         }
 
-        revalidate();
-        repaint();
+        actualizarPantalla();
     }
    
     /**
